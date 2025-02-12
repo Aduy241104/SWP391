@@ -1,0 +1,178 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Feb 11, 2025, 9:08:00 AM
+    Author     : DUY
+*/
+
+
+.cover-page {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+}
+
+.component-1 {
+    background-color: white;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.option_1 ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin: 0px;
+}
+
+.option_1 li {
+    margin: 8px 17px;
+}
+
+.line-row {
+    width: 1px;
+    background-color: black;
+    margin: 14px 5px;
+}
+
+.option-header a {
+    color: black;
+    opacity: 1;
+    font-weight: 500;
+}
+
+.option-header a:hover {
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+.component-2 {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: rgb(237, 17, 100);
+}
+
+.category_List {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    list-style: none;
+    margin-bottom: 0px;
+}
+
+.category a {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0px 10px;
+    line-height: 60px;
+}
+
+.search_header {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+    /* position: relative; */
+}
+
+
+
+.search_header input {
+    border-radius: 19px;
+    border: none;
+    background-color: rgb(236, 235, 235);
+    margin: 10px;
+    padding: 6px 10px;
+    padding-left: 44px;
+}
+
+.search_header input:hover {
+    background-color: rgb(197, 197, 197);
+}
+
+.icon-search {
+    position: absolute;
+    top: -7px;
+    left: -2%;
+    background-color: rgb(229, 229, 229);
+    margin: 0px;
+    font-size: 22px;
+    padding: 7px;
+    border-radius: 22px;
+}
+
+
+
+.search_header i {
+    margin: 18px 15px;
+    font-size: 22px;
+    color: rgb(255, 255, 255);
+}
+
+.component-3 {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(245, 245, 245);
+    border-bottom: 1px solid rgb(209, 209, 209);
+}
+
+.banner_new-headerz {
+    display: flex;
+    text-align: center;
+}
+
+.rightBanner_contentz,
+.leftBanner_contentz {
+    width: 270px;
+    margin: 10px;
+}
+
+.leftBanner_contentz {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.rightBanner_contentz h4 {
+    padding: 0px;
+    margin: 0px;
+}
+
+.body-web {
+    background-color: white;
+}
+
+.header-bodyWeb {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+}
+
+.header-bodyWeb-component_1 h3 {
+    margin: 6px 0px;
+    padding: 0px 0px;
+    font-weight: 600;
+}
+
+.header-bodyWeb-component_1 a {
+    color: black;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.header-bodyWeb-component_2 {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-bodyWeb-component_2 span {
+    margin: 20px 20px;
+    font-weight: 500;
+    font-size: 15px;
+}
