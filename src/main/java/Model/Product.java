@@ -4,30 +4,44 @@
  */
 package Model;
 
+import java.sql.Date;
+
 /**
  *
  * @author DUY
  */
 public class Product {
-    private int productID; 
-    private String productName; 
-    private double price; 
-    private int stock; 
-    private int categoryID; 
-    private String ageRange; 
-    private boolean isActive; 
+    private int productID;
+    private String productName;
+    private String description;
+    private double price;
+    private int stock;
+    private String imageUrl;
+    private int categoryID;
+    private Date createAt;
+    private boolean isActive;
+    private String size;
+    private String ageRange;
+    private String origin;
+    private double weight;
 
-    public Product() {
-    }
-
-    public Product(int productID, String productName, double price, int stock, int categoryID, String ageRange, boolean isActive) {
+    public Product(int productID, String productName, String description, double price, int stock, String imageUrl, int categoryID, Date createAt, boolean isActive, String size, String ageRange, String origin, double weight) {
         this.productID = productID;
         this.productName = productName;
+        this.description = description;
         this.price = price;
         this.stock = stock;
+        this.imageUrl = imageUrl;
         this.categoryID = categoryID;
-        this.ageRange = ageRange;
+        this.createAt = createAt;
         this.isActive = isActive;
+        this.size = size;
+        this.ageRange = ageRange;
+        this.origin = origin;
+        this.weight = weight;
+    }
+
+    public Product() {
     }
 
     public int getProductID() {
@@ -46,6 +60,14 @@ public class Product {
         this.productName = productName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public double getPrice() {
         return price;
     }
@@ -62,12 +84,44 @@ public class Product {
         this.stock = stock;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public int getCategoryID() {
         return categoryID;
     }
 
     public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public String getAgeRange() {
@@ -78,11 +132,28 @@ public class Product {
         this.ageRange = ageRange;
     }
 
-    public boolean isIsActive() {
-        return isActive;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    } 
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", description=" + description + ", price=" + price + ", stock=" + stock + ", imageUrl=" + imageUrl + ", categoryID=" + categoryID + ", createAt=" + createAt + ", isActive=" + isActive + ", size=" + size + ", ageRange=" + ageRange + ", origin=" + origin + ", weight=" + weight + '}';
+    }
+    
+    
+    
+    
 }

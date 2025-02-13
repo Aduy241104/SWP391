@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,7 +26,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
     </head>
     <body>
-
         <div class="container-fluid" style="background-color: rgb(255, 255, 255);">
 
             <header class="" id="header">
@@ -79,205 +79,159 @@
                         <!-- <span>Hide Filters  <i class="fa-solid fa-sliders"></i></span>
                         <span>Sort by  <i class="fa-solid fa-sort"></i></span> -->
                         <h3>Hello ${sessionScope.user.fullName} 😻</h3>
-                    </div>
-                </nav>
+                </div>
+            </nav>
 
 
-                <div class="row body-web cover-page">
-
-                    <div class="row rtxs">
-                        <h1 style="text-align: center; color: palevioletred; width: 100%;">Most Popular Products </h1>
-
+            <div class="row body-web cover-page">
+                <!-- Most Popular Products -->
+                <div class="row rtxs">
+                    <h1 style="text-align: center; color: palevioletred; width: 100%;">Most Popular Products</h1>
+                    <c:forEach var="product" items="${productList}">
                         <div class="col-lg-2 items">
-                            <a href="">
-                                <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <a href="productDetail.jsp?productID=${product.productID}">
+                                <img src="${product.imageUrl}" alt="${product.productName}" style="width: 100%; height: auto;">
                                 <div class="information">
                                     <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
+                                    <p>${product.productName}</p>
+                                    <p>${product.description}</p>
+                                    <p><strong><fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND" /></strong></p>
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-2 items">
-                            <a href="">
-                                <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
+                    </c:forEach>
+                </div>
+
+
+                <div class="col-md-2 left-menu custom-scroll">
+                    <form class="filter-group" action="">
+                        <div>
+                            <h4>Age Range</h4>
+                            <select class="age-range" name="" id="">
+                                <option value="">From 1 to 3 year olds</option>
+                                <option value="">From 0 to 1 year olds</option>
+                                <option value="">From 3 years olds</option>
+                            </select>
+
                         </div>
 
-                        <div class="col-lg-2 items">
-                            <a href="">
-                                <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
+                        <div class="filter-group-1">
+                            <h4>Category</h4>
 
-                        <div class="col-lg-2 items">
-                            <a href="">
-                                <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-lg-2 items">
-                            <a href="">
-                                <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-2 left-menu custom-scroll">
-                        <form class="filter-group" action="">
                             <div>
-                                <h4>Age Range</h4>
-                                <select class="age-range" name="" id="">
-                                    <option value="">From 1 to 3 year olds</option>
-                                    <option value="">From 0 to 1 year olds</option>
-                                    <option value="">From 3 years olds</option>
-                                </select>
+                                <input name="country" type="checkbox">
+                                <label for="">VietNam</label>
+                            </div>
+
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">America</label>
 
                             </div>
 
-                            <div class="filter-group-1">
-                                <h4>Category</h4>
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">France</label>
+                            </div>
+                        </div>
 
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">VietNam</label>
-                                </div>
+                        <div class="filter-group-2">
+                            <h4>Origin</h4>
 
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">America</label>
-
-                                </div>
-
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">France</label>
-                                </div>
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">VietNam</label>
                             </div>
 
-                            <div class="filter-group-2">
-                                <h4>Origin</h4>
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">America</label>
 
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">VietNam</label>
-                                </div>
-
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">America</label>
-
-                                </div>
-
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">France</label>
-                                </div>
                             </div>
 
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">France</label>
+                            </div>
+                        </div>
 
-                            <div class="filter-group-2">
-                                <h4>Origin</h4>
 
-                                <div>
-                                    <input name="price" type="checkbox">
-                                    <label for="">From 10$ to 50$</label>
-                                </div>
+                        <div class="filter-group-2">
+                            <h4>Origin</h4>
 
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">From 50$ to 100$</label>
-
-                                </div>
-
-                                <div>
-                                    <input name="country" type="checkbox">
-                                    <label for="">More than 100$</label>
-                                </div>
+                            <div>
+                                <input name="price" type="checkbox">
+                                <label for="">From 10$ to 50$</label>
                             </div>
 
-                            <button type="submit">Apply</button>
-                        </form>
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">From 50$ to 100$</label>
+
+                            </div>
+
+                            <div>
+                                <input name="country" type="checkbox">
+                                <label for="">More than 100$</label>
+                            </div>
+                        </div>
+
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+
+                <div class="col-lg-10 right-menu">
+
+                    <div class="col-lg-3 items">
+                        <a href="">
+                            <img src="https://cdnv2.tgdd.vn/mwg-static/avakids/Products/Images/10421/332469/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-thumb-638684309417733559-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 items">
+                        <a href="">
+                            <img src="https://cdn.tgdd.vn/Products/Images/10421/257210/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
                     </div>
 
-                    <div class="col-lg-10 right-menu">
+                    <div class="col-lg-3 items">
+                        <a href="">
+                            <img src="https://cdn.tgdd.vn/Products/Images/10421/257210/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
 
-                        <div class="col-lg-3 items">
-                            <a href="">
-                                <img src="https://cdnv2.tgdd.vn/mwg-static/avakids/Products/Images/10421/332469/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-thumb-638684309417733559-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 items">
-                            <a href="">
-                                <img src="https://cdn.tgdd.vn/Products/Images/10421/257210/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-lg-3 items">
-                            <a href="">
-                                <img src="https://cdn.tgdd.vn/Products/Images/10421/257210/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-lg-3 items">
-                            <a href="">
-                                <img src="https://cdnv2.tgdd.vn/mwg-static/avakids/Products/Images/10421/332469/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-thumb-638684309417733559-300x300.jpg" alt="">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>Nike pagasus 41 PQ</p>
-                                    <p>Men's Road Running Shoes 1 Colour</p>
-                                    <p>3,829,000đ</p>
-                                </div>
-                            </a>
-                        </div>
+                    <div class="col-lg-3 items">
+                        <a href="">
+                            <img src="https://cdnv2.tgdd.vn/mwg-static/avakids/Products/Images/10421/332469/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-thumb-638684309417733559-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
-            <footer style="margin-top: 80px;" class="container-fluid" id="footer">
+        </div>
+        <footer style="margin-top: 80px;" class="container-fluid" id="footer">
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
 
