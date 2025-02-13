@@ -4,6 +4,9 @@
     Author     : DUY
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="Model.Product"%>
+<%@page import="Model.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -87,19 +90,64 @@
                 <!-- Most Popular Products -->
                 <div class="row rtxs">
                     <h1 style="text-align: center; color: palevioletred; width: 100%;">Most Popular Products</h1>
-                    <c:forEach var="product" items="${productList}">
-                        <div class="col-lg-2 items">
-                            <a href="productDetail.jsp?productID=${product.productID}">
-                                <img src="${product.imageUrl}" alt="${product.productName}" style="width: 100%; height: auto;">
-                                <div class="information">
-                                    <p>Just in</p>
-                                    <p>${product.productName}</p>
-                                    <p>${product.description}</p>
-                                    <p><strong><fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND" /></strong></p>
-                                </div>
-                            </a>
-                        </div>
-                    </c:forEach>
+                   <div class="col-lg-2 items">
+                        <a href="">
+                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
+                     <div class="col-lg-2 items">
+                        <a href="">
+                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
+
+                     <div class="col-lg-2 items">
+                        <a href="">
+                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
+
+                     <div class="col-lg-2 items">
+                        <a href="">
+                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
+
+                     <div class="col-lg-2 items">
+                        <a href="">
+                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
+                            <div class="information">
+                                <p>Just in</p>
+                                <p>Nike pagasus 41 PQ</p>
+                                <p>Men's Road Running Shoes 1 Colour</p>
+                                <p>3,829,000đ</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
 
@@ -181,53 +229,26 @@
                 </div>
 
                 <div class="col-lg-10 right-menu">
-
-                    <div class="col-lg-3 items">
-                        <a href="">
-                            <img src="https://cdnv2.tgdd.vn/mwg-static/avakids/Products/Images/10421/332469/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-thumb-638684309417733559-300x300.jpg" alt="">
+                    <c:choose>
+                        <c:when test="${not empty productList}">
+                            <c:forEach var="product" items="${productList}">
+                                <<div class="col-lg-3 items">
+                           <a href="">
+                            <img src="${product.imageUrl}" alt="">
                             <div class="information">
                                 <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
+                                <p>${product.productName}</p>
+                                <p>${product.description}</p>
+                                <p>${product.price}$</p>
                             </div>
                         </a>
                     </div>
-                    <div class="col-lg-3 items">
-                        <a href="">
-                            <img src="https://cdn.tgdd.vn/Products/Images/10421/257210/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 items">
-                        <a href="">
-                            <img src="https://cdn.tgdd.vn/Products/Images/10421/257210/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 items">
-                        <a href="">
-                            <img src="https://cdnv2.tgdd.vn/mwg-static/avakids/Products/Images/10421/332469/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-thumb-638684309417733559-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <p>Not Found</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>

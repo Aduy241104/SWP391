@@ -1,5 +1,13 @@
+Model\Cart.class
+Model\Product.class
+Controller\ViewCartController.class
+DAO\testDao.class
+DAO\CartDAO.class
+Controller\LogoutController.class
+Utils\DBContext.class
+DAO\ProductDAO.class
 Model\User.class
 DAO\orderDAO.class
 Controller\LoginController.class
+Controller\ViewProductListController.class
 DAO\userDAO.class
-Utils\DBContext.class

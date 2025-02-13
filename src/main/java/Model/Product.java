@@ -18,7 +18,7 @@ public class Product {
     private int stock;
     private String imageUrl;
     private int categoryID;
-    private Date createAt;
+    private Date createdAt;
     private boolean isActive;
     private String size;
     private String ageRange;
@@ -33,7 +33,7 @@ public class Product {
         this.stock = stock;
         this.imageUrl = imageUrl;
         this.categoryID = categoryID;
-        this.createAt = createAt;
+        this.createdAt = createAt;
         this.isActive = isActive;
         this.size = size;
         this.ageRange = ageRange;
@@ -101,11 +101,11 @@ public class Product {
     }
 
     public Date getCreateAt() {
-        return createAt;
+        return createdAt;
     }
 
     public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+        this.createdAt = createdAt;
     }
 
     public boolean isIsActive() {
@@ -150,7 +150,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", productName=" + productName + ", description=" + description + ", price=" + price + ", stock=" + stock + ", imageUrl=" + imageUrl + ", categoryID=" + categoryID + ", createAt=" + createAt + ", isActive=" + isActive + ", size=" + size + ", ageRange=" + ageRange + ", origin=" + origin + ", weight=" + weight + '}';
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", description=" + description + ", price=" + price + ", stock=" + stock + ", imageUrl=" + imageUrl + ", categoryID=" + categoryID + ", createAt=" + createdAt + ", isActive=" + isActive + ", size=" + size + ", ageRange=" + ageRange + ", origin=" + origin + ", weight=" + weight + '}';
     }
     
     
