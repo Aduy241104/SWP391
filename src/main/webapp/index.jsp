@@ -78,7 +78,7 @@
                     <div class="col-md-6 header-bodyWeb-component_2">
                         <!-- <span>Hide Filters  <i class="fa-solid fa-sliders"></i></span>
                         <span>Sort by  <i class="fa-solid fa-sort"></i></span> -->
-                        <h3>Hello User😻</h3>
+                        <h3>Hello ${sessionScope.user.fullName} 😻</h3>
                     </div>
                 </nav>
 
