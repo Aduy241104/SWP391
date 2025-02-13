@@ -181,6 +181,13 @@
                 </button>
             </div>
         </div>
+      
+       <footer style="margin-top: 80px;" class="container-fluid" id="footer">
+         <jsp:include page="Component/Footer.jsp"></jsp:include>
+    </footer>
+      
+      
+      
     
       
     </body>
