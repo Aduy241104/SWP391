@@ -8,6 +8,11 @@
         <servlet-name>ViewProductListController</servlet-name>
         <servlet-class>Controller.ViewProductListController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewCartController</servlet-name>
+        <servlet-class>Controller.ViewCartController</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
@@ -16,6 +21,11 @@
         <servlet-name>ViewProductListController</servlet-name>
         <url-pattern>/ViewProductListController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCartController</servlet-name>
+        <url-pattern>/ViewCartController</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30
