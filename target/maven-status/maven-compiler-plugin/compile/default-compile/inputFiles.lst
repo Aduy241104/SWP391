@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 D:\Projects\SWP391\src\main\java\Controller\LogoutController.java
 D:\Projects\SWP391\src\main\java\Utils\DBContext.java
 D:\Projects\SWP391\src\main\java\DAO\userDAO.java
 D:\Projects\SWP391\src\main\java\Model\User.java
 D:\Projects\SWP391\src\main\java\Controller\LoginController.java
 D:\Projects\SWP391\src\main\java\DAO\orderDAO.java
+=======
+C:\New folder (3)\SWP391\src\main\java\DAO\orderDAO.java
+C:\New folder (3)\SWP391\src\main\java\Utils\DBContext.java
+>>>>>>> 1bb35b6b57f53840729aa90d97cb89af615e4109
