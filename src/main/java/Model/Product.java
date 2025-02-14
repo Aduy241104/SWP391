@@ -40,6 +40,17 @@ public class Product {
         this.origin = origin;
         this.weight = weight;
     }
+    
+    
+     public Product(int productID, String productName, String description, double price, int stock, String imageUrl, boolean isActive) {
+        this.productID = productID;
+        this.productName = productName;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.imageUrl = imageUrl;
+        this.isActive = isActive;
+    }
 
     public Product() {
     }

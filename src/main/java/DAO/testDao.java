@@ -13,13 +13,11 @@ import java.util.List;
  */
 public class testDao {
     public static void main(String[] args) {
-        ProductDAO prd = new ProductDAO();
-        List<Product> ars = prd.getProductList();
+       CartDAO crt = new CartDAO();
+       
+        System.out.println(crt.getCartID(1));
         
-        for (Product ar : ars) {
-            System.out.println(ar.toString());
-            
-        }
+        
     }
     
 }

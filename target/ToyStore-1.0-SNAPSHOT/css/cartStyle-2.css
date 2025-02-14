@@ -14,7 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .function_place input{
-    width: 7px;
+    width: 20px;
     border: none;
     margin-left: 7px;
     margin-right: 7px;
@@ -32,7 +32,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     border: 1px solid rgb(212, 212, 212);
     border-radius: 25px;
     padding: 0px 0px;
-    width: 71%;
+    width: 80%;
     
 }
 
@@ -50,6 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     padding: 12px 12px;
     border-radius: 29px;
 }
+
 
 .function_add i:hover{
     background-color: rgb(204, 204, 204);
