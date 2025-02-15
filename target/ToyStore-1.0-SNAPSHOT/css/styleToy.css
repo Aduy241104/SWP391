@@ -12,9 +12,6 @@ body {
 
 }
 
-.fa-heart {
-    color: w;
-}
 
 .cover-page {
     padding-left: 48px !important;
@@ -300,6 +297,19 @@ p:nth-child(4) {
     /* Ẩn nội dung tràn ra ngoài */
     text-overflow: ellipsis;
 }
+
+.information p:nth-child(2) {
+    display: -webkit-box;
+    /* Sử dụng box model linh hoạt */
+    -webkit-box-orient: vertical;
+    /* Đặt hướng của hộp là dọc */
+    -webkit-line-clamp: 2;
+    /* Số dòng tối đa trước khi hiển thị dấu ba chấm */
+    overflow: hidden;
+    /* Ẩn nội dung tràn ra ngoài */
+    text-overflow: ellipsis;
+}
+
 
 
 .rtxs{

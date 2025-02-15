@@ -14,8 +14,7 @@ import java.util.List;
 public class testDao {
     public static void main(String[] args) {
        CartDAO crt = new CartDAO();
-       
-        System.out.println(crt.getCartID(1));
+        System.out.println(crt.getQuantity(5));
         
         
     }

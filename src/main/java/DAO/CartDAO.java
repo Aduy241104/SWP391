@@ -65,6 +65,7 @@ public class CartDAO {
 
     public int getCartID(int userID) {
         String query = "SELECT cartID FROM Cart WHERE userID = ?";
+        
         int cartID = -1;
         try {
             connection = new DBContext().getConnect();
@@ -137,4 +138,87 @@ public class CartDAO {
         }
          return cartID;
     }
+    
+    
+    public boolean checkOwnCart(int cartID, int cartItemsID) {
+        String query = "SELECT cartItemID FROM CartItems WHERE cartItemID = ? AND cartID = ?";
+        
+        try {
+             connection = new DBContext().getConnect();
+             preparedStatement = connection.prepareStatement(query);
+             preparedStatement.setInt(1, cartItemsID);
+             preparedStatement.setInt(2, cartID);
+             resultSet = preparedStatement.executeQuery();
+             
+             while (resultSet.next()) {
+                 if (resultSet.getInt(1) != 0) {
+                     return true;
+                 }
+            } 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    
+    public int checkProductIncart(int cartID,int productID) {
+        String query = "SELECT cartItemID FROM CartItems WHERE cartID = ? AND productID = ?";
+      
+        try {
+             connection = new DBContext().getConnect();
+             preparedStatement = connection.prepareStatement(query);
+             preparedStatement.setInt(1,cartID );
+             preparedStatement.setInt(2, productID);
+             resultSet = preparedStatement.executeQuery();
+             
+             if (resultSet.next()) {
+                 return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+    
+    public int getQuantity (int cartItemID) {
+        String query = "SELECT quantity FROM CartItems WHERE cartItemID = ?";
+        
+        try {
+              connection = new DBContext().getConnect();
+              preparedStatement = connection.prepareStatement(query);
+              preparedStatement.setInt(1,cartItemID);
+              resultSet = preparedStatement.executeQuery();
+              
+              if(resultSet.next()) {
+                  return resultSet.getInt(1);
+              }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+    
+    
+    public boolean addNewProduct(int cartID,int productID, int quantity) {
+        String query = "INSERT CartItems (cartID, productID, quantity)\n" +
+                       "VALUES (?,?,?)";
+        
+        try {
+              connection = new DBContext().getConnect();
+              preparedStatement = connection.prepareStatement(query);
+              preparedStatement.setInt(1,cartID);
+              preparedStatement.setInt(2,productID);
+              preparedStatement.setInt(3,quantity);
+              
+              int rowEffect = preparedStatement.executeUpdate();
+              if(rowEffect > 0) {
+                  return true;
+              }
+                      
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    
 }

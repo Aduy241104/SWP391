@@ -73,9 +73,9 @@ public class ViewCartController extends HttpServlet {
             if (listCartItem.getQuantity() > listCartItem.getProduct().getStock()) {
                 int stockOfProduct = listCartItem.getProduct().getStock();
                 int cartItemID = listCartItem.getCartItemID();
-
+                
                 if (stockOfProduct == 0) {
-                    crd.deleteCartItem(cartItemID);
+                    crd.updateQuantity(cartItemID, stockOfProduct);
                 } else if (stockOfProduct != 0) {
                     crd.updateQuantity(cartItemID, stockOfProduct);
                 }

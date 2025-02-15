@@ -36,19 +36,22 @@
                 <div class="col-md-8 row Cart_detail">
                     <h3 class="col-md-12 vf">Cart</h3>
 
-                <c:set var="totalPrice" value="0" />
-
+               <c:set var="totalPrice" value="0" />
+               <c:choose>
+               <c:when test="${not empty cartList}"> 
                 <c:forEach items="${requestScope.cartList}" var="x">
                     <div class="col-md-12 row bag">
                         <div class="col-md-3 product_img">                   
                             <img src="${x.product.imageUrl}" alt="product">
-                            <div class="function_place">
-                                <div style="width: 90%" class="function_add">
-                                    <i class="fa-solid fa-trash"></i> 
+                            <div style="width: 170px" class="function_place">
+                                <form style="width: 70%" class="function_add">
+                                    <i class="fa-solid fa-minus"></i>
                                     <input style="width: 21px;" type="text" value="${x.quantity}" max="${x.product.stock}" readonly>           
-                                    <i style="margin-left: 13px;" class="fa-solid fa-plus"></i>
-                                </div>                     
-
+                                    <i style="margin-left: 2px;" class="fa-solid fa-plus"></i>
+                                </form>  
+                                  <div class="wish-list">
+                                      <a href="EditCart?cartItemID=${x.cartItemID}&action=delete" style="color: red"> <i class="fa-solid fa-trash"></i></a>
+                                  </div>  
                             </div>
                         </div>
                         <div class="col-md-9 product_detail">
@@ -63,7 +66,7 @@
                                 >
                             </div>
                             <p>Price: ${x.product.price} $</p>
-                            <p>In Stock: ${x.product.stock}</p>
+                            <p>In Stock: ${(x.product.stock == 0)? "out of stock" : x.product.stock} </p>
                         </div>     
                         <div class="col-md-12">
                             <div class="bottom-line">
@@ -72,29 +75,35 @@
                     </div>  
                     <c:set var="totalPrice" value="${totalPrice + (x.quantity * x.product.price)}" />
                 </c:forEach>
+               </c:when>
+               <c:otherwise>
+                   <div>
+                       <img src="img/empty-cart.png" alt="alt"/>
+                       <h5>Your cart is empty</h5>
+                       <p>Add something to make me happy:)</p>
+                       <a href="url" target="target">Go Shopping</a>
+                   </div>
+               </c:otherwise>
+              </c:choose>
             </div>
             <form class="col-md-4 summary">
                 <h3 class="col-md-12 vf">Summary</h3>
                 <div class="col-md-12 Summary_detail">
                     <div class="Summary_detail-1 gena">
                         <p>Subtotal</i></p>
-                        <p>23,775,000₫</p>
+                        <p>${totalPrice}$</p>
                     </div>
-
                     <div class="Summary_detail-2 gena">
                         <p>Estimated Delivery & Handling</i></p>
                         <p>Free</p>
                     </div>
-
                 </div>
-
                 <div class="col-md-12 Summary_detail">
                     <div class="Summary_detail-1 gena">
                         <p>Subtotal</i></p>
                         <p>${totalPrice}$</p>
                     </div>
                 </div>
-
                 <div class="col-md-12 check-out text-center">
                     <button class="check-out-button" style="background-color: green;">
                         <p>Checkout</p>
