@@ -72,8 +72,9 @@
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
                     <p><strong>Stock:</strong> ${product.stock}</p>
                     <div class="product-buttons">
-                        <button class="btn btn-primary customize">Add to Cart</button>
-                        <button class="btn btn-secondary customize">Buy Now</button>
+                        
+                        <a class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
+                       <a class="btn customize" href="AddToCart?productID=4&quantity=3">Buy Now</a>
                     </div>
                     <div class="">
                         <h4>Product Information</h4>
