@@ -15,6 +15,7 @@ import java.sql.ResultSet;
  * @author NHATHCE181222
  */
 public class userDAO {
+
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -27,50 +28,51 @@ public class userDAO {
         }
     }
 
-    public User getUser(String username, String password) {
-    String query = "SELECT * FROM Users WHERE username = ? AND password = ?";
-    String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
-    String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
-    
-    try {
-        preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2, password);
-        resultSet = preparedStatement.executeQuery();
-        
-        if (resultSet.next()) {
-            int userId = resultSet.getInt("userID");
-            String role = "Customer"; // Mặc định là User
-            
-            // Kiểm tra trong bảng Admins
-            preparedStatement = connection.prepareStatement(adminQuery);
-            preparedStatement.setInt(1, userId);
-            ResultSet adminResult = preparedStatement.executeQuery();
-            if (adminResult.next()) {
-                role = "Admin";
-            } else {
-                // Kiểm tra trong bảng Staffs
-                preparedStatement = connection.prepareStatement(staffQuery);
+    public User getUser(String identifier, String password) {
+        String query = "SELECT * FROM Users WHERE (username = ? OR email = ?) AND password = ?";
+        String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
+        String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, identifier);
+            preparedStatement.setString(2, identifier);
+            preparedStatement.setString(3, password);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int userId = resultSet.getInt("userID");
+                String role = "Customer";
+
+                // Kiểm tra trong bảng Admins
+                preparedStatement = connection.prepareStatement(adminQuery);
                 preparedStatement.setInt(1, userId);
-                ResultSet staffResult = preparedStatement.executeQuery();
-                if (staffResult.next()) {
-                    role = "Staff";
+                ResultSet adminResult = preparedStatement.executeQuery();
+                if (adminResult.next()) {
+                    role = "Admin";
+                } else {
+                    // Kiểm tra trong bảng Staffs
+                    preparedStatement = connection.prepareStatement(staffQuery);
+                    preparedStatement.setInt(1, userId);
+                    ResultSet staffResult = preparedStatement.executeQuery();
+                    if (staffResult.next()) {
+                        role = "Staff";
+                    }
                 }
+                
+                return new User(
+                        userId,
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("email"),
+                        resultSet.getString("fullName"),
+                        resultSet.getDate("createdAt"),
+                        role
+                );
             }
-            
-            return new User(
-                userId,
-                resultSet.getString("username"),
-                resultSet.getString("password"),
-                resultSet.getString("email"),
-                resultSet.getString("fullName"),
-                resultSet.getDate("createdAt"),
-                role // Gán role lấy được
-            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 }

@@ -14,12 +14,24 @@ import java.util.List;
 public class testDao {
     public static void main(String[] args) {
         ProductDAO prd = new ProductDAO();
-        List<Product> ars = prd.getProductList();
-        
-        for (Product ar : ars) {
-            System.out.println(ar.toString());
-            
+
+        // ID của sản phẩm cần kiểm tra
+        int productID = 1;
+
+        try {
+            Product product = prd.getProductByID(productID);
+
+            if (product == null) {
+                System.out.println("Không tìm thấy sản phẩm với ID: " + productID);
+            } else {
+                System.out.println("Thông tin sản phẩm với ID " + productID + ":");
+                System.out.println(product.toString());
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi lấy dữ liệu sản phẩm: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-    
 }
+
+    

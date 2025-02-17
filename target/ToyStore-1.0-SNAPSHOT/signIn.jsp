@@ -32,7 +32,7 @@
                 <% }%>
 
                 <div class="form-input">
-                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="identifier" placeholder="Username or Email" required>
                 </div>
 
                 <div class="form-input">

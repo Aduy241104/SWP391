@@ -6,6 +6,7 @@ DAO\CartDAO.class
 Controller\LogoutController.class
 Utils\DBContext.class
 DAO\ProductDAO.class
+Controller\ViewProductDetailController.class
 Model\User.class
 DAO\orderDAO.class
 Controller\LoginController.class

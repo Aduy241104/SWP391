@@ -233,7 +233,7 @@
                         <c:when test="${not empty productList}">
                             <c:forEach var="product" items="${productList}">
                                 <<div class="col-lg-3 items">
-                           <a href="">
+                           <a href="ViewProductDetailController?productID=${product.productID}">
                             <img src="${product.imageUrl}" alt="">
                             <div class="information">
                                 <p>Just in</p>

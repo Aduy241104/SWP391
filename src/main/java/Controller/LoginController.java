@@ -72,11 +72,11 @@ public class LoginController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
+        String identifier = request.getParameter("identifier");
         String password = request.getParameter("password");
 
         userDAO userDAO = new userDAO();
-        User user = userDAO.getUser(username, password);
+        User user = userDAO.getUser(identifier, password);
         
         if (user != null) { // Đúng tài khoản & mật khẩu
             HttpSession session = request.getSession();

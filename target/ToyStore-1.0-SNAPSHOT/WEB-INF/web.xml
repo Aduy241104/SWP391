@@ -12,7 +12,10 @@
         <servlet-name>ViewCartController</servlet-name>
         <servlet-class>Controller.ViewCartController</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>ViewProductDetailController</servlet-name>
+        <servlet-class>Controller.ViewProductDetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
@@ -25,7 +28,10 @@
         <servlet-name>ViewCartController</servlet-name>
         <url-pattern>/ViewCartController</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>ViewProductDetailController</servlet-name>
+        <url-pattern>/ViewProductDetailController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
