@@ -51,7 +51,7 @@
         <input type="text" placeholder="search">
         <a href=""><i style=" color: black;" class="fa-solid fa-magnifying-glass icon-search"></i></a>
         <a href=""> <i class="fa-solid fa-newspaper"></i></a>
-        <a href=""> <i class="fa-solid fa-bag-shopping"></i></a>
+        <a href="ViewCartController"> <i class="fa-solid fa-bag-shopping"></i></a>
     </div>
 </div>
 

@@ -5,9 +5,7 @@
 package Controller;
 
 import DAO.CartDAO;
-import Model.Cart;
 import Model.User;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,13 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  *
  * @author DUY
  */
-public class ViewCartController extends HttpServlet {
+public class EditCartController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,8 +29,42 @@ public class ViewCartController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-         
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("ViewProductListController");
+            return;
+        }
+
+        if (!"delete".equals(action) && !"edit".equals(action)) {
+            response.sendRedirect("ViewProductListController");
+            return;
+        }
+
+        try {
+            CartDAO crd = new CartDAO();
+            int cartItemID = Integer.parseInt(request.getParameter("cartItemID"));
+            int cartID = crd.getCartID(user.getUserId());
+            boolean checkOwnCart = crd.checkOwnCart(cartID, cartItemID);
+
+            if (!checkOwnCart) {
+                throw new Exception("invalid cart");
+            }
+
+            if ("delete".equals(action)) {
+                crd.deleteCartItem(cartItemID);
+                response.sendRedirect("ViewCartController");
+            } else if ("edit".equals(action)) {
+
+                response.sendRedirect("ViewCart");
+            }
+        } catch (Exception e) {
+            response.sendRedirect("ViewProductListController");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -48,44 +79,7 @@ public class ViewCartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        
-        if (user == null) {
-            // Nếu user chưa đăng nhập, chuyển hướng về trang login
-            response.sendRedirect("signIn.jsp");
-            return;
-        }
-
-        CartDAO crd = new CartDAO();
-        int userID = user.getUserId();
-        int cartID = crd.getCartID(userID);
-
-        // neu chua co thi tao gio hang moi
-        if (cartID == -1) {
-            cartID = crd.createCart(userID);
-        }
-
-        List<Cart> listCartItems = crd.getCartListByCartID(cartID);
-
-        for (Cart listCartItem : listCartItems) {
-
-            if (listCartItem.getQuantity() > listCartItem.getProduct().getStock()) {
-                int stockOfProduct = listCartItem.getProduct().getStock();
-                int cartItemID = listCartItem.getCartItemID();
-                
-                if (stockOfProduct == 0) {
-                    crd.updateQuantity(cartItemID, stockOfProduct);
-                } else if (stockOfProduct != 0) {
-                    crd.updateQuantity(cartItemID, stockOfProduct);
-                }
-            }
-        }
-
-        listCartItems = crd.getCartListByCartID(cartID);
-        request.setAttribute("cartList", listCartItems);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/ViewCart.jsp");
-        rd.forward(request, response);
+        processRequest(request, response);
     }
 
     /**

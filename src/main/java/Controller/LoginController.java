@@ -91,7 +91,7 @@ public class LoginController extends HttpServlet {
                     response.sendRedirect("staffDashboard.jsp");
                     break;
                 case "customer":
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("ViewProductListController");
                     break;
                 default:
                     request.setAttribute("errorMessage", "Invalid user role!");

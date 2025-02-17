@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:\Projects\SWP391\src\main\java\Controller\LogoutController.java
 D:\Projects\SWP391\src\main\java\Model\Product.java
 D:\Projects\SWP391\src\main\java\Controller\ViewProductListController.java
@@ -12,3 +13,20 @@ D:\Projects\SWP391\src\main\java\DAO\ProductDAO.java
 D:\Projects\SWP391\src\main\java\Utils\DBContext.java
 D:\Projects\SWP391\src\main\java\Model\Cart.java
 D:\Projects\SWP391\src\main\java\DAO\testDao.java
+=======
+C:\New folder (6)\SWP391\src\main\java\Utils\DBContext.java
+C:\New folder (6)\SWP391\src\main\java\Controller\ViewProductListController.java
+C:\New folder (6)\SWP391\src\main\java\Controller\LoginController.java
+C:\New folder (6)\SWP391\src\main\java\DAO\ProductDAO.java
+C:\New folder (6)\SWP391\src\main\java\Controller\ViewCartController.java
+C:\New folder (6)\SWP391\src\main\java\Model\User.java
+C:\New folder (6)\SWP391\src\main\java\Model\Product.java
+C:\New folder (6)\SWP391\src\main\java\Model\Cart.java
+C:\New folder (6)\SWP391\src\main\java\Controller\EditCartController.java
+C:\New folder (6)\SWP391\src\main\java\Controller\LogoutController.java
+C:\New folder (6)\SWP391\src\main\java\DAO\orderDAO.java
+C:\New folder (6)\SWP391\src\main\java\DAO\userDAO.java
+C:\New folder (6)\SWP391\src\main\java\DAO\CartDAO.java
+C:\New folder (6)\SWP391\src\main\java\Controller\AddToCartController.java
+C:\New folder (6)\SWP391\src\main\java\DAO\testDao.java
+>>>>>>> 2f9e150ffcf46792d7afe568fc6e43ea626979a4

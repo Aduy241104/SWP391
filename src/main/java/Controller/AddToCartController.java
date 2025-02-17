@@ -5,9 +5,9 @@
 package Controller;
 
 import DAO.CartDAO;
-import Model.Cart;
+import DAO.ProductDAO;
+import Model.Product;
 import Model.User;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,13 +15,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  *
  * @author DUY
  */
-public class ViewCartController extends HttpServlet {
+public class AddToCartController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,8 +31,8 @@ public class ViewCartController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-         
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -48,44 +47,54 @@ public class ViewCartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         if (user == null) {
-            // Nếu user chưa đăng nhập, chuyển hướng về trang login
             response.sendRedirect("signIn.jsp");
             return;
         }
+        try {
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        CartDAO crd = new CartDAO();
-        int userID = user.getUserId();
-        int cartID = crd.getCartID(userID);
+            CartDAO crd = new CartDAO();
+            ProductDAO prd = new ProductDAO();
+            Product product = prd.getProductByID(productID);
 
-        // neu chua co thi tao gio hang moi
-        if (cartID == -1) {
-            cartID = crd.createCart(userID);
-        }
-
-        List<Cart> listCartItems = crd.getCartListByCartID(cartID);
-
-        for (Cart listCartItem : listCartItems) {
-
-            if (listCartItem.getQuantity() > listCartItem.getProduct().getStock()) {
-                int stockOfProduct = listCartItem.getProduct().getStock();
-                int cartItemID = listCartItem.getCartItemID();
-                
-                if (stockOfProduct == 0) {
-                    crd.updateQuantity(cartItemID, stockOfProduct);
-                } else if (stockOfProduct != 0) {
-                    crd.updateQuantity(cartItemID, stockOfProduct);
+            //kiem tra productID co ton tai hay khong va so luong co phu hop hay khong
+            if (product == null || quantity <= 0) {
+                throw new Exception();
+            }
+            
+            //Kiem tra xem nguoi dung da co gio hang hay chua neu chua co thi tao mot gio hang moi
+            int cartID = crd.getCartID(user.getUserId());
+            if(cartID == -1) {
+                cartID = crd.createCart(user.getUserId());
+            }
+            
+            // lay cartItemID dua tren productId va cartID de kiem tra xem san pham co ton tai trong gio hang hay chua
+            int cartItemID = crd.checkProductIncart(cartID, productID);
+      
+            //neu da ton tai thi thuc hien cong don so luong san pham them vao 
+            if(cartItemID != -1) {
+                int currentQuantity = crd.getQuantity(cartItemID);
+                if(product.getStock() >= currentQuantity + quantity) {
+                    crd.updateQuantity(cartItemID, currentQuantity + quantity);
+                }
+            // neu san pham chua co trong gio hang thi thuc hien tao san pham moi trong gio
+            }else{
+                //chi thuc hien them khi so luong trong kho dap ung du
+                if(product.getStock() >= quantity ) {
+                    crd.addNewProduct(cartID, productID, quantity);
                 }
             }
+            response.sendRedirect("ViewCartController");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            response.sendRedirect("ViewProductListController");
         }
-
-        listCartItems = crd.getCartListByCartID(cartID);
-        request.setAttribute("cartList", listCartItems);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/ViewCart.jsp");
-        rd.forward(request, response);
     }
 
     /**
