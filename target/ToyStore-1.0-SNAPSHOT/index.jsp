@@ -244,7 +244,7 @@
                                         </div>
                                     </a>
                                 </div>
->>>>>>> 2f9e150ffcf46792d7afe568fc6e43ea626979a4
+
                             </c:forEach>
                         </c:when>
                         <c:otherwise>

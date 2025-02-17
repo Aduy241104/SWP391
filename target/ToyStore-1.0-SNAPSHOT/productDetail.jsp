@@ -57,7 +57,7 @@
     </head>
     <body>
         <header class="container-fluid" id="header">
-            <script src="js/jk.js"></script>
+           <jsp:include page="Component/Header.jsp"></jsp:include>
         </header>
 
 
