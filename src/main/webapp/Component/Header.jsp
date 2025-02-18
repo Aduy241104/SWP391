@@ -21,9 +21,18 @@
             <li class="option-header"><a href="">Join us</a></li>
             <span class="line-row" style="margin: 14px 7px;"></span>
             <li class="option-header">
-                <a href="<%= (session.getAttribute("user") != null) ? "LogoutController" : "signIn.jsp"%>">
-                    <%= (session.getAttribute("user") != null) ? "Logout" : "Sign In"%>
-                </a>
+                <%
+                    Object userObj = session.getAttribute("user");
+                    String role = (userObj != null && session.getAttribute("role") != null) ? session.getAttribute("role").toString() : "";
+                %>
+                <% if (userObj != null) { %>
+                <% if (role.equals("admin")) { %>
+                <a href="AdminManagerProducts?action=productForDashBoard">Manage for Admin</a> |
+                <% } %>
+                <a href="LogoutController">Logout</a>
+                <% } else { %>
+                <a href="signIn.jsp">Sign In</a>
+                <% }%>
             </li>
         </ul>
     </div>
