@@ -159,7 +159,7 @@
                                     <td>${order.orderStatus}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="OrderDetails.jsp?id=${order.orderId}" class="btn btn-info btn-sm">
+                                            <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}" class="btn btn-info btn-sm">
                                                 <i style="padding-right: 5px;" class="fas fa-eye"></i> View Details
                                             </a>
                                         </div>

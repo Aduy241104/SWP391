@@ -22,10 +22,12 @@ public class OrderDetail {
     private String phoneNumber;
     private String orderStatus;
     private String description;
+    private int quantity;
 
-    public OrderDetail(int orderId, String username, String productName, double totalAmount, String address, 
-                       String imageUrl, double price, String categoryName, String email, 
-                       String phoneNumber, String orderStatus, String description) {
+    public OrderDetail() {
+    }
+
+    public OrderDetail(int orderId, String username, String productName, double totalAmount, String address, String imageUrl, double price, String categoryName, String email, String phoneNumber, String orderStatus, String description, int quantity) {
         this.orderId = orderId;
         this.username = username;
         this.productName = productName;
@@ -38,9 +40,7 @@ public class OrderDetail {
         this.phoneNumber = phoneNumber;
         this.orderStatus = orderStatus;
         this.description = description;
-    }
-
-    public OrderDetail() {
+        this.quantity = quantity;
     }
 
     public int getOrderId() {
@@ -138,4 +138,14 @@ public class OrderDetail {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+   
 }

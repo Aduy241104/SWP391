@@ -24,7 +24,22 @@
         <servlet-name>EditCartController</servlet-name>
         <servlet-class>Controller.EditCartController</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>AdminManagerProducts</servlet-name>
+        <servlet-class>Controller.AdminManagerProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminManagerOrders</servlet-name>
+        <servlet-class>Controller.AdminManagerOrders</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminManagerProducts</servlet-name>
+        <url-pattern>/AdminManagerProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManagerOrders</servlet-name>
+        <url-pattern>/AdminManagerOrders</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>

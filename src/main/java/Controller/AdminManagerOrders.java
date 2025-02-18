@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -152,15 +153,41 @@ public class AdminManagerOrders extends HttpServlet {
         } else if (action.equals("viewDetails")) {
             OrderDetailDAO orderDetailsDao = new OrderDetailDAO();
             String orderId = request.getParameter("id");
-            String price = request.getParameter("price");
-            String userID = request.getParameter("userID");
+            double total = 0;
+            OrderDetail orderDetail = null;
             try {
                 int OrderID = Integer.parseInt(orderId);
-                double Price = Double.parseDouble(price);
-                int UserID = Integer.parseInt(userID);
-                int OrderDetailsID = orderDetailsDao.getOrderDetailsID(OrderID, Price, UserID);
-                OrderDetail order = orderDetailsDao.getOrderDetailById(OrderDetailsID);
-                request.setAttribute("orderDetail", order);
+                List<OrderDetail> orderList = orderDetailsDao.getOrderDetailById(OrderID);
+                String orderStatus = "0";
+                if (orderList.size() != 0) {
+                    total = orderList.get(0).getTotalAmount();
+                    orderDetail = orderList.get(0);
+                    orderStatus = orderDetailsDao.getOrderDetailById(OrderID).get(0).getOrderStatus();
+                }
+                List<OrderDetail> mergedOrderList = new ArrayList<>();  // List mới để chứa các sản phẩm đã hợp nhất
+
+                for (int i = 0; i < orderList.size(); i++) {
+                    OrderDetail currentOrder = orderList.get(i);
+                    boolean foundDuplicate = false;
+
+                    for (int j = 0; j < mergedOrderList.size(); j++) {
+                        OrderDetail mergedOrder = mergedOrderList.get(j);
+                        if (mergedOrder.getProductName().equals(currentOrder.getProductName())) {
+                            mergedOrder.setQuantity(mergedOrder.getQuantity() + currentOrder.getQuantity());
+                            foundDuplicate = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundDuplicate) {
+                        mergedOrderList.add(currentOrder);
+                    }
+                }
+
+                request.setAttribute("orderDetail", orderDetail);
+                request.setAttribute("total", total);
+                request.setAttribute("orderDetails", mergedOrderList);
+                request.setAttribute("orderStatus", orderStatus);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=viewDetails").forward(request, response);
             } catch (NumberFormatException e) {
 

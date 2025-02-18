@@ -1,16 +1,23 @@
-C:\New folder (6)\SWP391\src\main\java\Utils\DBContext.java
-C:\New folder (6)\SWP391\src\main\java\Controller\ViewProductListController.java
-C:\New folder (6)\SWP391\src\main\java\Controller\LoginController.java
-C:\New folder (6)\SWP391\src\main\java\DAO\ProductDAO.java
-C:\New folder (6)\SWP391\src\main\java\Controller\ViewCartController.java
-C:\New folder (6)\SWP391\src\main\java\Model\User.java
-C:\New folder (6)\SWP391\src\main\java\Controller\ViewProductDetailController.java
-C:\New folder (6)\SWP391\src\main\java\Model\Product.java
-C:\New folder (6)\SWP391\src\main\java\Model\Cart.java
-C:\New folder (6)\SWP391\src\main\java\Controller\EditCartController.java
-C:\New folder (6)\SWP391\src\main\java\Controller\LogoutController.java
-C:\New folder (6)\SWP391\src\main\java\DAO\orderDAO.java
-C:\New folder (6)\SWP391\src\main\java\DAO\userDAO.java
-C:\New folder (6)\SWP391\src\main\java\DAO\CartDAO.java
-C:\New folder (6)\SWP391\src\main\java\Controller\AddToCartController.java
-C:\New folder (6)\SWP391\src\main\java\DAO\testDao.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\EditCartController.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Model\Category.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\AdminManagerOrders.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Model\Cart.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\CartDAO.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\LoginController.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\ViewCartController.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\orderDAO.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\ProductDAO.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Model\User.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\testDao.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\OrderDetailDAO.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\userDAO.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\ViewProductDetailController.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Model\Orders.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\AdminManagerProducts.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Model\Product.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\AddToCartController.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Utils\DBContext.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Model\OrderDetail.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\DAO\OrdersDAO.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\LogoutController.java
+C:\Users\thaiv\OneDrive\Desktop\Study\5\SWP391\Project\SWP391\src\main\java\Controller\ViewProductListController.java

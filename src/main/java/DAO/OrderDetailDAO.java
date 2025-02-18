@@ -9,6 +9,8 @@ import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,22 +30,23 @@ public class OrderDetailDAO {
         }
     }
 
-    public OrderDetail getOrderDetailById(int orderDetailsID) {
+    public List<OrderDetail> getOrderDetailById(int orderID) {
+        List<OrderDetail> orderDetailsList = new ArrayList<>();
         String query = "SELECT *\n"
                 + "FROM     Orders INNER JOIN\n"
                 + "                  OrderDetails ON Orders.orderID = OrderDetails.orderID INNER JOIN\n"
                 + "                  Products ON OrderDetails.productID = Products.productID INNER JOIN\n"
                 + "                  Categories ON Products.categoryID = Categories.categoryID INNER JOIN\n"
                 + "                  Users ON Orders.userID = Users.userID\n"
-                + "				  Where OrderDetails.orderDetailID = ?";
+                + "				  Where Orders.orderID = ?";
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, orderDetailsID);
+            preparedStatement.setInt(1, orderID);
             resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return new OrderDetail(
+            while (resultSet.next()) {
+                OrderDetail orderDetail = new OrderDetail(
                         resultSet.getInt("orderID"),
                         resultSet.getString("username"),
                         resultSet.getString("productName"),
@@ -55,58 +58,24 @@ public class OrderDetailDAO {
                         resultSet.getString("email"),
                         resultSet.getString("phoneNumber"),
                         resultSet.getString("orderStatus"),
-                        resultSet.getString("description")
+                        resultSet.getString("description"),
+                        resultSet.getInt("quantity")
                 );
+                orderDetailsList.add(orderDetail);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public int getOrderDetailsID(int orderID, double price, int userID) {
-        String query = "SELECT TOP 1 OrderDetails.orderDetailID "
-                + "FROM OrderDetails "
-                + "INNER JOIN Orders ON OrderDetails.orderID = Orders.orderID "
-                + "WHERE OrderDetails.orderID = ? AND OrderDetails.price = ? AND Orders.userID = ?";
-
-        try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, orderID);
-            preparedStatement.setDouble(2, price);
-            preparedStatement.setInt(3, userID);
-
-            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt("orderDetailID");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
+        return orderDetailsList;
     }
 
     public static void main(String[] args) {
-        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        OrderDetailDAO dao = new OrderDetailDAO();  // ✅ Tạo object
+        List<OrderDetail> details = dao.getOrderDetailById(1);  // ✅ Gọi hàm từ object
 
-        int orderID = 9;
-
-        OrderDetail orderDetail = orderDetailDAO.getOrderDetailById(orderID);
-        if (orderDetail != null) {
-            System.out.println("===== ORDER DETAIL =====");
-            System.out.printf("Username       : %s%n", orderDetail.getUsername());
-            System.out.printf("Product Name   : %s%n", orderDetail.getProductName());
-            System.out.printf("Total Amount   : %.2f%n", orderDetail.getTotalAmount());
-            System.out.printf("Address        : %s%n", orderDetail.getAddress());
-            System.out.printf("Image URL      : %s%n", orderDetail.getImageUrl());
-            System.out.printf("Price          : %.2f%n", orderDetail.getPrice());
-            System.out.printf("Category       : %s%n", orderDetail.getCategoryName());
-            System.out.printf("Email          : %s%n", orderDetail.getEmail());
-            System.out.printf("Phone Number   : %s%n", orderDetail.getPhoneNumber());
-            System.out.printf("Order Status   : %s%n", orderDetail.getOrderStatus());
-            System.out.printf("Description    : %s%n", orderDetail.getDescription());
-        } else {
-            System.out.println("Không tìm thấy đơn hàng!");
+        for (OrderDetail detail : details) {
+            System.out.println(detail.getProductName() + " - " + detail.getOrderStatus());
         }
     }
+
 }

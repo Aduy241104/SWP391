@@ -74,7 +74,7 @@
     </head>
     <body>
         <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
+            <h2 style="color: white; text-align: start;"><i class="fas fa-cogs"></i> Admin</h2>
             <a href="manageUsers.jsp"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
@@ -92,64 +92,80 @@
         <div class="main-content">
             <div class="container">
                 <h2>Order Detail</h2>
-                <div class="order-info">
-                    <img src="${orderDetail.imageUrl}" alt="Product Image">
-                    <div class="order-details">
-                        <p><strong>Username:</strong> ${orderDetail.username}</p>
-                        <p><strong>Product Name:</strong> ${orderDetail.productName}</p>
-                        <p><strong>Category:</strong> ${orderDetail.categoryName}</p>
-                        <p><strong>Price:</strong> $${orderDetail.price}</p>
-                        <p><strong>Total Amount:</strong> $${orderDetail.totalAmount}</p>
-                        <p><strong>Address:</strong> ${orderDetail.address}</p>
-                        <p><strong>Phone:</strong> ${orderDetail.phoneNumber}</p>
-                        <p><strong>Email:</strong> ${orderDetail.email}</p>
-                        <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
-                        <p><strong>Description:</strong> ${orderDetail.description}</p>
+                <c:if test="${empty orderDetails}">
+                    <div class="alert alert-warning" role="alert">
+                        <h1> No orders found.</h1>
                     </div>
-                </div>
+                </c:if>
 
+                <c:forEach var="orderDetail" items="${orderDetails}">
+                    <div class="order-info">
+                        <img src="${orderDetail.imageUrl}" alt="Product Image">
+                        <div class="order-details">
+                            <p><strong>Product Name:</strong> ${orderDetail.productName}</p>
+                            <p><strong>Category:</strong> ${orderDetail.categoryName}</p>
+                            <p><strong>Price:</strong> $${orderDetail.price}</p>
+
+                            <p><strong>Quantity:</strong> ${orderDetail.quantity}</p>
+                        </div>
+                    </div>
+                    <h1>---------------------------------------------------------------</h1>
+                </c:forEach>
+                 <c:if test="${not empty orderDetails}">
+                <h1>
+                    <p><strong>Username:</strong> ${orderDetail.username}</p>
+                    <p><strong>Address:</strong> ${orderDetail.address}</p>
+                    <p><strong>Phone:</strong> ${orderDetail.phoneNumber}</p>
+                    <p><strong>Email:</strong> ${orderDetail.email}</p>
+                    <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
+                    <p><strong>Total Amount:</strong> $${total}</p>
+                </h1>
+                 </c:if>
                 <c:choose>
-                    <c:when test="${orderDetail.orderStatus == 'pending'}">
+                    <c:when test="${orderStatus== 'pending'}">
                         <div class="action-buttons">
                             <a  href="AdminManagerOrders?id=${orderDetail.orderId}&action=accept" class="btn btn-success btn-sm">
                                 <i style="padding-right: 10px;" class="fas fa-check-circle"></i> Accept
                             </a>
-                            <a href="#" onclick="event.preventDefault(); if (confirm('Are you sure you want to reject this order?'))
-                            window.location.href = 'AdminManagerOrders?id=${orderDetail.orderId}&action=reject';" class="btn btn-danger btn-sm">
+                            <a href="#" onclick="event.preventDefault();
+                                    if (confirm('Are you sure you want to reject this order?'))
+                                        window.location.href = 'AdminManagerOrders?id=${orderDetail.orderId}&action=reject';" class="btn btn-danger btn-sm">
                                 <i style="padding-right: 10px;" class="fas fa-times-circle"></i> Reject
                             </a>
                         </div>
                     </c:when>
-                    <c:when test="${orderDetail.orderStatus == 'shipping'}">
+                    <c:when test="${orderStatus== 'shipping'}">
                         <div class="action-buttons">
                             <a style="padding-right: 10px;" href="AdminManagerOrders?id=${orderDetail.orderId}&action=Delivered" class="btn btn-success btn-sm">
                                 <i style="padding-right: 10px;"  class="fas fa-check-circle"></i> Delivered
                             </a>
-                            <a href="#" onclick="event.preventDefault(); if (confirm('Are you sure you want to cancel this shipping?'))
-                            window.location.href = 'AdminManagerOrders?id=${orderDetail.orderId}&action=cancel';" class="btn btn-danger btn-sm">
+                            <a href="#" onclick="event.preventDefault();
+                                    if (confirm('Are you sure you want to cancel this shipping?'))
+                                        window.location.href = 'AdminManagerOrders?id=${orderDetail.orderId}&action=cancel';" class="btn btn-danger btn-sm">
                                 <i style="padding-right: 10px;" class="fas fa-times-circle"></i> Cancel
                             </a>
                         </div>
                     </c:when>
-                    <c:when test="${orderDetail.orderStatus == 'Delivered'}">
+                    <c:when test="${orderStatus== 'delivered'}">
                         <div class="action-buttons" style="padding: 5px; display: flex; align-items: center;">
                             <i style="padding-right: 10px;"  class="fas fa-money-bill-wave" style="color: green; margin-right: 5px;"></i>
                             <span style="font-weight: bold; color: green;">Paid</span>
                         </div>
                     </c:when>
-                    <c:when test="${orderDetail.orderStatus == 'Cancel'}">
+                    <c:when test="${orderStatus== 'cancel'}">
                         <div class="action-buttons">
                             <a href="AdminManagerOrders?id=${orderDetail.orderId}&action=restore" class="btn btn-success btn-sm">
                                 <i style="padding-right: 10px;"  style="padding: 10px;"  class="fas fa-check-circle"></i> Restore
                             </a>
                             <a href="#" onclick="event.preventDefault();
-                        if (confirm('Are you sure you want to delete this order?'))
-                            window.location.href = 'AdminManagerOrders?id=${orderDetail.orderId}&action=delete';" class="btn btn-danger btn-sm">
+                                    if (confirm('Are you sure you want to delete this order?'))
+                                        window.location.href = 'AdminManagerOrders?id=${orderDetail.orderId}&action=delete';" class="btn btn-danger btn-sm">
                                 <i style="padding-right: 10px;"  class="fas fa-times-circle"></i> Delete
                             </a>
                         </div>
                     </c:when>
                 </c:choose>
+
             </div>
 
             <div style="margin-bottom: 20px; justify-content: center; "class="action-buttons-add">
