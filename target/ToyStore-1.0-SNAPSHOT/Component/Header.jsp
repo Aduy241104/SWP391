@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="css/ToyHead.css">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- <header class=""> -->
 <div class="row component-1 cover-page">
 
@@ -25,6 +26,11 @@
                     <%= (session.getAttribute("user") != null) ? "Logout" : "Sign In"%>
                 </a>
             </li>
+            <c:if test="${not empty sessionScope.user}">
+                <li class="option-header">
+                    <a href="">Manage Profile</a>
+                </li>
+            </c:if>
         </ul>
     </div>
 </div>

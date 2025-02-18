@@ -24,8 +24,7 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
         <style>
 
             body{
@@ -51,20 +50,59 @@
                 color: rgb(237, 17, 100);
             }
 
+            .toast-container {
+                position: fixed;
+                top: 200px;
+                right: 20px;
+                z-index: 1000;
+            }
+
+            .toast {
+                display: none; /* Mặc định ẩn */
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+                border-radius: 4px;
+                padding: 16px;
+                color: #155724;
+                font-size: 14px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                animation: fadeInOut 3.5s ease forwards;
+            }
+
+            .toast.show {
+                display: block;
+            }
+
+            /* Hiệu ứng mờ dần */
+            @keyframes fadeInOut {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                10%, 90% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+
 
 
         </style>
     </head>
     <body>
         <header class="container-fluid" id="header">
-           <jsp:include page="Component/Header.jsp"></jsp:include>
-        </header>
+            <jsp:include page="Component/Header.jsp"></jsp:include>
+            </header>
 
 
-        <div class="container product-details-container">
-            <div class="row">
-                <div class="col-md-6" style="height: 500px;">
-                    <img  src="${product.imageUrl}" alt="Product Image" class="product-image">
+            <div class="container product-details-container">
+                <div class="row">
+                    <div class="col-md-6" style="height: 500px;">
+                        <img  src="${product.imageUrl}" alt="Product Image" class="product-image">
                 </div>
                 <div class="col-md-6">
                     <h2>${product.productName}</h2>
@@ -72,9 +110,9 @@
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
                     <p><strong>Stock:</strong> ${product.stock}</p>
                     <div class="product-buttons">
-                        
+
                         <a class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                       <a class="btn customize" href="AddToCart?productID=4&quantity=3">Buy Now</a>
+                        <a class="btn customize" href="AddToCart?productID=4&quantity=3">Buy Now</a>
                     </div>
                     <div class="">
                         <h4>Product Information</h4>
@@ -170,64 +208,47 @@
             </div>
         </div>
 
-        <footer class="container-fluid">
-            <div class="row footer-header" style="padding-left: 100px;">
-                <div class="col-lg-4 descript">
-                    <h4>100% Genuine Products</h4>
-                    <p>Over 100 famous brands</p>
-                </div>
-                <div class="col-lg-4 descript">
-                    <h4>100% Genuine Products</h4>
-                    <p>Over 100 famous brands</p>
-                </div>
-                <div class="col-lg-4 descript">
-                    <h4>100% Genuine Products</h4>
-                    <p>Over 100 famous brands</p>
-                </div>
-            </div>
 
-            <div class="row footer-last" style="padding-left: 100px;">
-                <div class="col-lg-3">
-                    <h4>HOTLINE</h4>
-                    <p class="urt">Order: 1900.866.874</p>
-                    <p class="urt">Complaints: 1900.866.894</p>
-                </div>
-                <div class="col-lg-3">
-                    <h4>STORE SYSTEM</h4>
-                    <ul class="urt" style="list-style: none; padding: 0;">
-                        <li>62-store system</li>
-                        <li>Store regulations</li>
-                        <li>Service quality</li>
-                        <li>Return & warranty policy</li>
-                        <li>VIP Reward Points & Gifts</li>
-                        <li>Bulk purchase discounts</li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>CUSTOMER SUPPORT</h4>
-                    <ul class="urt" style="list-style: none; padding: 0;">
-                        <li>General transaction terms</li>
-                        <li>Online shopping guide</li>
-                        <li>Shipping policy</li>
-                        <li>Payment policy</li>
-                        <li>Account deletion policy</li>
-                        <li>Order history</li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>ABOUT AVAKIDS</h4>
-                    <ul class="urt" style="list-style: none; padding: 0;">
-                        <li>Company introduction</li>
-                        <li>Comment posting regulations</li>
-                        <li>Personal data processing policy</li>
-                        <li>AVAKids Smile Fund</li>
-                        <li>SIM cards & top-up vouchers</li>
-                        <li>Installment payment</li>
-                        <li>View mobile version</li>
-                    </ul>
+                        <c:if test="${not empty isAdded}">
+            <div class="toast-container">
+                <div class="toast" id="success-toast">
+                    Added Product to Cart
                 </div>
             </div>
+        </c:if>
+
+
+        <footer class="container-fluid">
+            <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Hàm hiển thị Toast
+            function showToast() {
+                const toast = document.getElementById("success-toast");
+                if (toast) {
+                    // Thêm class 'show' để hiển thị Toast
+                    toast.classList.add("show");
+
+                    // Ẩn Toast sau 3 giây
+                    setTimeout(() => {
+                        toast.classList.remove("show");
+                    }, 3000);
+                }
+            }
+
+            // Gọi hàm showToast khi cần (ví dụ: khi thêm sản phẩm vào giỏ hàng thành công)
+            document.addEventListener("DOMContentLoaded", () => {
+                // Giả lập thêm sản phẩm thành công
+                const isAdded = true;
+                ; // Đây là giá trị giả lập từ server
+                if (isAdded) {
+                    showToast();
+                }
+            });
+        </script>
     </body>
 </html>
 

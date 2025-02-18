@@ -60,8 +60,10 @@ public class ViewProductDetailController extends HttpServlet {
         try {
             // Lấy productID từ request
             int productID = Integer.parseInt(request.getParameter("productID"));
+           String isAdded = request.getParameter("isAdded");
             // Gọi DAO để lấy thông tin sản phẩm
             System.out.println("productID = " + productID);
+            System.out.println(isAdded);
             ProductDAO productDAO = new ProductDAO();
             Product product = productDAO.getProductByID(productID);
             
@@ -70,6 +72,7 @@ public class ViewProductDetailController extends HttpServlet {
             if (product != null) {
                 // Gửi dữ liệu sản phẩm đến trang JSP
                 request.setAttribute("product", product);
+                request.setAttribute("isAdded", isAdded);
                 request.getRequestDispatcher("productDetail.jsp").forward(request, response);
             } else {
                 response.sendRedirect("error.jsp");
