@@ -76,21 +76,25 @@ public class AddToCartController extends HttpServlet {
             
             // lay cartItemID dua tren productId va cartID de kiem tra xem san pham co ton tai trong gio hang hay chua
             int cartItemID = crd.checkProductIncart(cartID, productID);
-      
+            String url = "ViewProductDetailController?productID="+ productID;
+            
             //neu da ton tai thi thuc hien cong don so luong san pham them vao 
             if(cartItemID != -1) {
                 int currentQuantity = crd.getQuantity(cartItemID);
                 if(product.getStock() >= currentQuantity + quantity) {
                     crd.updateQuantity(cartItemID, currentQuantity + quantity);
+                    url += "&isAdded=added";
                 }
             // neu san pham chua co trong gio hang thi thuc hien tao san pham moi trong gio
             }else{
                 //chi thuc hien them khi so luong trong kho dap ung du
                 if(product.getStock() >= quantity ) {
                     crd.addNewProduct(cartID, productID, quantity);
+                     url += "&isAdded=added";
                 }
             }
-            response.sendRedirect("ViewCartController");
+//            String url = "ViewProductDetailController?productID="+ productID + "isAdded=true";
+            response.sendRedirect(url);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             response.sendRedirect("ViewProductListController");
