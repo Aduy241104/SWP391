@@ -17,7 +17,7 @@ import java.util.List;
  * @author DUY
  */
 public class ProductDAO {
-     private Connection connection;
+    private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
@@ -32,7 +32,7 @@ public class ProductDAO {
     // Lấy danh sách tất cả sản phẩm
     public List<Product> getProductList() {
         List<Product> productList = new ArrayList<>();
-        String query = "SELECT * FROM Products";
+        String query = "SELECT * FROM Products WHERE isActive = 1";
 
         try {
             preparedStatement = connection.prepareStatement(query);

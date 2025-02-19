@@ -77,10 +77,14 @@ public class LoginController extends HttpServlet {
 
         userDAO userDAO = new userDAO();
         User user = userDAO.getUser(identifier, password);
-        
+
         if (user != null) { // Đúng tài khoản & mật khẩu
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+
+            // Cho sua xiu nha <3 thaiv
+            String role = user.getRole().toLowerCase();
+            session.setAttribute("role", role);
 
             // Phân quyền và chuyển trang
             switch (user.getRole().toLowerCase()) {

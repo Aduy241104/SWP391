@@ -51,11 +51,11 @@ public class ViewCartController extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         
-        if (user == null) {
-            // Nếu user chưa đăng nhập, chuyển hướng về trang login
-            response.sendRedirect("signIn.jsp");
-            return;
-        }
+//        if (user == null) {
+//            // Nếu user chưa đăng nhập, chuyển hướng về trang login
+//            response.sendRedirect("signIn.jsp");
+//            return;
+//        }
 
         CartDAO crd = new CartDAO();
         int userID = user.getUserId();

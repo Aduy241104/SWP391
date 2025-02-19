@@ -15,18 +15,24 @@
     </div>
     <div class="col-md-6 option_1">
         <ul>
-            <li class="option-header"><a href="">Find a store</a></li>
-            <span class="line-row"></span>
-            <li class="option-header"><a href="">Help</a></li>
-            <span class="line-row"></span>
             <li class="option-header"><a href="">Join us</a></li>
             <span class="line-row" style="margin: 14px 7px;"></span>
             <li class="option-header">
-                <a href="<%= (session.getAttribute("user") != null) ? "LogoutController" : "signIn.jsp"%>">
-                    <%= (session.getAttribute("user") != null) ? "Logout" : "Sign In"%>
-                </a>
+                <%
+                    Object userObj = session.getAttribute("user");
+                    String role = (userObj != null && session.getAttribute("role") != null) ? session.getAttribute("role").toString() : "";
+                %>
+                <% if (userObj != null) { %>
+                <% if (role.equals("admin")) { %>
+                <a href="AdminManagerProducts?action=productForDashBoard">Manage for Admin</a> |
+                <% } %>
+                <a href="LogoutController">Logout</a>
+                <% } else { %>
+                <a href="signIn.jsp">Sign In</a>
+                <% }%>
             </li>
             <c:if test="${not empty sessionScope.user}">
+                <span class="line-row"></span>
                 <li class="option-header">
                     <a href="viewProfileController?userId=${user.userId}">Manage Profile</a>
                 </li>

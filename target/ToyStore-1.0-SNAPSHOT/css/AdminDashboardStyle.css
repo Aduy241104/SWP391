@@ -1,0 +1,192 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 15, 2025, 4:09:21 PM
+    Author     : thaiv
+*/
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    font-size: 18px;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: calc(100% - 250px);
+    top: 0;
+    left: 250px;
+    z-index: 1000;
+}
+.navbar .logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ED1164;
+}
+.navbar .search-bar {
+    flex: 1;
+    margin: 0 50px 0px 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+}
+.navbar .search-bar input {
+    width: 100%;
+    padding: 10px 40px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+.navbar .search-bar i {
+    position: absolute;
+    left: 15px;
+    color: gray;
+}
+.navbar .account-info {
+    display: flex;
+    align-items: center;
+}
+.navbar .account-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.sidebar {
+    width: 250px;
+    background-color: #ED1164;
+    color: white;
+    padding: 25px;
+    font-size: 18px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    display: block;
+}
+.sidebar a:hover {
+    background-color: #c10d55;
+}
+.main-content {
+    flex-grow: 1;
+    padding: 80px 20px 20px 20px;
+    background: linear-gradient(to bottom, #f8c8dc, #ffffff);
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.stat-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+}
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+.product-container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.header h2 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.see-all-btn {
+    background: #e91e63;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.see-all-btn:hover {
+    background: #d81b60;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.product-table th, .product-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.product-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+}
+
+.product-table tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.product-table tr:hover {
+    background: #e9ecef;
+    transition: 0.3s;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.low-stock {
+    background: red;
+}
+.medium-stock {
+    background: orange;
+}
+.high-stock {
+    background: green;
+}
