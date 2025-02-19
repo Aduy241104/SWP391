@@ -15,10 +15,6 @@
     </div>
     <div class="col-md-6 option_1">
         <ul>
-            <li class="option-header"><a href="">Find a store</a></li>
-            <span class="line-row"></span>
-            <li class="option-header"><a href="">Help</a></li>
-            <span class="line-row"></span>
             <li class="option-header"><a href="">Join us</a></li>
             <span class="line-row" style="margin: 14px 7px;"></span>
             <li class="option-header">
@@ -36,6 +32,7 @@
                 <% }%>
             </li>
             <c:if test="${not empty sessionScope.user}">
+                <span class="line-row"></span>
                 <li class="option-header">
                     <a href="">Manage Profile</a>
                 </li>

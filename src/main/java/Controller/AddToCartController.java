@@ -51,10 +51,6 @@ public class AddToCartController extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        if (user == null) {
-            response.sendRedirect("signIn.jsp");
-            return;
-        }
         try {
             int productID = Integer.parseInt(request.getParameter("productID"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -67,33 +63,33 @@ public class AddToCartController extends HttpServlet {
             if (product == null || quantity <= 0) {
                 throw new Exception();
             }
-            
+
             //Kiem tra xem nguoi dung da co gio hang hay chua neu chua co thi tao mot gio hang moi
             int cartID = crd.getCartID(user.getUserId());
-            if(cartID == -1) {
+            if (cartID == -1) {
                 cartID = crd.createCart(user.getUserId());
             }
-            
+
             // lay cartItemID dua tren productId va cartID de kiem tra xem san pham co ton tai trong gio hang hay chua
             int cartItemID = crd.checkProductIncart(cartID, productID);
-            String url = "ViewProductDetailController?productID="+ productID;
-            
+            String url = "ViewProductDetailController?productID=" + productID;
+
             //neu da ton tai thi thuc hien cong don so luong san pham them vao 
-            if(cartItemID != -1) {
+            if (cartItemID != -1) {
                 int currentQuantity = crd.getQuantity(cartItemID);
-                if(product.getStock() >= currentQuantity + quantity) {
+                if (product.getStock() >= currentQuantity + quantity) {
                     crd.updateQuantity(cartItemID, currentQuantity + quantity);
                     url += "&isAdded=added";
                 }
-            // neu san pham chua co trong gio hang thi thuc hien tao san pham moi trong gio
-            }else{
+                // neu san pham chua co trong gio hang thi thuc hien tao san pham moi trong gio
+            } else {
                 //chi thuc hien them khi so luong trong kho dap ung du
-                if(product.getStock() >= quantity ) {
+                if (product.getStock() >= quantity) {
                     crd.addNewProduct(cartID, productID, quantity);
-                     url += "&isAdded=added";
+                    url += "&isAdded=added";
                 }
             }
-//            String url = "ViewProductDetailController?productID="+ productID + "isAdded=true";
+
             response.sendRedirect(url);
         } catch (Exception e) {
             System.out.println(e.getMessage());

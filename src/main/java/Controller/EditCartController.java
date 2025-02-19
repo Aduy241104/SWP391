@@ -59,8 +59,9 @@ public class EditCartController extends HttpServlet {
                 crd.deleteCartItem(cartItemID);
                 response.sendRedirect("ViewCartController");
             } else if ("edit".equals(action)) {
-
-                response.sendRedirect("ViewCart");
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                crd.updateQuantity(cartItemID, quantity);
+                response.sendRedirect("ViewCartController");
             }
         } catch (Exception e) {
             response.sendRedirect("ViewProductListController");

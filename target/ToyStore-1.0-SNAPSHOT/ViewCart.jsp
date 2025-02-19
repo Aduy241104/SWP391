@@ -44,11 +44,24 @@
                                 <div class="col-md-3 product_img">                   
                                     <img src="${x.product.imageUrl}" alt="product">
                                     <div style="width: 170px" class="function_place">
-                                        <form style="width: 70%" class="function_add">
-                                            <i class="fa-solid fa-minus"></i>
-                                            <input style="width: 21px;" type="text" value="${x.quantity}" max="${x.product.stock}" readonly>           
-                                            <i style="margin-left: 2px;" class="fa-solid fa-plus"></i>
-                                        </form>  
+                                        <!--                                        <form style="width: 70%" class="function_add">
+                                                                                    <i class="fa-solid fa-minus"></i>
+                                                                                    <input name="" style="width: 21px;" type="text" value="${x.quantity}" max="${x.product.stock}" readonly>           
+                                                                                    <i style="margin-left: 2px;" class="fa-solid fa-plus"></i>
+                                                                                </form>  -->
+
+                                        <form style="width: 70%" class="function_add" action="EditCart" method="GET">
+                                            <!-- Nút giảm số lượng -->
+                                            <i class="fa-solid fa-minus" onclick="updateQuantity(this, -1)"></i>
+
+                                            <!-- Ô nhập số lượng -->
+                                            <input name="quantity" style="width: 21px;" type="text" value="${x.quantity}" max="${x.product.stock}" readonly>
+                                            <input name="cartItemID" style="width: 21px;" type="hidden" value="${x.cartItemID}" >
+                                            <input name="action" style="width: 21px;" type="hidden" value="edit" >
+
+                                            <!-- Nút tăng số lượng -->
+                                            <i class="fa-solid fa-plus" onclick="updateQuantity(this, 1)" style="margin-left: 2px;"></i>
+                                        </form>
                                         <div class="wish-list">
                                             <a href="EditCart?cartItemID=${x.cartItemID}&action=delete" style="color: red"> <i class="fa-solid fa-trash"></i></a>
                                         </div>  
@@ -82,8 +95,8 @@
                         <div>
                             <img src="img/empty-cart.png" alt="alt"/>
                             <h5>Your cart is empty</h5>
-                            <p>Add something to make me happy:)</p>
-                            <a href="url" target="target">Go Shopping</a>
+                            <p>Add something to make me happy 💕💕</p>
+                            <a href="ViewProductListController">Go Shopping</a>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -117,5 +130,38 @@
         <footer style="margin-top: 80px;" class="container-fluid" id="footer">
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
+
+
+        <script>
+            function updateQuantity(element, change) {
+                // Lấy thẻ input trong cùng form
+                const input = element.parentElement.querySelector("input[name='quantity']");
+                const max = parseInt(input.getAttribute("max")); // Lấy giá trị max
+                const min = 1; // Giá trị nhỏ nhất là 1
+                let quantity = parseInt(input.value); // Lấy giá trị hiện tại của ô input
+
+                // Kiểm tra nếu số lượng đã đạt min và người dùng nhấn "-"
+                if (quantity === min && change < 0) {
+                    return; // Dừng lại, không giảm nữa
+                }
+
+                // Kiểm tra nếu số lượng đã đạt max và người dùng nhấn "+"
+                if (quantity === max && change > 0) {
+                    return; // Dừng lại, không tăng nữa
+                }
+
+                // Tăng hoặc giảm số lượng
+                quantity += change;
+
+                // Cập nhật giá trị mới
+                input.value = quantity;
+
+                // Gửi form tự động
+                const form = element.parentElement; // Lấy form chứa thẻ input
+                form.submit(); // Gửi form
+            }
+        </script>
+
+
     </body>
 </html>
