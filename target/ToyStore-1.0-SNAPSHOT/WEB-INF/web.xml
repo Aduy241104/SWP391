@@ -24,7 +24,18 @@
         <servlet-name>EditCartController</servlet-name>
         <servlet-class>Controller.EditCartController</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>viewProfileController</servlet-name>
+        <servlet-class>Controller.viewProfileController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editProfileController</servlet-name>
+        <servlet-class>Controller.editProfileController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changePasswordController</servlet-name>
+        <servlet-class>Controller.changePasswordController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
@@ -49,7 +60,18 @@
         <servlet-name>EditCartController</servlet-name>
         <url-pattern>/EditCart</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>viewProfileController</servlet-name>
+        <url-pattern>/viewProfileController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProfileController</servlet-name>
+        <url-pattern>/editProfileController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePasswordController</servlet-name>
+        <url-pattern>/changePasswordController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

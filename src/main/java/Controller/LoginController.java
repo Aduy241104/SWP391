@@ -85,12 +85,12 @@ public class LoginController extends HttpServlet {
             // Phân quyền và chuyển trang
             switch (user.getRole().toLowerCase()) {
                 case "admin":
-                    response.sendRedirect("adminDashboard.jsp");
+                    response.sendRedirect("ViewProductListController");
                     break;
                 case "staff":
-                    response.sendRedirect("staffDashboard.jsp");
+                    response.sendRedirect("ViewProductListController");
                     break;
-                case "customer":
+                case "customer": 
                     response.sendRedirect("ViewProductListController");
                     break;
                 default:
