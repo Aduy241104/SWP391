@@ -9,9 +9,9 @@
         <url-pattern>/LogoutController</url-pattern>
         <url-pattern>/ViewCartController</url-pattern>
         <url-pattern>/EditCart</url-pattern>
-        <url-pattern>/AddToCart</url-pattern> 
+        <url-pattern>/AddToCart</url-pattern>
+        <url-pattern>/viewProfileController</url-pattern>
     </filter-mapping>
-    
     <!-- User Controllers -->
     <servlet>
         <servlet-name>LogoutController</servlet-name>
@@ -49,7 +49,6 @@
         <servlet-name>changePasswordController</servlet-name>
         <servlet-class>Controller.changePasswordController</servlet-class>
     </servlet>
-    
     <!-- Admin Controllers -->
     <servlet>
         <servlet-name>AdminManagerProducts</servlet-name>
@@ -59,8 +58,11 @@
         <servlet-name>AdminManagerOrders</servlet-name>
         <servlet-class>Controller.AdminManagerOrders</servlet-class>
     </servlet>
-    
     <!-- Servlet Mappings -->
+    <servlet>
+        <servlet-name>SearchProductController</servlet-name>
+        <servlet-class>Controller.SearchProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
@@ -105,7 +107,18 @@
         <servlet-name>AdminManagerOrders</servlet-name>
         <url-pattern>/AdminManagerOrders</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProductController</servlet-name>
+        <url-pattern>/SearchProduct</url-pattern>
+    </servlet-mapping>
     
+    
+    
+   <error-page>
+       <error-code>404</error-code>
+       <location>/error.jsp</location>
+  </error-page>
+
     <session-config>
         <session-timeout>
             30

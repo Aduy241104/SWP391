@@ -62,10 +62,6 @@ public class viewProfileController extends HttpServlet {
         try {
             // Lấy user từ session
             HttpSession session = request.getSession(false);
-            if (session == null || session.getAttribute("user") == null) {
-                response.sendRedirect("login.jsp"); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
-                return;
-            }
 
             // Lấy userId từ đối tượng user trong session
             User sessionUser = (User) session.getAttribute("user");

@@ -48,8 +48,8 @@
 
     <div class="col-md-6">
         <ul class="category_List">
-            <li class="category"><a href="">New & Featured</a></li>
-            <li class="category"> <a href="">Men</a></li>
+            <li class="category"><a href="ViewProductListController">Home Page</a></li>
+            <li class="category"> <a href="">Top Toy</a></li>
             <li class="category"><a href="">Women</a></li>
             <li class="category"><a href="">Kids</a></li>
             <li class="category"><a href="">Sale</a></li>
@@ -59,12 +59,14 @@
 
     </div>
 
-    <div class="col-md-3 search_header">
-        <input type="text" placeholder="search">
-        <a href=""><i style=" color: black;" class="fa-solid fa-magnifying-glass icon-search"></i></a>
+    <form action="SearchProduct" class="col-md-3 search_header" id="searchForm" method="GET">
+        <input type="text" placeholder="search" name="searchKey" id="searchInput">
+        <div id="searchButton" style="cursor: pointer; z-index: 2">
+            <i style=" color: black;" class="fa-solid fa-magnifying-glass icon-search"></i>
+        </div>
         <a href=""> <i class="fa-solid fa-newspaper"></i></a>
         <a href="ViewCartController"> <i class="fa-solid fa-bag-shopping"></i></a>
-    </div>
+    </form>
 </div>
 
 <div class="row component-3">
@@ -82,4 +84,23 @@
         </div>
     </div>
 </div>    
-<!-- </header> -->
+
+<script>
+    function submitForm() {
+        const searchInput = document.getElementById("searchInput");
+
+        if (searchInput.value.trim() !== "") {
+            document.getElementById("searchForm").submit();
+        }
+    }
+
+    document.getElementById("searchButton").addEventListener("click", submitForm);
+
+    document.getElementById("searchInput").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submitForm();
+        }
+    });
+
+ </script>

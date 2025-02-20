@@ -3,7 +3,6 @@ Controller\LogoutController.class
 Utils\DBContext.class
 DAO\ProductDAO.class
 Controller\ViewProductDetailController.class
-DAO\testDAO.class
 DAO\userDAO.class
 Model\Cart.class
 Model\Product.class

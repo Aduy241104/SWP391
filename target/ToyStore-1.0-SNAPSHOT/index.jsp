@@ -33,7 +33,7 @@
 
             <header class="" id="header">
                 <jsp:include page="Component/Header.jsp"></jsp:include>
-                </header>
+            </header>
 
                 <div  id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->

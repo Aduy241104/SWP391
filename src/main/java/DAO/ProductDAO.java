@@ -17,6 +17,7 @@ import java.util.List;
  * @author DUY
  */
 public class ProductDAO {
+
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -28,7 +29,7 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
-    
+
     // Lấy danh sách tất cả sản phẩm
     public List<Product> getProductList() {
         List<Product> productList = new ArrayList<>();
@@ -39,26 +40,25 @@ public class ProductDAO {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-            Product product = new Product(
-                resultSet.getInt("productID"),
-                resultSet.getString("productName"),
-                resultSet.getString("description"),
-                resultSet.getDouble("price"),
-                resultSet.getInt("stock"),
-                resultSet.getString("imageUrl"),
-                resultSet.getInt("categoryID"),
-                resultSet.getDate("createdAt"),
-                resultSet.getBoolean("isActive"),
-                resultSet.getString("size"),
-                resultSet.getString("ageRange"),
-                resultSet.getString("origin"),
-                resultSet.getDouble("weight")
-            );
-            productList.add(product);
-           
-            
-        }
-            
+                Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                productList.add(product);
+
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,19 +76,19 @@ public class ProductDAO {
 
             if (resultSet.next()) {
                 return new Product(
-                    resultSet.getInt("productID"),
-                    resultSet.getString("productName"),
-                    resultSet.getString("description"),
-                    resultSet.getDouble("price"),
-                    resultSet.getInt("stock"),
-                    resultSet.getString("imageUrl"),
-                    resultSet.getInt("categoryID"),
-                    resultSet.getDate("createdAt"),
-                    resultSet.getBoolean("isActive"),
-                    resultSet.getString("size"),
-                    resultSet.getString("ageRange"),
-                    resultSet.getString("origin"),
-                    resultSet.getDouble("weight")
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
                 );
             }
         } catch (Exception e) {
@@ -96,5 +96,40 @@ public class ProductDAO {
         }
         return null;
     }
-    
+
+    public List<Product> searchProduct(String keySearch) {
+        String query = "SELECT * FROM Products WHERE productName LIKE ?";
+
+        List<Product> listResult = new ArrayList<>();
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "%" + keySearch + "%");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                listResult.add(product);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return listResult;
+    }
+
 }

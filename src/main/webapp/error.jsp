@@ -11,8 +11,6 @@
     <title>Error</title>
 </head>
 <body>
-    <h2 style="color: red;">Error Occurred</h2>
-    <p>${error}</p>
-    <a href="index.jsp">Back to Home</a>
+    <img src="img/404Page.jpg" width="100%" height="100%" alt="alt"/>
 </body>
 </html>

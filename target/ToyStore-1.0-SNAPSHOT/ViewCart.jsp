@@ -92,11 +92,11 @@
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <div>
+                        <div class="">
                             <img src="img/empty-cart.png" alt="alt"/>
-                            <h5>Your cart is empty</h5>
-                            <p>Add something to make me happy 💕💕</p>
-                            <a href="ViewProductListController">Go Shopping</a>
+                            <h4 style="margin-top: 40px; margin-left:45px">Your cart is empty</h4>
+                            <p style="margin-top:10px; margin-bottom: 20px ">Add something to make me happy 💕💕</p>
+                            <a style="padding: 7px 30px; text-align: center; border-radius: 9px; background-color: pink; margin-left: 65px" href="ViewProductListController">Go Shopping</a>
                         </div>
                     </c:otherwise>
                 </c:choose>
