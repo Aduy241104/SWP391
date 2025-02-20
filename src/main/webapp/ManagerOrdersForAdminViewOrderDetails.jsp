@@ -81,17 +81,11 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <div class="navbar">
-            <div class="logo"><i class="fas fa-store"></i> Toy Store</div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search here">
-            </div>
-        </div>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
-        <div class="main-content">
-            <div class="container">
-                <h2>Order Detail</h2>
+            <div class="main-content">
+                <div class="container">
+                    <h2>Order Detail</h2>
                 <c:if test="${empty orderDetails}">
                     <div class="alert alert-warning" role="alert">
                         <h1> No orders found.</h1>
@@ -111,16 +105,16 @@
                     </div>
                     <h1>---------------------------------------------------------------</h1>
                 </c:forEach>
-                 <c:if test="${not empty orderDetails}">
-                <h1>
-                    <p><strong>Username:</strong> ${orderDetail.username}</p>
-                    <p><strong>Address:</strong> ${orderDetail.address}</p>
-                    <p><strong>Phone:</strong> ${orderDetail.phoneNumber}</p>
-                    <p><strong>Email:</strong> ${orderDetail.email}</p>
-                    <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
-                    <p><strong>Total Amount:</strong> $${total}</p>
-                </h1>
-                 </c:if>
+                <c:if test="${not empty orderDetails}">
+                    <h1>
+                        <p><strong>Username:</strong> ${orderDetail.username}</p>
+                        <p><strong>Address:</strong> ${orderDetail.address}</p>
+                        <p><strong>Phone:</strong> ${orderDetail.phoneNumber}</p>
+                        <p><strong>Email:</strong> ${orderDetail.email}</p>
+                        <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
+                        <p><strong>Total Amount:</strong> $${total}</p>
+                    </h1>
+                </c:if>
                 <c:choose>
                     <c:when test="${orderStatus== 'pending'}">
                         <div class="action-buttons">

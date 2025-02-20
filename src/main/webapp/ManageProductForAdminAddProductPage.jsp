@@ -1,7 +1,7 @@
 <%-- 
     Document   : ManageProductForAdminAddProductPage
     Created on : Feb 15, 2025, 7:32:15 PM
-    Author     : thaiv
+    Author     : lanoc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -101,14 +101,7 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <!-- Navbar -->
-        <div class="navbar">
-            <div class="logo"><i class="fas fa-store"></i> Toy Store</div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search here">
-            </div>
-        </div>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
         <!-- Main content -->
         <div class="main-content">

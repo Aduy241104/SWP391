@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminDashboard
     Created on : Feb 15, 2025, 2:02:16 PM
-    Author     : thaiv
+    Author     : lanoc
 --%>
 
 <%@page import="java.util.List"%>
@@ -31,32 +31,26 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <div class="navbar">
-            <div class="logo"><i class="fas fa-store"></i> Toy Store</div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search here">
-            </div>
-        </div>
-
-        <div class="main-content">
-            <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
-            <table class="table table-bordered table-hover mt-4">
-                <tr class="table-dark">
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Image</th>
-                    <th>Category</th>
-                    <th>Active</th>
-                    <th>Size</th>
-                    <th>Age Range</th>
-                    <th>Origin</th>
-                    <th>Weight</th>
-                    <th>Action</th>
-                </tr>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        
+            <div class="main-content">
+                <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
+                <table class="table table-bordered table-hover mt-4">
+                    <tr class="table-dark">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Active</th>
+                        <th>Size</th>
+                        <th>Age Range</th>
+                        <th>Origin</th>
+                        <th>Weight</th>
+                        <th>Action</th>
+                    </tr>
                 <c:forEach var="product" items="${productList}">
                     <tr>
                         <td>${product.productID}</td>
@@ -76,7 +70,7 @@
                                 <a href="EditProduct.jsp?id=${product.productID}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <a href="DeleteProductServlet?id=${product.productID}" 
+                                <a href="AdminManagerProducts?action=delete&id=${product.productID}" 
                                    onclick="return confirm('Are you sure you want to delete this product?')" 
                                    class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i> Delete

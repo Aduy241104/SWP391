@@ -59,14 +59,8 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <div class="navbar">
-            <div class="logo"><i class="fas fa-store"></i> Toy Store</div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search here">
-            </div>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
-        </div>
 
         <div class="main-content">
             <h2><i class="fas fa-chart-line"></i> Dashboard</h2>

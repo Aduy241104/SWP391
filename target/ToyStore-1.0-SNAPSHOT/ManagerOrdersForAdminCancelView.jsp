@@ -30,27 +30,21 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <div class="navbar">
-            <div class="logo"><i class="fas fa-store"></i> Toy Store</div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search here">
-            </div>
-        </div>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
-        <div class="main-content">
-            <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
-            <table class="table table-bordered table-hover mt-4">
-                <tr class="table-dark">
-                    <th>Order ID</th>
-                    <th>User ID</th>
-                    <th>Total Amount</th>
-                    <th>Created At</th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+            <div class="main-content">
+                <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
+                <table class="table table-bordered table-hover mt-4">
+                    <tr class="table-dark">
+                        <th>Order ID</th>
+                        <th>User ID</th>
+                        <th>Total Amount</th>
+                        <th>Created At</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
                 <c:forEach var="order" items="${ordersList}">
                     <tr>
                         <td>${order.orderId}</td>
@@ -60,7 +54,7 @@
                         <td>${order.address}</td>
                         <td>${order.phoneNumber}</td>
                         <td>${order.orderStatus}</td>
-                                               <td>
+                        <td>
                             <div style="padding: 5px;" class="action-buttons">
                                 <a href="AdminManagerOrders?id=${order.orderId}&action=restore" class="btn btn-success btn-sm">
                                     <i  style="padding-right: 5px;"  class="fas fa-check-circle"></i> Restore

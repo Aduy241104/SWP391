@@ -102,6 +102,16 @@ public class AdminManagerProducts extends HttpServlet {
             List<Orders> orderList = orderDao.getAllOrders();
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("ManagerOrdersForAdmin.jsp").forward(request, response);
+        } else if (action.equals("delete")) {
+            ProductDAO productDao = new ProductDAO();
+            String id_raw = request.getParameter("id");
+            try {
+                int id = Integer.parseInt(id_raw);
+                productDao.deleteProduct(id);
+                request.getRequestDispatcher("AdminManagerProducts?action=product").forward(request, response);
+            } catch (NumberFormatException e) {
+            }
+
         }
 
     }

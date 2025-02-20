@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>Filters.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/LogoutController</url-pattern>
-        <url-pattern>/ViewCartController</url-pattern>
-        <url-pattern>/EditCart</url-pattern>
-        <url-pattern>/AddToCart</url-pattern>
-        <url-pattern>/viewProfileController</url-pattern>
-    </filter-mapping>
-    <!-- User Controllers -->
     <servlet>
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>Controller.LogoutController</servlet-class>
@@ -38,19 +25,6 @@
         <servlet-class>Controller.EditCartController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>viewProfileController</servlet-name>
-        <servlet-class>Controller.viewProfileController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>editProfileController</servlet-name>
-        <servlet-class>Controller.editProfileController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>changePasswordController</servlet-name>
-        <servlet-class>Controller.changePasswordController</servlet-class>
-    </servlet>
-    <!-- Admin Controllers -->
-    <servlet>
         <servlet-name>AdminManagerProducts</servlet-name>
         <servlet-class>Controller.AdminManagerProducts</servlet-class>
     </servlet>
@@ -58,11 +32,18 @@
         <servlet-name>AdminManagerOrders</servlet-name>
         <servlet-class>Controller.AdminManagerOrders</servlet-class>
     </servlet>
-    <!-- Servlet Mappings -->
     <servlet>
-        <servlet-name>SearchProductController</servlet-name>
-        <servlet-class>Controller.SearchProductController</servlet-class>
+        <servlet-name>AdminManager_Search</servlet-name>
+        <servlet-class>Controller.AdminManager_Search</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminManagerProducts</servlet-name>
+        <url-pattern>/AdminManagerProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManagerOrders</servlet-name>
+        <url-pattern>/AdminManagerOrders</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
@@ -88,37 +69,9 @@
         <url-pattern>/EditCart</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>viewProfileController</servlet-name>
-        <url-pattern>/viewProfileController</url-pattern>
+        <servlet-name>AdminManager_Search</servlet-name>
+        <url-pattern>/AdminManager_Search</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>editProfileController</servlet-name>
-        <url-pattern>/editProfileController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>changePasswordController</servlet-name>
-        <url-pattern>/changePasswordController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminManagerProducts</servlet-name>
-        <url-pattern>/AdminManagerProducts</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminManagerOrders</servlet-name>
-        <url-pattern>/AdminManagerOrders</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchProductController</servlet-name>
-        <url-pattern>/SearchProduct</url-pattern>
-    </servlet-mapping>
-    
-    
-    
-   <error-page>
-       <error-code>404</error-code>
-       <location>/error.jsp</location>
-  </error-page>
-
     <session-config>
         <session-timeout>
             30

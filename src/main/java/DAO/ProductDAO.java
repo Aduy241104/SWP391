@@ -132,4 +132,20 @@ public class ProductDAO {
         return listResult;
     }
 
+    public boolean deleteProduct(int productID) {
+        String query = "DELETE FROM Products WHERE productID = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, productID);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Trả về true nếu xóa thành công
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Trả về false nếu có lỗi
+    }
+
 }

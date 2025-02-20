@@ -151,7 +151,7 @@ public class OrdersDAO {
         }
         return totalAmount;
     }
-    
+
     // restore ne
     public boolean restoreCancelledOrder(int orderID) {
         String query = "UPDATE Orders SET orderStatus = 'pending' WHERE orderID = ? AND orderStatus = 'cancelled'";
@@ -168,30 +168,81 @@ public class OrdersDAO {
 
     // delete luon ne
     public boolean deleteCancelledOrder(int orderID) {
-    String query = "DELETE FROM Orders WHERE orderID = ? AND orderStatus = 'cancelled'";
-    try {
-        preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1, orderID);
-        int rowsDeleted = preparedStatement.executeUpdate();
-        return rowsDeleted > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
+        String query = "DELETE FROM Orders WHERE orderID = ? AND orderStatus = 'cancelled'";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderID);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 
+    public List<Orders> searchOrder(int userId, int orderId) {
+        String query = "SELECT * FROM Orders WHERE userId = ? AND orderId = ?";
+        List<Orders> listResult = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, orderId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Orders order = new Orders(
+                        resultSet.getInt("orderId"),
+                        resultSet.getInt("userId"),
+                        resultSet.getDouble("totalAmount"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getString("address"),
+                        resultSet.getString("phoneNumber"),
+                        resultSet.getString("orderStatus")
+                );
+                listResult.add(order);
+            }
+        } catch (Exception e) {
+        }
+
+        return listResult;
+    }
 
     // test xiu nhe :)))
     public static void main(String[] args) {
         OrdersDAO orderDAO = new OrdersDAO();
-        String status = "pending";
-        List<Orders> orders = orderDAO.getOrdersByStatus(status);
-        for (Orders order : orders) {
-            System.out.println("Order ID: " + order.getOrderId() + ", User ID: " + order.getUserId() + ", Total: " + order.getTotalAmount());
-        }
-        OrdersDAO ordersDAO = new OrdersDAO();
-        double totalRevenue = ordersDAO.getTotalAmountOfDeliveredOrders();
-        System.out.println("Tổng tiền của các đơn hàng đã giao: " + totalRevenue);
 
+        // Ví dụ nhập từ người dùng
+        String userInput = "1+3"; // Người dùng nhập "1+3" tức là userID = 1, orderID = 3
+
+        int userId = -1;
+        int orderId = -1;
+        if (userInput.contains("+")) {
+            String[] parts = userInput.split("\\+");
+            if (parts.length == 2) {
+                try {
+                    userId = Integer.parseInt(parts[0].trim());
+                    orderId = Integer.parseInt(parts[1].trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("Lỗi chuyển đổi số: " + e.getMessage());
+                }
+            }
+        }
+        List<Orders> orders = orderDAO.searchOrder(userId, orderId);
+
+        if (orders.isEmpty()) {
+            System.out.println("Không tìm thấy đơn hàng.");
+        } else {
+            for (Orders order : orders) {
+                System.out.println("Mã đơn hàng: " + order.getOrderId());
+                System.out.println("Mã khách hàng: " + order.getUserId());
+                System.out.println("Tổng tiền: " + order.getTotalAmount());
+                System.out.println("Ngày tạo: " + order.getCreatedAt());
+                System.out.println("Địa chỉ: " + order.getAddress());
+                System.out.println("Số điện thoại: " + order.getPhoneNumber());
+                System.out.println("Trạng thái: " + order.getOrderStatus());
+                System.out.println("---------------------------");
+            }
+        }
     }
 }
