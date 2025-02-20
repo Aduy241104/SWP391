@@ -34,7 +34,7 @@
             <c:if test="${not empty sessionScope.user}">
                 <span class="line-row"></span>
                 <li class="option-header">
-                    <a href="viewProfileController?userId=${user.userId}">Manage Profile</a>
+                    <a href="viewProfile?userId=${user.userId}">Manage Profile</a>
                 </li>
             </c:if>
         </ul>

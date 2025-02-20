@@ -132,6 +132,7 @@ public class ProductDAO {
         return listResult;
     }
 
+
     public boolean deleteProduct(int productID) {
         String query = "DELETE FROM Products WHERE productID = ?";
 
