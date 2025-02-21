@@ -116,7 +116,6 @@ public class AdminManagerProducts extends HttpServlet {
         } else if (action.equals("addProduct")) {
             CategoryDAO categoryDAO = new CategoryDAO();
             List<Category> categoryList = categoryDAO.getAllCategory();
-
             request.setAttribute("categoryList", categoryList);
             request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
         } else if (action.equals("editProduct")) {
