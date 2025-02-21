@@ -74,7 +74,7 @@ public class AdminManagerProducts extends HttpServlet {
             request.getSession().removeAttribute("count");
             request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
         } else if (action.equals("home")) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("ViewProductListController").forward(request, response);
         } else if (action.equals("productForDashBoard")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
