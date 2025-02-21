@@ -112,6 +112,8 @@ public class AdminManagerProducts extends HttpServlet {
             } catch (NumberFormatException e) {
             }
 
+        }else if(action.equals("addProduct")){
+            String productName = request.getParameter("productName");
         }
 
     }

@@ -132,6 +132,32 @@ public class ProductDAO {
         return listResult;
     }
 
+    public boolean addProduct(Product product) {
+        String query = "INSERT INTO Products (productName, description, price, stock, imageUrl, categoryID, createdAt, isActive, size, ageRange, origin, weight) "
+                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), ?, ?, ?, ?, ?)";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, product.getProductName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setDouble(3, product.getPrice());
+            preparedStatement.setInt(4, product.getStock());
+            preparedStatement.setString(5, product.getImageUrl());
+            preparedStatement.setInt(6, product.getCategoryID());
+            preparedStatement.setBoolean(7, true);
+            preparedStatement.setString(8, product.getSize());
+            preparedStatement.setString(9, product.getAgeRange());
+            preparedStatement.setString(10, product.getOrigin());
+            preparedStatement.setDouble(11, product.getWeight());
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            return rowsInserted > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; 
+    }
 
     public boolean deleteProduct(int productID) {
         String query = "DELETE FROM Products WHERE productID = ?";

@@ -107,7 +107,7 @@
         <div class="main-content">
             <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
 
-            <form action="AddProductServlet" method="POST" enctype="multipart/form-data" class="form-container">
+            <form action="AdminManagerProducts?action=addProduct" method="get" enctype="multipart/form-data" class="form-container">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Product Name:</label>
