@@ -4,8 +4,10 @@
  */
 package Controller;
 
+import DAO.CategoryDAO;
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
+import Model.Category;
 import Model.Orders;
 import Model.Product;
 import java.io.IOException;
@@ -111,9 +113,41 @@ public class AdminManagerProducts extends HttpServlet {
                 request.getRequestDispatcher("AdminManagerProducts?action=product").forward(request, response);
             } catch (NumberFormatException e) {
             }
+        } else if (action.equals("addProduct")) {
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<Category> categoryList = categoryDAO.getAllCategory();
 
-        }else if(action.equals("addProduct")){
-            String productName = request.getParameter("productName");
+            request.setAttribute("categoryList", categoryList);
+            request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+        } else if (action.equals("editProduct")) {
+            String productID_raw = request.getParameter("id");
+            try {
+                int productID = Integer.parseInt(productID_raw);
+                ProductDAO productDao = new ProductDAO();
+                Product product = productDao.getProductByID(productID);
+                CategoryDAO categoryDAO = new CategoryDAO();
+                List<Category> categoryList = categoryDAO.getAllCategory();
+                request.setAttribute("product", product);
+                request.setAttribute("categoryList", categoryList);
+                request.getRequestDispatcher("ManageProductForAdminEditProductPage.jsp").forward(request, response);
+            } catch (Exception e) {
+            }
+        } else if (action.equals("viewDelete")) {
+            ProductDAO productDao = new ProductDAO();
+            List<Product> productList = productDao.getDisabledProducts();
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
+        } else if (action.equals("restore")) {
+            String productID_raw = request.getParameter("id");
+            try {
+                int productID = Integer.parseInt(productID_raw);
+                ProductDAO productDao = new ProductDAO();
+                productDao.restoreProduct(productID);
+                List<Product> productList = productDao.getDisabledProducts();
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
+            } catch (Exception e) {
+            }
         }
 
     }
@@ -129,7 +163,65 @@ public class AdminManagerProducts extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+
+        String productName = request.getParameter("productName");
+        String priceStr = request.getParameter("price");
+        String description = request.getParameter("description");
+        String stockStr = request.getParameter("stock");
+        String categoryIDStr = request.getParameter("categoryID");
+        String size = request.getParameter("size");
+        String ageRange = request.getParameter("ageRange");
+        String origin = request.getParameter("origin");
+        String weightStr = request.getParameter("weight");
+        String isActiveStr = request.getParameter("isActive");
+        String image = request.getParameter("image");
+
+        if (action.equals("addProduct")) {
+            try {
+                if (action != null && action.equals("addProduct")) {
+                    double price = (priceStr != null && !priceStr.trim().isEmpty()) ? Double.parseDouble(priceStr) : 0.0;
+                    int stock = (stockStr != null && !stockStr.trim().isEmpty()) ? Integer.parseInt(stockStr) : 0;
+                    int categoryID = (categoryIDStr != null && !categoryIDStr.trim().isEmpty()) ? Integer.parseInt(categoryIDStr) : 0;
+                    double weight = (weightStr != null && !weightStr.trim().isEmpty()) ? Double.parseDouble(weightStr) : 0.0;
+                    boolean isActive = (isActiveStr != null && !isActiveStr.trim().isEmpty()) ? Boolean.parseBoolean(isActiveStr) : false;
+
+                    ProductDAO productDao = new ProductDAO();
+                    Product product = new Product(productName, description, price, stock, image, categoryID, isActive, size, ageRange, origin, weight);
+                    productDao.addProduct(product);
+                }
+                response.sendRedirect("AdminManagerProducts?action=product");
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid input format. Please check your data.");
+                request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("error", "An error occurred: " + e.getMessage());
+                request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+            }
+        } else if (action.equals("editProduct")) {
+            try {
+                if (action != null && action.equals("editProduct")) {
+                    String productID_raw = request.getParameter("productID");
+                    double price = (priceStr != null && !priceStr.trim().isEmpty()) ? Double.parseDouble(priceStr) : 0.0;
+                    int stock = (stockStr != null && !stockStr.trim().isEmpty()) ? Integer.parseInt(stockStr) : 0;
+                    int categoryID = (categoryIDStr != null && !categoryIDStr.trim().isEmpty()) ? Integer.parseInt(categoryIDStr) : 0;
+                    double weight = (weightStr != null && !weightStr.trim().isEmpty()) ? Double.parseDouble(weightStr) : 0.0;
+                    boolean isActive = (isActiveStr != null && !isActiveStr.trim().isEmpty()) ? Boolean.parseBoolean(isActiveStr) : false;
+                    int productID = Integer.parseInt(productID_raw);
+                    ProductDAO productDao = new ProductDAO();
+                    Product product = new Product(productID, productName, description, price, stock, image, categoryID, null, isActive, size, ageRange, origin, weight);
+                    productDao.updateProduct(product);
+                }
+                response.sendRedirect("AdminManagerProducts?action=product");
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid input format. Please check your data.");
+                request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("error", "An error occurred: " + e.getMessage());
+                request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+            }
+        }
+
     }
 
     /**

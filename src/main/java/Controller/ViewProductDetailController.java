@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -70,7 +71,10 @@ public class ViewProductDetailController extends HttpServlet {
             
             
             if (product != null) {
+                List<Product> listRelatedProduct = productDAO.getRelatedProduct(product.getCategoryID());
+                
                 // Gửi dữ liệu sản phẩm đến trang JSP
+                request.setAttribute("listRelatedProduct", listRelatedProduct);
                 request.setAttribute("product", product);
                 request.setAttribute("isAdded", isAdded);
                 request.getRequestDispatcher("productDetail.jsp").forward(request, response);

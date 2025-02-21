@@ -156,23 +156,134 @@ public class ProductDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false; 
+        return false;
     }
 
     public boolean deleteProduct(int productID) {
-        String query = "DELETE FROM Products WHERE productID = ?";
+        String query = "UPDATE Products\n"
+                + "SET isActive = 0\n"
+                + "WHERE productID = ?";
 
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, productID);
 
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Trả về true nếu xóa thành công
+            return rowsAffected > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false; // Trả về false nếu có lỗi
+        return false;
     }
+
+    public List<Product> getRelatedProduct(int categoryID) {
+        String query = "SELECT TOP 4 * FROM Products WHERE categoryID = ? ORDER BY price DESC";
+        List<Product> listResult = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, categoryID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                listResult.add(product);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listResult;
+    }
+
+    public boolean updateProduct(Product product) {
+        String query = "UPDATE Products SET productName = ?, description = ?, price = ?, stock = ?, imageUrl = ?, categoryID = ?, size = ?, ageRange = ?, origin = ?, weight = ? WHERE productID = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, product.getProductName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setDouble(3, product.getPrice());
+            preparedStatement.setInt(4, product.getStock());
+            preparedStatement.setString(5, product.getImageUrl());
+            preparedStatement.setInt(6, product.getCategoryID());
+            preparedStatement.setString(7, product.getSize());
+            preparedStatement.setString(8, product.getAgeRange());
+            preparedStatement.setString(9, product.getOrigin());
+            preparedStatement.setDouble(10, product.getWeight());
+            preparedStatement.setInt(11, product.getProductID());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Product> getDisabledProducts() {
+        List<Product> disabledProducts = new ArrayList<>();
+        String query = "SELECT * FROM Products WHERE isActive = 0";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                disabledProducts.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return disabledProducts;
+    }
+
+    public boolean restoreProduct(int productID) {
+        String query = "UPDATE Products SET isActive = 1 WHERE productID = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, productID);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

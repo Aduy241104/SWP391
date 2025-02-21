@@ -6,9 +6,10 @@
 
 <%@page import="java.util.List"%>
 <%@page import="Model.Product"%>
-<%@page import="Model.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,6 +22,46 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/AdminDashboardStyle.css"/>
         <link rel="stylesheet" href="css/ManageProductForAdminStyles.css"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <style>
+            td.description {
+                max-width: 250px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                position: relative;
+            }
+
+            td.description.expanded {
+                white-space: normal;
+                overflow: visible;
+                max-width: 400px;
+                background: #fff;
+                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+                padding: 5px;
+                position: relative; /* Giữ nguyên vị trí */
+            }
+
+            .toggle-btn {
+                display: block;
+                margin-top: 5px;
+                background-color: #EA83AA;
+                border: none;
+                color: white;
+                cursor: pointer;
+                text-decoration: none;
+            }
+            .toggle-btn:hover {
+                color: black;
+                background-color: #FCEBF2;
+                transform: scale(1.05);
+                text-decoration: none;
+            }
+
+
+        </style>
     </head>
     <body>
         <div class="sidebar">
@@ -32,7 +73,7 @@
         </div>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
-        
+
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
                 <table class="table table-bordered table-hover mt-4">
@@ -55,7 +96,19 @@
                     <tr>
                         <td>${product.productID}</td>
                         <td>${product.productName}</td>
-                        <td>${product.description}</td>
+                        <td class="description">
+                            <c:choose>
+                                <c:when test="${fn:length(product.description) > 20}">
+                                    <span class="short-text">${fn:substring(product.description, 0, 100)}...</span>
+                                    <span class="full-text" style="display: none;">${product.description}</span>
+                                    <button class="toggle-btn btn btn-sm btn-link">See more...</button>
+                                </c:when>
+                                <c:otherwise>
+                                    ${product.description}
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+
                         <td>${product.price}</td>
                         <td>${product.stock}</td>
                         <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
@@ -67,7 +120,7 @@
                         <td>${product.weight} kg</td>
                         <td>
                             <div class="action-buttons">
-                                <a href="EditProduct.jsp?id=${product.productID}" class="btn btn-warning btn-sm">
+                                <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <a href="AdminManagerProducts?action=delete&id=${product.productID}" 
@@ -80,14 +133,41 @@
                     </tr>
                 </c:forEach>
             </table>
-            <div style="margin-bottom: 20px;"class="action-buttons-add">
-                <a href="ManageProductForAdminAddProductPage.jsp" class="btn btn-custom btn-lg shadow">
+            <div style="margin-bottom: 20px;" class="action-buttons-add">
+                <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-plus-circle"></i> Add New Product
+                </a>
+                <a href="AdminManagerProducts?action=viewDelete" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-trash"></i> View Deleted Products
                 </a>
                 <a href="AdminManagerProducts?action=ordersForDashBoard" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>
             </div>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".toggle-btn").forEach(button => {
+                    button.addEventListener("click", function () {
+                        let td = this.closest("td");
+                        td.classList.toggle("expanded");
+
+                        let shortText = td.querySelector(".short-text");
+                        let fullText = td.querySelector(".full-text");
+
+                        if (td.classList.contains("expanded")) {
+                            fullText.style.display = "inline";
+                            shortText.style.display = "none";
+                            this.textContent = "Collapse";
+                        } else {
+                            fullText.style.display = "none";
+                            shortText.style.display = "inline";
+                            this.textContent = "See more...";
+                        }
+                    });
+                });
+            });
+
+        </script>
     </body>
 </html>

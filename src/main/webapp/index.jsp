@@ -14,7 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Home Page</title>
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/styleToy.css">
@@ -33,7 +33,7 @@
 
             <header class="" id="header">
                 <jsp:include page="Component/Header.jsp"></jsp:include>
-            </header>
+                </header>
 
                 <div  id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
@@ -75,7 +75,7 @@
                     <div class="col-md-6 header-bodyWeb-component_1">
 
                         <span><a href="">New Release </a> / <a href="">Toys</a></span>
-                        <h3>New Toys (<p style="display: inline; color: palevioletred;">399</p>)</h3>
+                        <h3>All Toys (<p style="display: inline; color: palevioletred;">${requestScope.productList.size()}</p>)</h3>
 
                     </div>
                     <div class="col-md-6 header-bodyWeb-component_2">
@@ -165,22 +165,13 @@
 
                         <div class="filter-group-1">
                             <h4>Category</h4>
+                            <c:forEach var="cate" items="${requestScope.categoryList}">
+                                <div>
+                                    <input value="${cate.categoryID}" name="category" type="checkbox">
+                                    <label for="category">${cate.categoryName}</label>
+                                </div>
+                            </c:forEach>
 
-                            <div>
-                                <input name="country" type="checkbox">
-                                <label for="">VietNam</label>
-                            </div>
-
-                            <div>
-                                <input name="country" type="checkbox">
-                                <label for="">America</label>
-
-                            </div>
-
-                            <div>
-                                <input name="country" type="checkbox">
-                                <label for="">France</label>
-                            </div>
                         </div>
 
                         <div class="filter-group-2">

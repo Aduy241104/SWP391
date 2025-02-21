@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="Model.Product"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -103,40 +108,41 @@
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
-        <!-- Main content -->
-        <div class="main-content">
-            <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
 
-            <form action="AdminManagerProducts?action=addProduct" method="get" enctype="multipart/form-data" class="form-container">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Product Name:</label>
-                        <input type="text" class="form-control" name="productName" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Price ($):</label>
-                        <input type="number" class="form-control" name="price" step="0.01" required>
-                    </div>
-                </div>
+            <div class="main-content">
+                <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
 
-                <div class="mb-3">
-                    <label class="form-label">Description:</label>
-                    <textarea class="form-control" name="description" rows="3" required></textarea>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Stock:</label>
-                        <input type="number" class="form-control" name="stock" required>
+                <form action="AdminManagerProducts?action=addProduct" method="Post"  class="form-container">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Product Name:</label>
+                            <input type="text" class="form-control" name="productName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Price ($):</label>
+                            <input type="number" class="form-control" name="price" step="0.01" required>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Category:</label>
-                        <select class="form-control" name="categoryID" required>
-                            <option value="1">Toys</option>
-                            <option value="2">Educational</option>
-                            <option value="3">Plush</option>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description:</label>
+                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Stock:</label>
+                            <input type="number" class="form-control" name="stock" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Category:</label>
+                            <select class="form-control" name="categoryID" required>
+                                <c:forEach var="category" items="${categoryList}">
+                               <option value="${category.categoryID}">${category.categoryName}</option>
+                            </c:forEach>
                         </select>
                     </div>
+
                 </div>
 
                 <div class="row">

@@ -55,6 +55,21 @@ public class Product {
     public Product() {
     }
 
+    public Product(String productName, String description, double price, int stock, String imageUrl, int categoryID, boolean isActive, String size, String ageRange, String origin, double weight) {
+        this.productName = productName;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.imageUrl = imageUrl;
+        this.categoryID = categoryID;
+        this.isActive = isActive;
+        this.size = size;
+        this.ageRange = ageRange;
+        this.origin = origin;
+        this.weight = weight;
+    }
+
+
     public int getProductID() {
         return productID;
     }

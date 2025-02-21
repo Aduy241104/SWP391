@@ -155,55 +155,25 @@
             </div>
 
             <div class="row">
-                <h3 style="margin-left: 19px; margin-bottom: 20px;">Other Figure Toy</h3>
-                <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
-                    <a href="">
+                <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
+                <c:forEach var="ctl" items="${requestScope.listRelatedProduct}">
+                     <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
+                    <a href="ViewProductDetailController?productID=${ctl.productID}">
                         <div class="rxs" href="">
-                            <img src="img/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-1-638684309368089841.jpg" alt="">
+                            <img src="${ctl.imageUrl}" alt="">
                             <div class="suggest-product_infor">
-                                <h5>Name</h5>
-                                <p>price</p>
-                                <a href="" class="hxe">Add To Cart</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
-                    <a href="">
-                        <div class="rxs" href="">
-                            <img src="img/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-1-638684309368089841.jpg" alt="">
-                            <div class="suggest-product_infor">
-                                <h5>Name</h5>
-                                <p>price</p>
-                                <a href="" class="hxe">Add To Cart</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
-                    <a href="">
-                        <div class="rxs" href="">
-                            <img src="img/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-1-638684309368089841.jpg" alt="">
-                            <div class="suggest-product_infor">
-                                <h5>Name</h5>
-                                <p>price</p>
-                                <a href="" class="hxe">Add To Cart</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
-                    <a href="">
-                        <div class="rxs" href="">
-                            <img src="img/do-choi-xe-rac-mo-hinh-co-den-va-am-thanh-vecto-vt53t-1-638684309368089841.jpg" alt="">
-                            <div class="suggest-product_infor">
-                                <h5>Name</h5>
-                                <p>price</p>
+                                <h5>${ctl.productName}</h5>
+                                <p>${ctl.price}</p>
                                 <a href="" class="hxe">Add To Cart</a>
                             </div>
                         </div>
                     </a>
                 </div>          
+                </c:forEach>
+                
+               
+                
+                   
             </div>
         </div>
 
