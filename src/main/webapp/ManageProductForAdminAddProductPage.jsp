@@ -103,6 +103,7 @@
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
+
         <div class="main-content">
             <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
 
