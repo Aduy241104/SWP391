@@ -21,6 +21,15 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/AdminDashboardStyle.css"/>
         <link rel="stylesheet" href="css/ManageProductForAdminStyles.css"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <style>
+            body{
+                font-family: "Montserrat", sans-serif;
+                overflow-x: hidden;
+            }
+        </style>
     </head>
     <body>
         <div class="sidebar">
@@ -32,7 +41,7 @@
         </div>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
-        
+
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
                 <table class="table table-bordered table-hover mt-4">

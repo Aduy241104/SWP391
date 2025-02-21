@@ -148,5 +148,40 @@ public class ProductDAO {
         }
         return false; // Trả về false nếu có lỗi
     }
+    
+    
+    public List<Product> getRelatedProduct(int categoryID) {
+        String query = "SELECT TOP 4 * FROM Products WHERE categoryID = ? ORDER BY price DESC";
+        List<Product> listResult = new ArrayList<>();
+        
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, categoryID);
+            resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {      
+                 Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                listResult.add(product);
+            }  
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listResult;   
+    }
 
 }
