@@ -100,8 +100,8 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2><i class="fas fa-cogs"></i> Admin</h2>
-            <a href="manageUsers.jsp"><i class="fas fa-users"></i> Manage Users</a>
-            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
+            <a href="AdminManagerProducts?action=product"  class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>

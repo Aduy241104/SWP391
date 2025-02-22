@@ -20,6 +20,42 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/AdminDashboardStyle.css"/>
+        <style>
+            .center-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 60vh; /* Đảm bảo nội dung căn giữa màn hình */
+                text-align: center;
+                margin-left: 600px;
+                
+            }
+
+            .mess {
+                color: red;
+                font-size: 32px;
+                margin-bottom: 20px;
+            }
+
+            .message-box {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                max-width: 600px;
+            }
+            p {
+                font-size: 18px;
+                color: #333;
+            }
+
+            .example {
+                font-weight: bold;
+                color: #007bff;
+            }
+
+        </style>
     </head>
     <body>
         <div class="sidebar">
@@ -90,7 +126,13 @@
             </c:when>
 
             <c:otherwise>
-                <h1 style="margin-left: 700px; margin-top: 100px;color: red;">No results found!</h1>
+                    <div class="center-container">
+                        <h1 class="mess">No results found!</h1>
+                        <div class="message-box">
+                            <p>You can search for orders by entering OrderID and UserID like this:</p>
+                            <p class="example">EX: "1+1"</p>
+                        </div>
+                    </div>
             </c:otherwise>
         </c:choose>
     </body>

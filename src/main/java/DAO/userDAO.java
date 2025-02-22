@@ -9,6 +9,8 @@ import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -76,6 +78,56 @@ public class userDAO {
         return null;
     }
 
+    public List<User> getAllUser() {
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT userID, username, password, email, fullName, createdAt FROM Users";
+        String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
+        String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int userId = rs.getInt("userID");
+                String role = "Customer";
+
+                try ( PreparedStatement adminPs = connection.prepareStatement(adminQuery)) {
+                    adminPs.setInt(1, userId);
+                    try ( ResultSet adminRs = adminPs.executeQuery()) {
+                        if (adminRs.next()) {
+                            role = "Admin";
+                        }
+                    }
+                }
+
+                // Kiểm tra trong bảng Staffs nếu không phải Admin
+                if (role.equals("Customer")) {
+                    try ( PreparedStatement staffPs = connection.prepareStatement(staffQuery)) {
+                        staffPs.setInt(1, userId);
+                        try ( ResultSet staffRs = staffPs.executeQuery()) {
+                            if (staffRs.next()) {
+                                role = "Staff";
+                            }
+                        }
+                    }
+                }
+
+                User user = new User(
+                        userId,
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("fullName"),
+                        rs.getDate("createdAt"),
+                        role
+                );
+                userList.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
     public User getUserById(int userId) {
         String query = "SELECT userID, username, password, email, fullName, createdAt FROM Users WHERE userID = ?";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
@@ -111,18 +163,18 @@ public class userDAO {
         }
         return false;
     }
-    
+
     public boolean changePassword(int userId, String oldPassword, String newPassword) {
         String checkQuery = "SELECT * FROM Users WHERE userID = ? AND password = ?";
         String updateQuery = "UPDATE Users SET password = ? WHERE userID = ?";
-        
+
         try {
             // Kiểm tra mật khẩu cũ
             preparedStatement = connection.prepareStatement(checkQuery);
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, oldPassword);
             resultSet = preparedStatement.executeQuery();
-            
+
             if (resultSet.next()) {
                 // Cập nhật mật khẩu mới
                 preparedStatement = connection.prepareStatement(updateQuery);
@@ -136,5 +188,20 @@ public class userDAO {
         return false;
     }
 
-}
+    public static void main(String[] args) {
+        userDAO dao = new userDAO(); // Khởi tạo userDAO
+        List<User> users = dao.getAllUser(); // Lấy danh sách tất cả người dùng
 
+        // Hiển thị danh sách người dùng
+        System.out.println("Danh sách Users:");
+        for (User user : users) {
+            System.out.println("ID: " + user.getUserId()
+                    + ", Username: " + user.getUsername()
+                    + ", Email: " + user.getEmail()
+                    + ", Full Name: " + user.getFullName()
+                    + ", Created At: " + user.getCreateAt()
+                    + ", Role: " + user.getRole());
+        }
+    }
+
+}

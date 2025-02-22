@@ -7,9 +7,11 @@ package Controller;
 import DAO.CategoryDAO;
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
+import DAO.userDAO;
 import Model.Category;
 import Model.Orders;
 import Model.Product;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -91,12 +93,16 @@ public class AdminManagerProducts extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             List<Orders> OrdersList = ordersDao.getAllOrders();
             OrdersDAO OrdersDAO = new OrdersDAO();
+            userDAO userDao = new userDAO();
+            List<User> userList = userDao.getAllUser();
             Double totalAmount = OrdersDAO.getTotalAmountOfDeliveredOrders();
             int countOrders = OrdersList.size();
             int count = productList.size();
+            int countUser = userList.size();
             request.getSession().setAttribute("totalAmount", totalAmount);
             request.getSession().setAttribute("countOrders", countOrders);
             request.getSession().setAttribute("count", count);
+            request.getSession().setAttribute("countUser", countUser);
             request.setAttribute("count", count);
             request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
         } else if (action.equals("order")) {
