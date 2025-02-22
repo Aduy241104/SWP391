@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="tab-content">
-                            <form class="tab-pane fade active show" id="account-general" action="editProfileController" method="post">
+                            <form class="tab-pane fade active show" id="account-general" action="editProfile" method="post">
                                 <hr class="border-light m-0">
                                 <div class="card-body">
                                     <div class="form-group">
