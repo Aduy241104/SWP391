@@ -141,7 +141,7 @@
 
                 <div class="col-md-6" style="height: 375px;">
                     <h2>Rating 4.5⭐</h2>
-                    <button class="btn btn-primary customize">View Feedback</button>
+                   <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Add To Cart</a>
 
                 </div>
 
