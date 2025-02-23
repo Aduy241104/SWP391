@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -36,7 +37,7 @@ public class changePasswordController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet changePasswordController</title>");            
+            out.println("<title>Servlet changePasswordController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet changePasswordController at " + request.getContextPath() + "</h1>");
@@ -71,34 +72,88 @@ public class changePasswordController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = (HttpSession) request.getSession();
-        Integer userId = 0;
+
+        HttpSession session = request.getSession();
         String userId_raw = request.getParameter("userId");
-        
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String repeatPassword = request.getParameter("repeatPassword");
+
         if (userId_raw == null) {
             response.sendRedirect("login.jsp");
             return;
         }
-        String repeatPassowrd = request.getParameter("repeatPassword");
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
+
+        int userId;
         try {
             userId = Integer.parseInt(userId_raw);
         } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid user ID.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
         }
+
         userDAO dao = new userDAO();
-        boolean isChanged = false;
-        if(repeatPassowrd.equals(newPassword)){
-        isChanged = dao.changePassword(userId, oldPassword, newPassword);
+
+        // Kiểm tra mật khẩu cũ không được rỗng
+        if (oldPassword == null || oldPassword.trim().isEmpty()) {
+            request.setAttribute("errorOldPassword", "Old password cannot be empty.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
         }
+
+        // Kiểm tra mật khẩu cũ có đúng không
+        if (!dao.checkOldPassword(userId, oldPassword)) {
+            request.setAttribute("errorOldPassword", "Old password is incorrect.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới không được rỗng
+        if (newPassword == null || repeatPassword == null
+                || newPassword.trim().isEmpty() || repeatPassword.trim().isEmpty()) {
+            request.setAttribute("error", "New password fields cannot be empty.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới có hợp lệ không
+        if (!isValidPassword(newPassword)) {
+            request.setAttribute("errorNewPassword",
+                    "Password must be at least 8 characters long and contain at least one number and one uppercase letter.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới và mật khẩu nhập lại có trùng khớp không
+        if (!newPassword.equals(repeatPassword)) {
+            request.setAttribute("errorRepeatPassword", "New password and repeat password do not match.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra xem mật khẩu mới có trùng với mật khẩu cũ không
+        if (newPassword.equals(oldPassword)) {
+            request.setAttribute("error", "New password cannot be the same as the old password.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
+        }
+
+        // Cập nhật mật khẩu
+        boolean isChanged = dao.changePassword(userId, oldPassword, newPassword);
         if (isChanged) {
-            request.setAttribute("message", "Mật khẩu đã thay đổi thành công!");
+            request.setAttribute("message", "Password changed successfully!");
         } else {
-            request.setAttribute("error", "Thay đổi mật khẩu thất bại. Kiểm tra lại thông tin.");
+            request.setAttribute("error", "Password change failed. Please try again.");
         }
-        
+
         request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+    }
+
+// Kiểm tra mật khẩu có ít nhất 8 ký tự, chứa ít nhất 1 số và 1 chữ cái viết hoa
+    private boolean isValidPassword(String password) {
+        String regex = "^(?=.*[0-9])(?=.*[A-Z]).{8,}$";
+        return Pattern.matches(regex, password);
     }
 
     /**
