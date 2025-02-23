@@ -76,6 +76,7 @@ public class editProfileController extends HttpServlet {
         
         
         if (userId_raw == null) {
+            System.out.println("null");
             response.sendRedirect("error.jsp");
             return;
         }
@@ -95,7 +96,7 @@ public class editProfileController extends HttpServlet {
         } else {
             request.setAttribute("error", "Failed to update profile. Please try again.");
         }
-        response.sendRedirect("viewProfileController");
+        response.sendRedirect("viewProfile");
     }
 
     /**

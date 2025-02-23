@@ -5,6 +5,7 @@
 package DAO;
 
 import Model.Product;
+import Model.Review;
 import java.util.List;
 
 /**
@@ -13,9 +14,10 @@ import java.util.List;
  */
 public class TestDATA {
     public static void main(String[] args) {
-        ProductDAO prd = new ProductDAO();
-        List<Product> ls = prd.searchProduct("VT");
-        for (Product l : ls) {
+      commentDAO cmd = new commentDAO();
+      List<Review> ls = cmd.filterRating(9, 5);
+      
+        for (Review l : ls) {
             System.out.println(l.toString());
             
         }

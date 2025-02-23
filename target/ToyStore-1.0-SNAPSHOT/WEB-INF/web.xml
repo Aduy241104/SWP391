@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!-- Filter Configuration -->
     <filter>
         <filter-name>LoginFilter</filter-name>
@@ -16,7 +13,6 @@
         <url-pattern>/AddToCart</url-pattern>
         <url-pattern>/viewProfileController</url-pattern>
     </filter-mapping>
-
     <!-- User Controllers -->
     <servlet>
         <servlet-name>LogoutController</servlet-name>
@@ -54,7 +50,6 @@
         <servlet-name>changePasswordController</servlet-name>
         <servlet-class>Controller.changePasswordController</servlet-class>
     </servlet>
-
     <!-- Admin Controllers -->
     <servlet>
         <servlet-name>AdminManagerProducts</servlet-name>
@@ -72,8 +67,27 @@
         <servlet-name>SearchProductController</servlet-name>
         <servlet-class>Controller.SearchProductController</servlet-class>
     </servlet>
-
     <!-- Servlet Mappings -->
+    <servlet>
+        <servlet-name>FilterRatingController</servlet-name>
+        <servlet-class>Controller.FilterRatingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewOrderListController</servlet-name>
+        <servlet-class>Controller.ViewOrderListController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminManager_Search</servlet-name>
+        <url-pattern>/AdminManager_Search</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ViewFeedbackController</servlet-name>
+        <servlet-class>Controller.ViewFeedbackController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminManagerUser</servlet-name>
+        <servlet-class>Controller.AdminManagerUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
@@ -122,16 +136,29 @@
         <servlet-name>SearchProductController</servlet-name>
         <url-pattern>/SearchProduct</url-pattern>
     </servlet-mapping>
-    
     <!-- Error Page Configuration -->
     <error-page>
         <error-code>404</error-code>
         <location>/error.jsp</location>
     </error-page>
-
     <!-- Session Configuration -->
+    <servlet-mapping>
+        <servlet-name>ViewFeedbackController</servlet-name>
+        <url-pattern>/ViewFeedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManagerUser</servlet-name>
+        <url-pattern>/AdminManagerUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterRatingController</servlet-name>
+        <url-pattern>/FilterRating</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOrderListController</servlet-name>
+        <url-pattern>/ViewOrderListController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-
 </web-app>
