@@ -28,7 +28,7 @@
             }
 
             strong{
-                color: rgb(6, 121, 15);
+                color: rgb(46, 145, 245);
                 margin-bottom: 10px;
             }
 
@@ -83,22 +83,25 @@
             }
 
             .avt {
-                padding: 5px 13px;
+                padding: 5px 10px;
+                border: 1px solid rgb(51, 123, 248);
                 background-color: rgb(217, 216, 216);
                 border-radius: 140px;
                 display: inline-block;
             }
 
             .layout-4 {
-                background-color: rgb(240, 239, 239);
+                background-color: rgb(245, 243, 243);
                 padding: 30px;
                 border-radius: 9px;
+                width: 50%;
+                border: 1px solid salmon;
             }
 
             .fa-star{
                 color: rgb(214, 197, 6);
             }
-            
+
             .actives{
                 background-color: pink !important;
             }
@@ -160,24 +163,26 @@
                 <h3 class="mb-3">Comments (${requestScope.listReview.size()})</h3>
                 <c:forEach var="r" items="${requestScope.listReview}">
                     <div class="border-bottom mb-2">
-                        <strong><i style="margin-right: 9px;" class="avt">j</i> 
+                        <strong><i style="margin-right: 9px;" class="avt">D</i> 
                             <c:if test="${sessionScope.user.userId == r.userID}">
-                               You
+                                You
                             </c:if>
                             <c:if test="${sessionScope.user.userId != r.userID}">
-                               ${r.username}
+                                ${r.username}
                             </c:if>
                         </strong> 
-                        <div style="display: flex; flex-direction: column; margin-left: 35px;">
-                            <span style="margin: 3px 7px;" class="text-warning"> <c:forEach begin="1" end="${r.rating}" var="i">
+                        <div style="display: flex; flex-direction: column; margin-left: 43px;">
+                            <span style="font-size: 11px;">${r.createdAt}</span>
+                            <span style="margin: 3px 0px;" class="text-warning"> <c:forEach begin="1" end="${r.rating}" var="i">
                                     <i class="fa-solid fa-star"></i>
 
                                 </c:forEach>
                             </span>
 
-                            <span style="margin:0px 6px; font-size: 12px;">${r.createdAt}</span>
+                            
+                             <p style="margin-top: 16px;">${r.reviewText}</p>
                         </div>
-                        <p style="margin-top: 16px; margin-left: 37px;">${r.reviewText}</p>
+                       
                     </div>
                 </c:forEach>
 

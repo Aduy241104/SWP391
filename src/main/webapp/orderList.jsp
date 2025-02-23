@@ -75,6 +75,9 @@
     <body>
 
 
+        <header class="" id="header">
+            <jsp:include page="Component/Header.jsp"></jsp:include>
+            </header>
         <div class="container">
             <h2 class="text-center mb-4">📦 Manage Order</h2>
 

@@ -38,7 +38,7 @@
                     <div class="col-md-6 header-bodyWeb-component_1">
 
                         <span><a href="">New Release </a> / <a href="">Toys</a></span>
-                        <h3>New Toys (<p style="display: inline; color: palevioletred;">399</p>)</h3>
+                        <h3>New Toys (<p style="display: inline; color: palevioletred;">${requestScope.productList.size()}</p>)</h3>
 
                     </div>
                     <div class="col-md-6 header-bodyWeb-component_2">

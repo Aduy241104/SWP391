@@ -69,7 +69,7 @@
     </form>
 </div>
 
-<div class="row component-3">
+<div class="component-3">
     <div class="banner_new-headerz">
         <div class="rightBanner_contentz">
             <h4>
