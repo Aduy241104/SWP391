@@ -136,7 +136,7 @@
                     <c:when test="${view eq 'orderTable'}">
                         <table class="table table-bordered table-hover mt-4">
                             <div class="header">
-                                <h2>Manage Products</h2>
+                                <h2>Manage Orders</h2>
                                 <a href="AdminManagerProducts?action=order" class="see-all-btn">See all →</a>
                             </div>
                             <tr class="table-dark">
