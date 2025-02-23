@@ -106,6 +106,7 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
+        
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
 
