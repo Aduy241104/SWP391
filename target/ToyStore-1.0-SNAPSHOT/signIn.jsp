@@ -10,6 +10,7 @@
 <%
     // Lấy thông báo lỗi từ request (do Controller truyền vào)
     String errorMessage = (String) request.getAttribute("errorMessage");
+     String accountNotFoundMessage = (String) request.getAttribute("accountNotFoundMessage");
 %>
 
 <!DOCTYPE html>
@@ -30,6 +31,11 @@
                 <% if (errorMessage != null) {%>
                 <p class="error"><%= errorMessage%></p>
                 <% }%>
+                
+                <%-- Hiển thị thông báo nếu tài khoản không tồn tại --%>
+                <% if (accountNotFoundMessage != null) { %>
+                <p class="error"><%= accountNotFoundMessage %></p>
+                <% } %>
 
                 <div class="form-input">
                     <input type="text" name="identifier" placeholder="Username or Email" required>

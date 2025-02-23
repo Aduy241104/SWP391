@@ -78,6 +78,36 @@ public class userDAO {
         return null;
     }
 
+    public boolean checkExistAccount(String identifier) {
+        String query = "SELECT COUNT(*) FROM Users WHERE username = ? OR email = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, identifier);
+            ps.setString(2, identifier);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Trả về true nếu tài khoản tồn tại
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+//    public String checkUserExistence(String identifier) {
+//        String query = "SELECT username, email FROM Users WHERE username = ? OR email = ?";
+//        try (PreparedStatement ps = connection.prepareStatement(query)) {
+//            ps.setString(1, identifier);
+//            ps.setString(2, identifier);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return "exists";
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "not_exists";
+//    }
     public List<User> getAllUser() {
         List<User> userList = new ArrayList<>();
         String query = "SELECT userID, username, password, email, fullName, createdAt FROM Users";
@@ -188,19 +218,31 @@ public class userDAO {
         return false;
     }
 
-    public static void main(String[] args) {
-        userDAO dao = new userDAO(); // Khởi tạo userDAO
-        List<User> users = dao.getAllUser(); // Lấy danh sách tất cả người dùng
+    public boolean checkOldPassword(int userId, String oldPassword) {
+        String query = "SELECT COUNT(*) FROM Users WHERE userID = ? AND password = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setString(2, oldPassword); // Nếu mật khẩu lưu dưới dạng hash, cần kiểm tra với phương thức mã hóa
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Trả về true nếu mật khẩu đúng
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-        // Hiển thị danh sách người dùng
-        System.out.println("Danh sách Users:");
-        for (User user : users) {
-            System.out.println("ID: " + user.getUserId()
-                    + ", Username: " + user.getUsername()
-                    + ", Email: " + user.getEmail()
-                    + ", Full Name: " + user.getFullName()
-                    + ", Created At: " + user.getCreateAt()
-                    + ", Role: " + user.getRole());
+    public static void main(String[] args) {
+        int userId = 1;
+        String oldPassword = "Nha0338666928@"; // Thay bằng mật khẩu thực tế trong DB
+        userDAO userDAO = new userDAO();
+        boolean isValid = userDAO.checkOldPassword(userId, oldPassword);
+        if (isValid) {
+            System.out.println("Mật khẩu đúng!");
+        } else {
+            System.out.println("Mật khẩu sai!");
         }
     }
 

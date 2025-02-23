@@ -41,15 +41,16 @@
                             <div style="width: 140px; height: 140px; background-color: rgb(251, 15, 176); margin-left: 60px; margin-top: 50px; margin-bottom: 30px ;border-radius: 120px; text-align: center; line-height: 140px;font-size: 45px; font-weight: 700; color: white;">
                                 D
                             </div>
-                            <a class="list-group-item list-group-item-action active" data-toggle="list"
+                            <a class="list-group-item list-group-item-action <%= (request.getAttribute("error") == null && request.getAttribute("errorOldPassword") == null) ? "active show" : ""%>" data-toggle="list"
                                href="#account-general">General</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list"
+                            <a class="list-group-item list-group-item-action  <%= (request.getAttribute("error") != null || request.getAttribute("errorOldPassword") != null) ? "active show" : ""%>" data-toggle="list"
                                href="#account-change-password">Change password</a>
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="tab-content">
-                            <form class="tab-pane fade active show" id="account-general" action="editProfile" method="post">
+                            <form class="tab-pane fade <%= (request.getAttribute("error") == null && request.getAttribute("errorOldPassword") == null) ? "active show" : ""%>" 
+                                  id="account-general" action="editProfile" method="post">
                                 <hr class="border-light m-0">
                                 <div class="card-body">
                                     <div class="form-group">
@@ -75,20 +76,26 @@
                                     <a href="" type="button" class="btn btn-default" style="margin-bottom: 20px;">Cancel</a>
                                 </div>
                             </form>
-                            <form class="tab-pane fade" id="account-change-password" action="changePasswordController" method="post">
+                            <form class="tab-pane fade <%= (request.getAttribute("error") != null || request.getAttribute("errorOldPassword") != null) ? "active show" : ""%>" 
+                                  id="account-change-password" action="changePassword" method="post" onsubmit="return validatePassword()">
                                 <div class="card-body pb-2">
                                     <input type="hidden" name="userId" value="${user.userId}">
                                     <div class="form-group">
                                         <label class="form-label">Current password</label>
-                                        <input name="oldPassword" type="password" class="form-control">
+                                        <input name="oldPassword" id="oldPassword" type="password" class="form-control" required>
+                                        <% if (request.getAttribute("errorOldPassword") != null) {%>
+                                        <small class="text-danger"><%= request.getAttribute("errorOldPassword")%></small>
+                                        <% }%>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">New password</label>
-                                        <input name="newPassword" type="password" class="form-control">
+                                        <input name="newPassword" id="newPassword" type="password" class="form-control" required>
+                                        <small id="newPasswordError" class="text-danger"></small>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Repeat new password</label>
-                                        <input name="repeatPassword" type="password" class="form-control">
+                                        <input name="repeatPassword" id="repeatPassword" type="password" class="form-control" required>
+                                        <small id="repeatPasswordError" class="text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="text-right mt-3">
@@ -96,13 +103,38 @@
                                     <button type="button" class="btn btn-default" style="margin-bottom: 20px;">Cancel</button>
                                 </div>
                             </form>
+
+                            <script>
+                                function validatePassword() {
+                                    let newPassword = document.getElementById("newPassword").value;
+                                    let repeatPassword = document.getElementById("repeatPassword").value;
+                                    let passwordRegex = /^(?=.*[0-9])(?=.*[A-Z]).{8,}$/;
+                                    let newPasswordError = document.getElementById("newPasswordError");
+                                    let repeatPasswordError = document.getElementById("repeatPasswordError");
+
+                                    newPasswordError.textContent = "";
+                                    repeatPasswordError.textContent = "";
+
+                                    if (!passwordRegex.test(newPassword)) {
+                                        newPasswordError.textContent = "Password must be at least 8 characters long and contain at least one number and one uppercase letter.";
+                                        return false;
+                                    }
+
+                                    if (newPassword !== repeatPassword) {
+                                        repeatPasswordError.textContent = "New password and repeat password do not match.";
+                                        return false;
+                                    }
+
+                                    return true;
+                                }
+                            </script>
                         </div>
                     </div>
+
                     <!-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
                     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-                    </script>
                     </body>
                     </html>

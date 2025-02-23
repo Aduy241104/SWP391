@@ -78,33 +78,31 @@ public class LoginController extends HttpServlet {
         userDAO userDAO = new userDAO();
         User user = userDAO.getUser(identifier, password);
 
-        if (user != null) { // Đúng tài khoản & mật khẩu
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-
-            // Cho sua xiu nha <3 thaiv
-            String role = user.getRole().toLowerCase();
-            session.setAttribute("role", role);
-
-            // Phân quyền và chuyển trang
-            switch (user.getRole().toLowerCase()) {
-                case "admin":
-                    response.sendRedirect("ViewProductListController");
-                    break;
-                case "staff":
-                    response.sendRedirect("ViewProductListController");
-                    break;
-                case "customer": 
-                    response.sendRedirect("ViewProductListController");
-                    break;
-                default:
-                    request.setAttribute("errorMessage", "Invalid user role!");
-                    request.getRequestDispatcher("signIn.jsp").forward(request, response);
-                    break;
-            }
-        } else { // Sai tài khoản hoặc mật khẩu
-            request.setAttribute("errorMessage", "Invalid username or password!");
+        if (!userDAO.checkExistAccount(identifier)) {
+            request.setAttribute("errorMessage", "Account does not exist!");
             request.getRequestDispatcher("signIn.jsp").forward(request, response);
+        } else {
+            if (user == null) {
+                request.setAttribute("errorMessage", "Wrong password!!!!");
+                request.getRequestDispatcher("signIn.jsp").forward(request, response);
+            } else {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                String role = user.getRole().toLowerCase();
+                session.setAttribute("role", role);
+
+                switch (role) {
+                    case "admin":
+                    case "staff":
+                    case "customer":
+                        response.sendRedirect("ViewProductListController");
+                        break;
+                    default:
+                        request.setAttribute("errorMessage", "Invalid user role!");
+                        request.getRequestDispatcher("signIn.jsp").forward(request, response);
+                        break;
+                }
+            }
         }
     }
 
