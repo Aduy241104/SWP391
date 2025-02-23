@@ -64,7 +64,7 @@
         <div id="searchButton" style="cursor: pointer; z-index: 2">
             <i style=" color: black;" class="fa-solid fa-magnifying-glass icon-search"></i>
         </div>
-        <a href=""> <i class="fa-solid fa-newspaper"></i></a>
+        <a href="ViewOrderListController"> <i class="fa-solid fa-newspaper"></i></a>
         <a href="ViewCartController"> <i class="fa-solid fa-bag-shopping"></i></a>
     </form>
 </div>
