@@ -5,7 +5,6 @@
 
 package Controller;
 
-import DAO.ProductDAO;
 import DAO.commentDAO;
 import Model.Review;
 import jakarta.servlet.RequestDispatcher;
@@ -21,7 +20,7 @@ import java.util.List;
  *
  * @author DUY
  */
-public class ViewFeedbackController extends HttpServlet {
+public class FilterRatingController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +37,10 @@ public class ViewFeedbackController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewFeedbackController</title>");  
+            out.println("<title>Servlet FilterRatingController</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewFeedbackController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet FilterRatingController at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,17 +57,30 @@ public class ViewFeedbackController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
         try {
             int productID = Integer.parseInt(request.getParameter("productID"));
-            commentDAO cmt = new commentDAO();
-            List<Review> listReview = cmt.getReviewByProductIDss(productID);  
-            double avgRating = cmt.getAvergeRating(productID);
-
-            request.setAttribute("avgRating", avgRating);
-            request.setAttribute("productID",productID);
+            String rating = request.getParameter("rating");
+            commentDAO cmd = new commentDAO();
+            List<Review> listReview;
+             
+            if(rating.equals("all")) {
+                listReview = cmd.getReviewByProductIDss(productID);
+            }else{
+                int ratings = Integer.parseInt(rating);
+                listReview = cmd.filterRating(productID, ratings);
+            }
+            
+            double avgRating = cmd.getAvergeRating(productID);
+            
             request.setAttribute("listReview", listReview);
+            request.setAttribute("rating", rating);
+            request.setAttribute("avgRating", avgRating);
+            request.setAttribute("productID", productID);
+            
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/FeedbackProduct.jsp");
             rd.forward(request, response);
+            
         } catch (Exception e) {
             response.sendRedirect("error.jsp");
         }
