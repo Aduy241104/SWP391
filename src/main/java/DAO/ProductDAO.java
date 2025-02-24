@@ -178,7 +178,7 @@ public class ProductDAO {
     }
 
     public List<Product> getRelatedProduct(int categoryID) {
-        String query = "SELECT TOP 4 * FROM Products WHERE categoryID = ? ORDER BY price DESC";
+        String query = "SELECT TOP 4 * FROM Products WHERE categoryID = ? AND isActive = 1 ORDER BY price DESC";
         List<Product> listResult = new ArrayList<>();
 
         try {
