@@ -77,7 +77,7 @@
                 <a href="AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-times"></i> View Canceled Orders
                 </a>
-                <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">
+                <a href="AdminManagerProducts?action=ordersForDashBoard" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>
             </div>

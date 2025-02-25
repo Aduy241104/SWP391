@@ -140,7 +140,7 @@
                 <a href="AdminManagerProducts?action=viewDelete" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-trash"></i> View Deleted Products
                 </a>
-                <a href="AdminManagerProducts?action=ordersForDashBoard" class="btn btn-custom btn-lg shadow">
+                <a href="AdminManagerProducts?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>
             </div>

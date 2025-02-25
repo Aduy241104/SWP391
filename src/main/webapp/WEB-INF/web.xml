@@ -68,6 +68,14 @@
         <servlet-class>Controller.SearchProductController</servlet-class>
     </servlet>
     <!-- Servlet Mappings -->
+    <servlet>
+        <servlet-name>FilterRatingController</servlet-name>
+        <servlet-class>Controller.FilterRatingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewOrderListController</servlet-name>
+        <servlet-class>Controller.ViewOrderListController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -141,6 +149,14 @@
     <servlet-mapping>
         <servlet-name>AdminManagerUser</servlet-name>
         <url-pattern>/AdminManagerUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterRatingController</servlet-name>
+        <url-pattern>/FilterRating</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOrderListController</servlet-name>
+        <url-pattern>/ViewOrderListController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

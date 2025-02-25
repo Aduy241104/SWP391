@@ -106,13 +106,14 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
+        
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
 
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
 
-                <form action="AdminManagerProducts?action=addProduct" method="Post"  class="form-container">
+                <form action="AdminManagerProducts?action=addProduct" method="Post"  class="form-container" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Product Name:</label>
@@ -137,8 +138,8 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Category:</label>
                             <select class="form-control" name="categoryID" required>
-                                <c:forEach var="category" items="${categoryList}">
-                               <option value="${category.categoryID}">${category.categoryName}</option>
+                            <c:forEach var="category" items="${categoryList}">
+                                <option value="${category.categoryID}">${category.categoryName}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -176,7 +177,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Product Image:</label>
-                    <input type="text" class="form-control" name="image"  required>
+                    <input type="file" class="form-control" name="image" accept="image/*" required>
                 </div>
 
                 <div class="text-center">

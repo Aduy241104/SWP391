@@ -88,5 +88,10 @@ public class Review {
         this.createdAt = createdAt;
     }
 
+    @Override
+    public String toString() {
+        return "Review{" + "reviewID=" + reviewID + ", productID=" + productID + ", username=" + username + ", userID=" + userID + ", rating=" + rating + ", reviewText=" + reviewText + ", createdAt=" + createdAt + '}';
+    }
+
     
 }

@@ -19,6 +19,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/AdminDashboardStyle.css"/>
+        <link rel="stylesheet" href="css/ManageProductForAdminStyles.css"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class="sidebar">
@@ -31,17 +35,17 @@
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
-        <div class="main-content">
-            <h2 class="text-center"><i class="fas fa-users"></i> Manage Users</h2>
-            <table class="table table-bordered table-hover mt-4">
-                <tr class="table-dark">
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Full Name</th>
-                    <th>Role</th>
-                    <th>Action</th>
-                </tr>
+            <div class="main-content">
+                <h2 class="text-center"><i class="fas fa-users"></i> Manage Users</h2>
+                <table class="table table-bordered table-hover mt-4">
+                    <tr class="table-dark">
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
                 <c:forEach var="user" items="${userList}">
                     <tr>
                         <td>${user.userId}</td>
@@ -59,6 +63,18 @@
                     </tr>
                 </c:forEach>
             </table>
+            <div style="margin-bottom: 20px;" class="action-buttons-add">
+                <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-plus-circle"></i> Add New User
+                </a>
+                <a href="AdminManagerProducts?action=viewDelete" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-trash"></i> View Deleted User
+                </a>
+                <a href="AdminManagerUser?action=userForDashBoard" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-arrow-left"></i> Back to Admin Page
+                </a>
+            </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
