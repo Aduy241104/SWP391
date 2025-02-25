@@ -5,7 +5,9 @@
 
 package Controller;
 
+import DAO.ProductDAO;
 import DAO.commentDAO;
+import Model.Product;
 import Model.Review;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -73,6 +75,10 @@ public class FilterRatingController extends HttpServlet {
             
             double avgRating = cmd.getAvergeRating(productID);
             
+            ProductDAO productDAO = new ProductDAO();
+             Product product = productDAO.getProductByID(productID);
+             
+            request.setAttribute("product", product);
             request.setAttribute("listReview", listReview);
             request.setAttribute("rating", rating);
             request.setAttribute("avgRating", avgRating);
