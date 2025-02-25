@@ -59,23 +59,22 @@ public class commentDAO {
                 + "where productID = ?";
 
         try {
-             connection = new DBContext().getConnect();
-             preparedStatement = connection.prepareStatement(query);
-             preparedStatement.setInt(1, productID);
-             resultSet = preparedStatement.executeQuery();
-             
-             if (resultSet.next()) {
-                 return resultSet.getDouble(1);
-             }
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, productID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getDouble(1);
+            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return -1;
     }
-    
-    
-    public List<Review> filterRating(int productID,int rating ) {
+
+    public List<Review> filterRating(int productID, int rating) {
         String query = "SELECT reviewID, productID, prv.userID, rating, reviewText, username, prv.createdAt    \n"
                 + "FROM\n"
                 + "ProductReviews AS prv\n"
@@ -105,6 +104,26 @@ public class commentDAO {
             System.out.println(e.getMessage());
         }
         return listResult;
+    }
+
+    public boolean deleteReviewByID(int reviewID) {
+        String query = "DELETE FROM ProductReviews\n"
+                + "WHERE reviewID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, reviewID);
+            int rowEffect = preparedStatement.executeUpdate();
+            
+            if(rowEffect > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 }
