@@ -234,16 +234,88 @@ public class userDAO {
         return false;
     }
 
-    public static void main(String[] args) {
-        int userId = 1;
-        String oldPassword = "Nha0338666928@"; // Thay bằng mật khẩu thực tế trong DB
-        userDAO userDAO = new userDAO();
-        boolean isValid = userDAO.checkOldPassword(userId, oldPassword);
-        if (isValid) {
-            System.out.println("Mật khẩu đúng!");
-        } else {
-            System.out.println("Mật khẩu sai!");
+    // Kiểm tra username đã tồn tại chưa
+    public boolean isUsernameExists(String username) {
+        String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu username đã tồn tại
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
+    }
+
+    // Kiểm tra email đã tồn tại chưa
+    public boolean isEmailExists(String email) {
+        String query = "SELECT COUNT(*) FROM Users WHERE email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu email đã tồn tại
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Đăng ký tài khoản
+    public boolean signUpUser(String username, String password, String confirmPassword, String email, String fullName) {
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Mật khẩu nhập lại không khớp.");
+            return false;
+        }
+
+        if (isUsernameExists(username)) {
+            System.out.println("Tên đăng nhập đã tồn tại.");
+            return false;
+        }
+
+        if (isEmailExists(email)) {
+            System.out.println("Email đã được sử dụng.");
+            return false;
+        }
+
+        String insertQuery = "INSERT INTO Users (username, password, email, fullName, createdAt) VALUES (?, ?, ?, ?, GETDATE())";
+        try (PreparedStatement ps = connection.prepareStatement(insertQuery)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setString(3, email);
+            ps.setString(4, fullName);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
+    
+    
+
+    public static void main(String[] args) {
+        userDAO userDAO = new userDAO();
+
+        // Test 1: Đăng ký thành công
+        boolean result1 = userDAO.signUpUser("testuser1", "123456", "123456", "test1@example.com", "Test User 1");
+        System.out.println("Test 1 (Đăng ký thành công): " + (result1 ? "Thành công" : "Thất bại"));
+
+        // Test 2: Mật khẩu không khớp
+        boolean result2 = userDAO.signUpUser("testuser2", "abcdef", "123456", "test2@example.com", "Test User 2");
+        System.out.println("Test 2 (Mật khẩu không khớp): " + (result2 ? "Thành công" : "Thất bại"));
+
+        // Test 3: Trùng username
+        boolean result3 = userDAO.signUpUser("testuser1", "abcdef", "abcdef", "test3@example.com", "Test User 3");
+        System.out.println("Test 3 (Trùng username): " + (result3 ? "Thành công" : "Thất bại"));
+
+        // Test 4: Trùng email
+        boolean result4 = userDAO.signUpUser("testuser4", "abcdef", "abcdef", "test1@example.com", "Test User 4");
+        System.out.println("Test 4 (Trùng email): " + (result4 ? "Thành công" : "Thất bại"));
     }
 
 }

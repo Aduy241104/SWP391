@@ -4,16 +4,10 @@
  */
 package DAO;
 
-import java.util.List;
-import Model.Review;
-
 /**
  *
- * @author DUY
+ * @author NHATHCE181222
  */
-public class testDAO {
-    public static void main(String[] args) {
-        
-      
-    }
+class SQLException {
+    
 }
