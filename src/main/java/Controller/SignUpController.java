@@ -12,6 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -79,10 +82,14 @@ public class SignUpController extends HttpServlet {
 
         userDAO userDAO = new userDAO();
 
-        if (userDAO.isUsernameExists(username)) {
-            request.setAttribute("errorUsername", "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
-            request.getRequestDispatcher("signUp.jsp").forward(request, response);
-            return;
+        try {
+            if (userDAO.isUsernameExists(username)) {
+                request.setAttribute("errorUsername", "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+                request.getRequestDispatcher("signUp.jsp").forward(request, response);
+                return;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Kiểm tra email đã tồn tại chưa
@@ -107,13 +114,17 @@ public class SignUpController extends HttpServlet {
             return;
         }
 
-        // Nếu tất cả hợp lệ, tiến hành đăng ký
-        if (userDAO.signUpUser(username, password, confirmPassword, email, fullName)) {
-            request.setAttribute("message", "Đăng ký thành công!");
-            request.getRequestDispatcher("signIn.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Đăng ký thất bại! Kiểm tra lại thông tin.");
-            request.getRequestDispatcher("signUp.jsp").forward(request, response);
+        try {
+            // Nếu tất cả hợp lệ, tiến hành đăng ký
+            if (userDAO.signUpUser(username, password, confirmPassword, email, fullName)) {
+                request.setAttribute("message", "Đăng ký thành công!");
+                request.getRequestDispatcher("signIn.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Đăng ký thất bại! Kiểm tra lại thông tin.");
+                request.getRequestDispatcher("signUp.jsp").forward(request, response);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -23,57 +23,93 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
-            <a href="AdminManagerUser?action=user" class="active"><i class="fas fa-users"></i> Manage Users</a>
-            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
-        </div>
+        <style>
+            .product-actions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 300px;
+                
+            }
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+            .product-actions a, .product-actions button {
+                flex: 1;
+                max-width: 120px;
+                text-align: center;
+            }
+        </style>
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2><i class="fas fa-cogs"></i> Admin</h2>
+        <a href="AdminManagerUser?action=user" class="active"><i class="fas fa-users"></i> Manage Users</a>
+        <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
+        <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+        <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+        <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+    </div>
 
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-users"></i> Manage Users</h2>
-                <table class="table table-bordered table-hover mt-4">
-                    <tr class="table-dark">
-                        <th>User ID</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Full Name</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                <c:forEach var="user" items="${userList}">
-                    <tr>
-                        <td>${user.userId}</td>
-                        <td>${user.username}</td>
-                        <td>${user.email}</td>
-                        <td>${user.fullName}</td>
-                        <td>${user.role}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <a href="AdminManagerUsers?action=viewDetails&id=${user.userId}" class="btn btn-info btn-sm">
-                                    <i class="fas fa-eye"></i> View Details
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </table>
-            <div style="margin-bottom: 20px;" class="action-buttons-add">
-                <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-plus-circle"></i> Add New User
-                </a>
-                <a href="AdminManagerProducts?action=viewDelete" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-trash"></i> View Deleted User
-                </a>
-                <a href="AdminManagerUser?action=userForDashBoard" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-arrow-left"></i> Back to Admin Page
-                </a>
-            </div>
+    <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+
+        <div  class="main-content">
+            <h2 class="text-center"><i class="fas fa-users"></i> Manage Users</h2>
+            <table class="table table-bordered table-hover mt-4">
+                <tr class="table-dark">
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Action</th>
+                </tr>
+            <c:forEach var="user" items="${userList}">
+                <tr>
+                    <td>${user.userId}</td>
+                    <td>${user.username}</td>
+                    <td>${user.fullName}</td>
+                    <td>
+                        <div class="product-actions">
+                            <c:choose>
+                                <c:when test="${user.role eq 'Admin'}">
+                                    <button  style="padding: 5px 18px;" style="margin-left: 10px;" class="btn btn-secondary btn-sm" disabled>
+                                        <i class="fas fa-ban"></i> Disabled
+                                    </button>
+                                </c:when>
+                                <c:when test="${user.isActive eq true}">
+                                    <a style="padding: 5px 16px;" href="AdminManagerUser?action=banUser&id=${user.userId}" 
+                                       onclick="return confirm('Are you sure you want to ban this user?')" 
+                                       class="btn btn-danger btn-sm">
+                                        <i class="fas fa-ban"></i> Ban User
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="AdminManagerUser?action=unBanUser&id=${user.userId}" 
+                                       onclick="return confirm('Are you sure you want to unban this user?')" 
+                                       class="btn btn-success btn-sm">
+                                        <i class="fas fa-check"></i> Unban User
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                            <a href="AdminManagerUser?action=viewUserDetails&id=${user.userId}" class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i> View Detail
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </c:forEach>
+
+
+        </table>
+        <div style="margin-bottom: 20px;" class="action-buttons-add">
+            <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
+                <i class="fas fa-plus-circle"></i> Add New User
+            </a>
+            <a href="AdminManagerUser?action=viewBan" class="btn btn-custom btn-lg shadow">
+                <i class="fas fa-trash"></i> View Ban User
+            </a>
+            <a href="AdminManagerUser?action=userForDashBoard" class="btn btn-custom btn-lg shadow">
+                <i class="fas fa-arrow-left"></i> Back to Admin Page
+            </a>
         </div>
     </div>
 </body>

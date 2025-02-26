@@ -76,6 +76,7 @@ public class AdminManagerProducts extends HttpServlet {
         if (action.equals("product")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
+
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdmin.jsp").forward(request, response);
         } else if (action.equals("BackToAdminDashboard")) {
@@ -161,6 +162,28 @@ public class AdminManagerProducts extends HttpServlet {
                 request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
             } catch (Exception e) {
             }
+        } else if (action.equals("viewProductDetail")) {
+            String productID_raw = request.getParameter("id");
+            try {
+                int productID = Integer.parseInt(productID_raw);
+                ProductDAO productDao = new ProductDAO();
+                productDao.restoreProduct(productID);
+                Product product = productDao.getProductByID(productID);
+                request.setAttribute("product", product);
+                request.getRequestDispatcher("ManageProductForAdminViewDetails.jsp").forward(request, response);
+            } catch (Exception e) {
+            }
+        } else if (action.equals("managerStock")) {
+            ProductDAO pDao = new ProductDAO();
+            List<Product> productList = pDao.getProductList();
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
+        } else if (action.equals("managerStockError")) {
+            ProductDAO pDao = new ProductDAO();
+            List<Product> productList = pDao.getProductList();
+            request.setAttribute("error", "Export quantity cannot exceed stock quantity!");
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
         }
 
     }
@@ -180,7 +203,6 @@ public class AdminManagerProducts extends HttpServlet {
 
         try {
             if ("addProduct".equals(action)) {
-                // Lấy dữ liệu từ form
                 String productName = request.getParameter("productName");
                 String priceStr = request.getParameter("price");
                 String description = request.getParameter("description");
@@ -191,7 +213,6 @@ public class AdminManagerProducts extends HttpServlet {
                 String origin = request.getParameter("origin");
                 String weightStr = request.getParameter("weight");
                 String isActiveStr = request.getParameter("isActive");
-                // Xử lý file upload
                 Part filePart = request.getPart("image");
                 String fileName = filePart.getSubmittedFileName();
                 String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
@@ -202,14 +223,12 @@ public class AdminManagerProducts extends HttpServlet {
                 String imagePath = "uploads" + File.separator + fileName;
                 filePart.write(uploadPath + File.separator + fileName);
 
-                // Convert và validate dữ liệu
                 double price = (priceStr != null && !priceStr.trim().isEmpty()) ? Double.parseDouble(priceStr) : 0.0;
                 int stock = (stockStr != null && !stockStr.trim().isEmpty()) ? Integer.parseInt(stockStr) : 0;
                 int categoryID = (categoryIDStr != null && !categoryIDStr.trim().isEmpty()) ? Integer.parseInt(categoryIDStr) : 0;
                 double weight = (weightStr != null && !weightStr.trim().isEmpty()) ? Double.parseDouble(weightStr) : 0.0;
                 boolean isActive = (isActiveStr != null && !isActiveStr.trim().isEmpty()) ? Boolean.parseBoolean(isActiveStr) : false;
 
-                // Tạo đối tượng Product
                 ProductDAO productDao = new ProductDAO();
                 Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
                 productDao.addProduct(product);
@@ -217,7 +236,6 @@ public class AdminManagerProducts extends HttpServlet {
                 response.sendRedirect("AdminManagerProducts?action=product");
 
             } else if ("editProduct".equals(action)) {
-                // Lấy dữ liệu từ form
                 String productIDStr = request.getParameter("productID");
                 String productName = request.getParameter("productName");
                 String priceStr = request.getParameter("price");
@@ -230,10 +248,9 @@ public class AdminManagerProducts extends HttpServlet {
                 String weightStr = request.getParameter("weight");
                 String isActiveStr = request.getParameter("isActive");
 
-                // Xử lý file upload (nếu có ảnh mới)
                 Part filePart = request.getPart("image");
                 String imagePath;
-                if (filePart != null && filePart.getSize() > 0) { // Nếu có file mới upload
+                if (filePart != null && filePart.getSize() > 0) {
                     String fileName = filePart.getSubmittedFileName();
                     String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
                     File uploadDir = new File(uploadPath);
@@ -242,11 +259,10 @@ public class AdminManagerProducts extends HttpServlet {
                     }
                     imagePath = "uploads" + File.separator + fileName;
                     filePart.write(uploadPath + File.separator + fileName);
-                } else { // Giữ ảnh cũ nếu không upload ảnh mới
+                } else {
                     imagePath = request.getParameter("existingImage"); // Giả sử form gửi hidden field chứa đường dẫn ảnh cũ
                 }
 
-                // Convert và validate dữ liệu
                 int productID = Integer.parseInt(productIDStr);
                 double price = (priceStr != null && !priceStr.trim().isEmpty()) ? Double.parseDouble(priceStr) : 0.0;
                 int stock = (stockStr != null && !stockStr.trim().isEmpty()) ? Integer.parseInt(stockStr) : 0;
@@ -254,30 +270,75 @@ public class AdminManagerProducts extends HttpServlet {
                 double weight = (weightStr != null && !weightStr.trim().isEmpty()) ? Double.parseDouble(weightStr) : 0.0;
                 boolean isActive = (isActiveStr != null && !isActiveStr.trim().isEmpty()) ? Boolean.parseBoolean(isActiveStr) : false;
 
-                // Tạo đối tượng Product
                 ProductDAO productDao = new ProductDAO();
                 Product product = new Product(productID, productName, description, price, stock, imagePath, categoryID, null, isActive, size, ageRange, origin, weight);
                 productDao.updateProduct(product);
 
                 response.sendRedirect("AdminManagerProducts?action=product");
+            } else if (action.equals("Import")) {
+                int productId = Integer.parseInt(request.getParameter("id"));
+                int newStock = Integer.parseInt(request.getParameter("newStock"));
+                int stock = Integer.parseInt(request.getParameter("stock"));
+
+                ProductDAO productDAO = new ProductDAO();
+                newStock += stock;
+
+                boolean isUpdated = productDAO.updateStock(productId, newStock);
+
+                if (isUpdated) {
+                    response.sendRedirect("AdminManagerProducts?action=managerStock");
+                } else {
+                    request.setAttribute("error", "Failed to update stock. Please try again.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
+            } else if (action.equals("Export")) {
+                try {
+                    int productId = Integer.parseInt(request.getParameter("id"));
+                    int newStock = Integer.parseInt(request.getParameter("newStock"));
+                    int stock = Integer.parseInt(request.getParameter("stock"));
+
+                    // Kiểm tra số lượng tồn kho có đủ để xuất không
+                    if (newStock > stock) {
+                        response.sendRedirect("AdminManagerProducts?action=managerStockError");
+                        return; // Thêm return để dừng chương trình
+                    }
+
+                    stock -= newStock;
+
+                    ProductDAO productDAO = new ProductDAO();
+                    boolean isUpdated = productDAO.updateStock(productId, stock);
+                    if(stock == 0){
+                        productDAO.deleteProduct(productId);
+                    }
+                    if (isUpdated) {
+                        response.sendRedirect("AdminManagerProducts?action=managerStock");
+                    } else {
+                        request.setAttribute("error", "Failed to update stock. Please try again.");
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("error", "Invalid input format. Please check your data.");
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                } catch (Exception e) {
+                    request.setAttribute("error", "An error occurred: " + e.getMessage());
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                }
             }
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid input format. Please check your data.");
-            request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("error", "An error occurred: " + e.getMessage());
-            request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+        }catch(Exception e){
+            
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+            /**
+             * Returns a short description of the servlet.
+             *
+             * @return a String containing servlet description
+             */
+            @Override
+            public String getServletInfo
+            
+                () {
         return "Short description";
-    }// </editor-fold>
+            }// </editor-fold>
 
-}
+        }

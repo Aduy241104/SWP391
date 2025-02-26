@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author NHATHCE181222
  */
 public class User {
+
     private int userId;
     private String username;
     private String password;
@@ -18,6 +19,18 @@ public class User {
     private String fullName;
     private Date createAt;
     private String role; // Thêm thuộc tính role
+    private boolean isActive;
+
+    public User(int userId, String username, String password, String email, String fullName, Date createAt, String role, boolean isActive) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.fullName = fullName;
+        this.createAt = createAt;
+        this.role = role;
+        this.isActive = isActive;
+    }
 
     public User(int userId, String username, String password, String email, String fullName, Date createAt, String role) {
         this.userId = userId;
@@ -29,16 +42,9 @@ public class User {
         this.role = role;
     }
 
-    public User(int userId, String username, String password, String email, String fullName, Date createAt) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.fullName = fullName;
-        this.createAt = createAt;
-    }
 
     
+
     public User() {
     }
 
@@ -97,4 +103,13 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }

@@ -103,6 +103,7 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManagerProducts?action=product"  class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
@@ -112,7 +113,7 @@
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-plus-circle"></i> Update Product</h2>
 
-                <form action="AdminManagerProducts?action=editProduct" method="POST" class="form-container">
+                <form action="AdminManagerProducts?action=editProduct" method="POST" class="form-container" enctype="multipart/form-data">
                     <input type="hidden" name="productID" value="${product.productID}">
 
                 <div class="row">
@@ -177,7 +178,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Product Image URL:</label>
-                    <input type="text" class="form-control" name="image" value="${product.imageUrl}" required>
+                    <input type="file" class="form-control" name="image" value="${product.imageUrl}" required>
                 </div>
 
                 <div class="text-center">

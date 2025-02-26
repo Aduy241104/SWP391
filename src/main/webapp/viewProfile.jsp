@@ -63,11 +63,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Full Name</label>
-                                        <input name="fullName" type="text" class="form-control" value="${user.fullName}">
+                                        <input required name="fullName" type="text" class="form-control" value="${user.fullName}">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">E-mail</label>
-                                        <input name="email" type="text" class="form-control mb-1" value="${user.email}">
+                                        <input required name="email" type="text" class="form-control mb-1" value="${user.email}">
                                     </div>
 
                                 </div>

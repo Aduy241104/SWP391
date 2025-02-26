@@ -59,7 +59,22 @@
                 transform: scale(1.05);
                 text-decoration: none;
             }
+            .stock-input-form {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
 
+            .stock-input-form input[type="number"] {
+                width: 80px;
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            .stock-input-form button {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
 
         </style>
     </head>
@@ -69,6 +84,7 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
@@ -83,13 +99,8 @@
                         <th>Description</th>
                         <th>Price</th>
                         <th>Stock</th>
+
                         <th>Image</th>
-                        <th>Category</th>
-                        <th>Active</th>
-                        <th>Size</th>
-                        <th>Age Range</th>
-                        <th>Origin</th>
-                        <th>Weight</th>
                         <th>Action</th>
                     </tr>
                 <c:forEach var="product" items="${productList}">
@@ -110,16 +121,13 @@
                         </td>
 
                         <td>${product.price}</td>
-                        <td>${product.stock}</td>
-                        <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
-                        <td>${product.categoryID}</td>
-                        <td>${product.isActive ? "Yes" : "No"}</td>
-                        <td>${product.size}</td>
-                        <td>${product.ageRange}</td>
-                        <td>${product.origin}</td>
-                        <td>${product.weight} kg</td>
                         <td>
-                            <div class="action-buttons">
+                               ${product.stock}
+                        </td>
+
+                        <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
+                        <td>
+                            <div class="product-actions">
                                 <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
@@ -127,6 +135,9 @@
                                    onclick="return confirm('Are you sure you want to delete this product?')" 
                                    class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i> Delete
+                                </a>
+                                <a href="AdminManagerProducts?action=viewProductDetail&id=${product.productID}" class="btn btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> View Detail
                                 </a>
                             </div>
                         </td>

@@ -15,12 +15,14 @@ import java.util.List;
 public class TestDATA {
     public static void main(String[] args) {
       commentDAO cmd = new commentDAO();
-      List<Review> ls = cmd.filterRating(9, 5);
-      
-        for (Review l : ls) {
-            System.out.println(l.toString());
-            
-        }
+      Review review = new Review(9, 1, 4, "holaaa");
+      boolean check = cmd.addReview(review);
+      if(check) {
+          System.out.println("done");
+      }else{
+          System.out.println("fail");
+      }
+     
     }
     
 }

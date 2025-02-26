@@ -9,6 +9,7 @@ import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class userDAO {
 //    }
     public List<User> getAllUser() {
         List<User> userList = new ArrayList<>();
-        String query = "SELECT userID, username, password, email, fullName, createdAt FROM Users";
+        String query = "SELECT userID, username, password, email, fullName, createdAt, isActive FROM Users";
         String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
         String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
 
@@ -148,7 +149,8 @@ public class userDAO {
                         rs.getString("email"),
                         rs.getString("fullName"),
                         rs.getDate("createdAt"),
-                        role
+                        role,
+                        rs.getBoolean("isActive")
                 );
                 userList.add(user);
             }
@@ -181,6 +183,60 @@ public class userDAO {
         return null;
     }
 
+    // thaiv
+    public User getUserByIDHaveActive(int userId) {
+        User user = null;
+        String query = "SELECT userID, username, password, email, fullName, createdAt, isActive FROM Users WHERE userID = ?";
+        String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
+        String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String role = "Customer";
+
+                    // Kiểm tra nếu user này là Admin
+                    try ( PreparedStatement adminPs = connection.prepareStatement(adminQuery)) {
+                        adminPs.setInt(1, userId);
+                        try ( ResultSet adminRs = adminPs.executeQuery()) {
+                            if (adminRs.next()) {
+                                role = "Admin";
+                            }
+                        }
+                    }
+
+                    // Nếu không phải Admin, kiểm tra tiếp xem có phải Staff không
+                    if (role.equals("Customer")) {
+                        try ( PreparedStatement staffPs = connection.prepareStatement(staffQuery)) {
+                            staffPs.setInt(1, userId);
+                            try ( ResultSet staffRs = staffPs.executeQuery()) {
+                                if (staffRs.next()) {
+                                    role = "Staff";
+                                }
+                            }
+                        }
+                    }
+
+                    // Tạo đối tượng User từ dữ liệu lấy được
+                    user = new User(
+                            rs.getInt("userID"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            role,
+                            rs.getBoolean("isActive") // Lấy trạng thái isActive từ DB
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public boolean updateUser(int userId, String fullName, String email) {
         String query = "UPDATE Users SET fullName = ?, email = ? WHERE userID = ?";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
@@ -194,6 +250,7 @@ public class userDAO {
         return false;
     }
 
+    // thaiv
     public boolean changePassword(int userId, String oldPassword, String newPassword) {
         String checkQuery = "SELECT * FROM Users WHERE userID = ? AND password = ?";
         String updateQuery = "UPDATE Users SET password = ? WHERE userID = ?";
@@ -235,14 +292,24 @@ public class userDAO {
     }
 
     // Kiểm tra username đã tồn tại chưa
-    public boolean isUsernameExists(String username) {
+    public boolean isUsernameExists(String username) throws SQLException {
         String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1) > 0; // Trả về true nếu username đã tồn tại
             }
+        }
+         return false;
+    }
+
+    // thaiv
+    public boolean banUser(int userId) {
+        String query = "UPDATE Users SET isActive = 0 WHERE userID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -252,7 +319,7 @@ public class userDAO {
     // Kiểm tra email đã tồn tại chưa
     public boolean isEmailExists(String email) {
         String query = "SELECT COUNT(*) FROM Users WHERE email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -265,7 +332,7 @@ public class userDAO {
     }
 
     // Đăng ký tài khoản
-    public boolean signUpUser(String username, String password, String confirmPassword, String email, String fullName) {
+    public boolean signUpUser(String username, String password, String confirmPassword, String email, String fullName) throws SQLException {
         if (!password.equals(confirmPassword)) {
             System.out.println("Mật khẩu nhập lại không khớp.");
             return false;
@@ -282,7 +349,7 @@ public class userDAO {
         }
 
         String insertQuery = "INSERT INTO Users (username, password, email, fullName, createdAt) VALUES (?, ?, ?, ?, GETDATE())";
-        try (PreparedStatement ps = connection.prepareStatement(insertQuery)) {
+        try ( PreparedStatement ps = connection.prepareStatement(insertQuery)) {
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, email);
@@ -293,29 +360,140 @@ public class userDAO {
         }
         return false;
     }
-    
-    
-    
-    
 
-    public static void main(String[] args) {
-        userDAO userDAO = new userDAO();
 
-        // Test 1: Đăng ký thành công
-        boolean result1 = userDAO.signUpUser("testuser1", "123456", "123456", "test1@example.com", "Test User 1");
-        System.out.println("Test 1 (Đăng ký thành công): " + (result1 ? "Thành công" : "Thất bại"));
 
-        // Test 2: Mật khẩu không khớp
-        boolean result2 = userDAO.signUpUser("testuser2", "abcdef", "123456", "test2@example.com", "Test User 2");
-        System.out.println("Test 2 (Mật khẩu không khớp): " + (result2 ? "Thành công" : "Thất bại"));
-
-        // Test 3: Trùng username
-        boolean result3 = userDAO.signUpUser("testuser1", "abcdef", "abcdef", "test3@example.com", "Test User 3");
-        System.out.println("Test 3 (Trùng username): " + (result3 ? "Thành công" : "Thất bại"));
-
-        // Test 4: Trùng email
-        boolean result4 = userDAO.signUpUser("testuser4", "abcdef", "abcdef", "test1@example.com", "Test User 4");
-        System.out.println("Test 4 (Trùng email): " + (result4 ? "Thành công" : "Thất bại"));
+    public boolean unBanUser(int userId) {
+        String query = "UPDATE Users SET isActive = 1 WHERE userID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
+    // thaiv
+    public boolean isUserActive(int userId) {
+        String query = "SELECT isActive FROM Users WHERE userID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("isActive");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //thaiv
+    public List<User> getBannedUsers() {
+        List<User> bannedUsers = new ArrayList<>();
+        String query = "SELECT userID, username, password, email, fullName, createdAt FROM Users WHERE isActive = 0";
+
+        try ( PreparedStatement ps = connection.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("userID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("fullName"),
+                        rs.getDate("createdAt"),
+                        "Customer",
+                        false // isActive = false
+                );
+                bannedUsers.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bannedUsers;
+    }
+
+    // thaiv
+    public List<User> searchUser(String keyword) {
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT userID, username, password, email, fullName, createdAt, isActive FROM Users "
+                + "WHERE (username LIKE ? OR email LIKE ? OR fullName LIKE ?) "; // Chỉ tìm kiếm người dùng đang active (có thể thay đổi nếu muốn bao gồm cả banned)
+        String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
+        String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int userId = rs.getInt("userID");
+                    String role = "Customer";
+
+                    // Kiểm tra nếu user này là Admin
+                    try ( PreparedStatement adminPs = connection.prepareStatement(adminQuery)) {
+                        adminPs.setInt(1, userId);
+                        try ( ResultSet adminRs = adminPs.executeQuery()) {
+                            if (adminRs.next()) {
+                                role = "Admin";
+                            }
+                        }
+                    }
+
+                    // Nếu không phải Admin, kiểm tra tiếp xem có phải Staff không
+                    if (role.equals("Customer")) {
+                        try ( PreparedStatement staffPs = connection.prepareStatement(staffQuery)) {
+                            staffPs.setInt(1, userId);
+                            try ( ResultSet staffRs = staffPs.executeQuery()) {
+                                if (staffRs.next()) {
+                                    role = "Staff";
+                                }
+                            }
+                        }
+                    }
+
+                    User user = new User(
+                            rs.getInt("userID"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            role,
+                            rs.getBoolean("isActive")
+                    );
+                    userList.add(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    public static void main(String[] args) {
+        userDAO userDao = new userDAO();
+
+        String keyword = "john";
+        List<User> searchResults = userDao.searchUser(keyword);
+
+        if (searchResults != null && !searchResults.isEmpty()) {
+            System.out.println("Search results for keyword: " + keyword);
+            for (User user : searchResults) {
+                System.out.println("User ID: " + user.getUserId());
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Email: " + user.getEmail());
+                System.out.println("Full Name: " + user.getFullName());
+                System.out.println("Role: " + user.getRole());
+                System.out.println("Is Active: " + user.isIsActive());
+                System.out.println("-------------------");
+            }
+        } else {
+            System.out.println("No users found for keyword: " + keyword);
+        }
+    }
 }
