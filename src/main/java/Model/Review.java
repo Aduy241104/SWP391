@@ -11,12 +11,12 @@ import java.sql.Date;
  * @author DUY
  */
 public class Review {
-      private int reviewID;
+    private int reviewID;
     private int productID;
-    private String username;  // 🔹 Đổi từ `userName` sang `username`
+    private String username;  
     private int userID;
     private int rating;
-    private String reviewText;  // 🔹 Đổi từ `comment` sang `reviewText`
+    private String reviewText;
     private Date createdAt;
 
     public Review() {
@@ -31,6 +31,15 @@ public class Review {
         this.reviewText = reviewText;
         this.createdAt = createdAt;
     }
+
+    public Review(int productID, int userID, int rating, String reviewText) {
+        this.productID = productID;
+        this.userID = userID;
+        this.rating = rating;
+        this.reviewText = reviewText;
+    }
+    
+    
 
     public int getReviewID() {
         return reviewID;
