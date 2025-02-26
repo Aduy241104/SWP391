@@ -103,25 +103,108 @@
                 color: rgb(214, 197, 6);
             }
 
-            .actives{
-                background-color: pink !important;
+            .layout-5{
+                background-color: rgba(252, 163, 191, 0.3);
+                border-radius: 7px;
             }
 
-            .customize {
-                padding: 12px 50px;
-                border-radius: 18px;
-                font-size: 17px;
-                border: none;
-                font-weight: 600;
+            .menu-comment{
+                position: relative;
+
+            }
+            .fa-ellipsis{
+                position: absolute;
+                right: 7px;
             }
 
-            .customize:first-child {
-                background-color: rgb(237, 17, 100);
+            .menu-place{
+                width: 120px;
+                height: 70px;
+                background-color: pink;
+                position: absolute;
+                right: 0;
+                display: flex;
+                flex-direction: column;
+                padding-left: 10px;
+                padding-top: 5px;
+                top: 19px;
+                display: none;
             }
 
-            .customize:last-child {
-                border: 2px solid rgb(237, 17, 100);
-                color: rgb(237, 17, 100);
+            .menu-place i {
+                font-size: 10px;
+            }
+
+            .menu-place::before{
+                width: 10px;
+                height: 40px;
+                content: "";
+                top: -32px;
+                right: 0;
+                position: absolute;
+                border: 15px solid;
+                border-color: transparent transparent pink transparent;
+
+
+            }
+
+            .mnx:hover .menu-place{
+                display: block;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .modal-header {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            /* Footer modal */
+            .modal-footer {
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .modals-content {
+                background-color: white;
+                margin: 15% auto;
+                padding: 20px;
+                border-radius: 10px;
+                width: 300px;
+                text-align: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .modal-header {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            .modal-footer {
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
             }
         </style>
     </head>
@@ -166,7 +249,6 @@
                                     <td>${product.weight}g</td>
                                 </tr>
                             </tbody>
-
                         </table>
                     </div>
                 </div>
@@ -202,37 +284,34 @@
                         </a>
                     </div>          
                 </c:forEach>
-
-
-
-
             </div>
         </div>
 
-
-                    <div style="margin-top: 40px;" class="container" id="reviews">
+        <div style="margin-top: 40px;" class="container" id="reviews">
             <h2 class="mb-4">Reviews Of Product #${requestScope.productID}</h2>
 
             <!-- Comment Form -->
-            <form class="card layout-4 p-3 mb-4">
-                <h4>Write Your Comment</h4>
-                <input type="hidden" class="form-control" placeholder="Enter your name">
-                <div style="margin-top: 15px;" class="mb-3">
-                    <label class="form-label">Rating</label>
-                    <select class="form-select">
-                        <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
-                        <option value="4">⭐⭐⭐⭐ - Good</option>
-                        <option value="3">⭐⭐⭐ - Average</option>
-                        <option value="2">⭐⭐ - Poor</option>
-                        <option value="1">⭐ - Very Bad</option>
-                    </select>
-                </div>
-                <div style="margin-top: 20px;" class="mb-3">
-                    <label class="form-label">Comment</label>
-                    <textarea class="form-control" rows="3" placeholder="Enter your comment"></textarea>
-                </div>
-                <button class="btn btn-primary custome">Submit Comment</button>
-            </form>
+            <c:if test="${not empty sessionScope.user}">
+                <form action="AddReview" method="POST" class="card layout-4 p-3 mb-4">
+                    <h4>Write Your Comment</h4>
+                    <input type="hidden" name="productID" class="form-control"value="${requestScope.productID}">
+                    <div style="margin-top: 15px;" class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <select name="rating" class="form-select">
+                            <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ - Good</option>
+                            <option value="3">⭐⭐⭐ - Average</option>
+                            <option value="2">⭐⭐ - Poor</option>
+                            <option value="1">⭐ - Very Bad</option>
+                        </select>
+                    </div>
+                    <div style="margin-top: 20px;" class="mb-3">
+                        <label class="form-label">Comment</label>
+                        <textarea name="reviewText" class="form-control" rows="3" placeholder="Enter your comment"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary custome">Submit Comment</button>
+                </form>
+            </c:if>
 
             <!-- Filter Rating Section -->
             <div class="row filter-rating">
@@ -254,36 +333,65 @@
                 </div>
             </div>
 
-
             <!-- Comment List -->
             <div class="card layout-3">
                 <h3 class="mb-3">Comments (${requestScope.listReview.size()})</h3>
                 <c:forEach var="r" items="${requestScope.listReview}">
                     <div class="border-bottom mb-2">
-                        <strong><i style="margin-right: 9px;" class="avt">D</i> 
+                        <div class="menu-comment">
+                            <strong><i style="margin-right: 9px;" class="avt">D</i> 
+
+                                <c:if test="${sessionScope.user.userId == r.userID}">
+                                    You
+                                </c:if>
+                                <c:if test="${sessionScope.user.userId != r.userID}">
+                                    ${r.username}
+                                </c:if>
+                            </strong> 
                             <c:if test="${sessionScope.user.userId == r.userID}">
-                                You
+                                <i class="fa-solid fa-ellipsis"></i>
+                                <div class="mnx">
+                                    <div style="width: 60px; height: 40px; right: 0; position: absolute; top: 0;">
+
+                                    </div>
+                                    <div class="menu-place">
+                                        <section>
+                                            <button value="${r.reviewID}"  id="openModal" style="border: none; background-color: pink;">Delete</button>
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </section>
+                                        <section>
+                                            <button style="border: none; background-color: pink;">Edit</button>
+                                            <i class="fa-solid fa-pen"></i>
+                                        </section> 
+                                    </div>
+                                </div>
                             </c:if>
-                            <c:if test="${sessionScope.user.userId != r.userID}">
-                                ${r.username}
-                            </c:if>
-                        </strong> 
+
+                        </div>
                         <div style="display: flex; flex-direction: column; margin-left: 43px;">
                             <span style="font-size: 11px;">${r.createdAt}</span>
                             <span style="margin: 3px 0px;" class="text-warning"> <c:forEach begin="1" end="${r.rating}" var="i">
                                     <i class="fa-solid fa-star"></i>
-
                                 </c:forEach>
                             </span>
-
-
                             <p style="margin-top: 16px;">${r.reviewText}</p>
                         </div>
 
                     </div>
                 </c:forEach>
+            </div>
+        </div>
 
-
+        <div id="confirmModal" class="modal">
+            <div class="modals-content">
+                <div class="modal-header">Confirm Action</div>
+                <div id="ulck" class="modal-body">Are you sure you want to Delete this review?</div>
+                <form action="DeleteReview" method="POST"  class="modal-footer">
+                    <input type="hidden" id="id" name="productID" value="${requestScope.productID}">
+                    <input type="hidden" id="inputHidden" name="reviewID">
+                    <button class="btn btn-secondary" id="cancelBtn">No</button>
+                    <button type="submit" class="btn btn-danger" id="confirmDelete">Yes, Delete</button>
+                </form>
             </div>
         </div>
 
@@ -291,16 +399,14 @@
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
 
-
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-            // Khôi phục vị trí cuộn từ localStorage (nếu có)
+                // Khôi phục vị trí cuộn từ localStorage (nếu có)
                 if (localStorage.getItem("scrollPosition")) {
                     window.scrollTo(0, localStorage.getItem("scrollPosition"));
                 }
 
-               // Bắt sự kiện click vào các link filter
+                // Bắt sự kiện click vào các link filter
                 document.querySelectorAll(".filter-link").forEach(link => {
                     link.addEventListener("click", function (e) {
                         e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
@@ -323,6 +429,46 @@
                 let element = document.getElementById("reviews"); // Thay "reviews" bằng ID của phần tử bạn muốn cuộn đến
                 if (element) {
                     element.scrollIntoView({behavior: "smooth"}); // Cuộn mượt xuống phần tử
+                }
+            });
+
+        </script>
+
+        <script>
+
+
+            const modal = document.getElementById("confirmModal");
+            const cancelBtn = document.getElementById("cancelBtn");
+            const confirmBtn = document.getElementById("confirmDelete");
+            const kj = document.getElementById("ulck");
+            const inputHid = document.getElementById("inputHidden");
+
+// Lấy tất cả các nút "Delete"
+            const openModalBtns = document.querySelectorAll("#openModal");
+
+// Gán sự kiện click cho từng nút "Delete"
+            openModalBtns.forEach((btn) => {
+                btn.addEventListener("click", function () {
+                    modal.style.display = "block";
+                    inputHid.value = this.value;
+                });
+            });
+
+// Đóng modal khi nhấn Hủy
+            cancelBtn.addEventListener("click", function () {
+                modal.style.display = "none";
+
+            });
+
+// Xác nhận xóa
+            confirmBtn.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+// Đóng modal khi click ra ngoài
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
                 }
             });
 

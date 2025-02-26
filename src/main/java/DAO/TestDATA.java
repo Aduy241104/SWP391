@@ -15,12 +15,14 @@ import java.util.List;
 public class TestDATA {
     public static void main(String[] args) {
       commentDAO cmd = new commentDAO();
-      boolean check = cmd.deleteReviewByID(2);
+      Review review = new Review(9, 1, 4, "holaaa");
+      boolean check = cmd.addReview(review);
       if(check) {
-          System.out.println("delete done");
+          System.out.println("done");
       }else{
-          System.out.println("delete fail");
+          System.out.println("fail");
       }
+     
     }
     
 }

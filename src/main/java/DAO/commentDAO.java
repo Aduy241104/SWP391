@@ -125,5 +125,29 @@ public class commentDAO {
         }
         return false;
     }
+    
+    
+    public boolean addReview(Review review) {
+        String query = "Insert Into ProductReviews (productID, userID, rating, reviewText)"
+                      + "values (?,?,?,?)";
+        
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, review.getProductID());
+            preparedStatement.setInt(2, review.getUserID());
+            preparedStatement.setInt(3, review.getRating());
+            preparedStatement.setString(4, review.getReviewText());
+            
+            int rowEffect = preparedStatement.executeUpdate();
+            if(rowEffect > 0) {
+                return true;
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 
 }

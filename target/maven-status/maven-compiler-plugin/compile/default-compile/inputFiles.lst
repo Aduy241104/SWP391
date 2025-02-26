@@ -1,38 +1,40 @@
-D:\New Projects\New Projects\SWP391\src\main\java\Model\Cart.java
-D:\New Projects\New Projects\SWP391\src\main\java\Filters\LoginFilter.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\changePasswordController.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\CartDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\OrderDetailDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\TestDATA.java
-D:\New Projects\New Projects\SWP391\src\main\java\Model\Category.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\FilterRatingController.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\orderDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\Model\Review.java
-D:\New Projects\New Projects\SWP391\src\main\java\Utils\DBContext.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\ViewFeedbackController.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\ProductDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\Model\OrderDetail.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\ViewProductDetailController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\viewProfileController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Model\Orders.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\ViewCartController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\editProfileController.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\ReviewDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\AdminManager_Search.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\ViewOrderListController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Model\Product.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\LoginController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\AddToCartController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\AdminManagerProducts.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\CategoryDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\LogoutController.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\commentDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\userDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\OrdersDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\Model\User.java
-D:\New Projects\New Projects\SWP391\src\main\java\DAO\testDAO.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\EditCartController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\ViewProductListController.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\AdminManagerOrders.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\AdminManagerUser.java
-D:\New Projects\New Projects\SWP391\src\main\java\Controller\SearchProductController.java
+C:\New folder\SWP391\src\main\java\Controller\editProfileController.java
+C:\New folder\SWP391\src\main\java\DAO\ReviewDAO.java
+C:\New folder\SWP391\src\main\java\Model\OrderDetail.java
+C:\New folder\SWP391\src\main\java\Utils\DBContext.java
+C:\New folder\SWP391\src\main\java\Controller\FilterRatingController.java
+C:\New folder\SWP391\src\main\java\DAO\OrderDetailDAO.java
+C:\New folder\SWP391\src\main\java\Controller\AdminManagerUser.java
+C:\New folder\SWP391\src\main\java\Controller\ViewOrderListController.java
+C:\New folder\SWP391\src\main\java\Filters\LoginFilter.java
+C:\New folder\SWP391\src\main\java\Controller\ViewProductListController.java
+C:\New folder\SWP391\src\main\java\Controller\LoginController.java
+C:\New folder\SWP391\src\main\java\Controller\ViewProductDetailController.java
+C:\New folder\SWP391\src\main\java\Controller\viewProfileController.java
+C:\New folder\SWP391\src\main\java\Model\Review.java
+C:\New folder\SWP391\src\main\java\Controller\SearchProductController.java
+C:\New folder\SWP391\src\main\java\Controller\ViewCartController.java
+C:\New folder\SWP391\src\main\java\Controller\LogoutController.java
+C:\New folder\SWP391\src\main\java\DAO\testDAO.java
+C:\New folder\SWP391\src\main\java\Controller\DeleteReviewContronller.java
+C:\New folder\SWP391\src\main\java\Controller\AdminManager_Search.java
+C:\New folder\SWP391\src\main\java\Controller\changePasswordController.java
+C:\New folder\SWP391\src\main\java\DAO\TestDATA.java
+C:\New folder\SWP391\src\main\java\DAO\orderDAO.java
+C:\New folder\SWP391\src\main\java\DAO\commentDAO.java
+C:\New folder\SWP391\src\main\java\Controller\AddToCartController.java
+C:\New folder\SWP391\src\main\java\Controller\EditCartController.java
+C:\New folder\SWP391\src\main\java\Controller\AdminManagerOrders.java
+C:\New folder\SWP391\src\main\java\Model\Cart.java
+C:\New folder\SWP391\src\main\java\Model\Category.java
+C:\New folder\SWP391\src\main\java\Controller\ViewFeedbackController.java
+C:\New folder\SWP391\src\main\java\DAO\CartDAO.java
+C:\New folder\SWP391\src\main\java\DAO\OrdersDAO.java
+C:\New folder\SWP391\src\main\java\Model\Product.java
+C:\New folder\SWP391\src\main\java\Controller\AddReviewController.java
+C:\New folder\SWP391\src\main\java\DAO\CategoryDAO.java
+C:\New folder\SWP391\src\main\java\Controller\AdminManagerProducts.java
+C:\New folder\SWP391\src\main\java\DAO\userDAO.java
+C:\New folder\SWP391\src\main\java\Model\Orders.java
+C:\New folder\SWP391\src\main\java\DAO\ProductDAO.java
+C:\New folder\SWP391\src\main\java\Model\User.java
