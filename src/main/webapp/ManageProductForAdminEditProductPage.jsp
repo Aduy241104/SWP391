@@ -112,7 +112,7 @@
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-plus-circle"></i> Update Product</h2>
 
-                <form action="AdminManagerProducts?action=editProduct" method="POST" class="form-container">
+                <form action="AdminManagerProducts?action=editProduct" method="POST" class="form-container" enctype="multipart/form-data">
                     <input type="hidden" name="productID" value="${product.productID}">
 
                 <div class="row">
@@ -177,7 +177,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Product Image URL:</label>
-                    <input type="text" class="form-control" name="image" value="${product.imageUrl}" required>
+                    <input type="file" class="form-control" name="image" value="${product.imageUrl}" required>
                 </div>
 
                 <div class="text-center">

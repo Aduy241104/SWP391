@@ -60,7 +60,32 @@
                 text-decoration: none;
             }
 
-
+            .product-actions {
+                display: grid;
+                grid-template-rows: auto auto;
+                grid-template-columns: auto;
+                gap: 5px;
+                width: 100%;
+                justify-items: center;
+            }
+            .product-actions a {
+                padding: 8px 12px;
+                font-size: 14px;
+                border-radius: 5px;
+                text-decoration: none;
+                width: 100%;
+                text-align: center;
+            }
+            .product-actions a:nth-child(1),
+            .product-actions a:nth-child(2) {
+                grid-row: 1;
+                grid-column: span 1;
+            }
+            .product-actions a:nth-child(3) {
+                grid-row: 2;
+                grid-column: 1 / span 2;
+                justify-self: center;
+            }
         </style>
     </head>
     <body>
@@ -119,7 +144,7 @@
                         <td>${product.origin}</td>
                         <td>${product.weight} kg</td>
                         <td>
-                            <div class="action-buttons">
+                            <div class="product-actions">
                                 <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
@@ -127,6 +152,9 @@
                                    onclick="return confirm('Are you sure you want to delete this product?')" 
                                    class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i> Delete
+                                </a>
+                                <a href="AdminManagerProducts?action=viewProductDetail&id=${product.productID}" class="btn btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> View Detail
                                 </a>
                             </div>
                         </td>

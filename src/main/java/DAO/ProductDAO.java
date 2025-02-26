@@ -285,5 +285,29 @@ public class ProductDAO {
         return false;
     }
 
+    public static void main(String[] args) {
+        ProductDAO productDAO = new ProductDAO();
 
+        // Tạo một sản phẩm để update
+        Product product = new Product();
+        product.setProductID(21); // ID của sản phẩm cần update
+        product.setProductName("New Toy Name");
+        product.setDescription("Updated description for the toy");
+        product.setPrice(29.99);
+        product.setStock(50);
+        product.setImageUrl("https://example.com/new-image.jpg");
+        product.setCategoryID(1);
+        product.setSize("Medium");
+        product.setAgeRange("3-5 years");
+        product.setOrigin("China");
+        product.setWeight(0.5);
+
+        // Gọi method update
+        boolean isUpdated = productDAO.updateProduct(product);
+        if (isUpdated) {
+            System.out.println("Product updated successfully!");
+        } else {
+            System.out.println("Failed to update product.");
+        }
+    }
 }
