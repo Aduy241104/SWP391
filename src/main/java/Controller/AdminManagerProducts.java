@@ -76,6 +76,7 @@ public class AdminManagerProducts extends HttpServlet {
         if (action.equals("product")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
+
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdmin.jsp").forward(request, response);
         } else if (action.equals("BackToAdminDashboard")) {
@@ -172,6 +173,17 @@ public class AdminManagerProducts extends HttpServlet {
                 request.getRequestDispatcher("ManageProductForAdminViewDetails.jsp").forward(request, response);
             } catch (Exception e) {
             }
+        } else if (action.equals("managerStock")) {
+            ProductDAO pDao = new ProductDAO();
+            List<Product> productList = pDao.getProductList();
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
+        } else if (action.equals("managerStockError")) {
+            ProductDAO pDao = new ProductDAO();
+            List<Product> productList = pDao.getProductList();
+            request.setAttribute("error", "Export quantity cannot exceed stock quantity!");
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
         }
 
     }
@@ -263,50 +275,70 @@ public class AdminManagerProducts extends HttpServlet {
                 productDao.updateProduct(product);
 
                 response.sendRedirect("AdminManagerProducts?action=product");
-            } else if (action.equals("updateStock")) {
+            } else if (action.equals("Import")) {
                 int productId = Integer.parseInt(request.getParameter("id"));
-                int newStock = Integer.parseInt(request.getParameter("stock"));
+                int newStock = Integer.parseInt(request.getParameter("newStock"));
+                int stock = Integer.parseInt(request.getParameter("stock"));
 
                 ProductDAO productDAO = new ProductDAO();
+                newStock += stock;
+
                 boolean isUpdated = productDAO.updateStock(productId, newStock);
 
                 if (isUpdated) {
-                    response.sendRedirect("AdminManagerProducts?action=product");
+                    response.sendRedirect("AdminManagerProducts?action=managerStock");
                 } else {
                     request.setAttribute("error", "Failed to update stock. Please try again.");
                     request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
-            } else if (action.equals("updateStockDetails")) {
-                int productId = Integer.parseInt(request.getParameter("id"));
-                int newStock = Integer.parseInt(request.getParameter("stock"));
+            } else if (action.equals("Export")) {
+                try {
+                    int productId = Integer.parseInt(request.getParameter("id"));
+                    int newStock = Integer.parseInt(request.getParameter("newStock"));
+                    int stock = Integer.parseInt(request.getParameter("stock"));
 
-                ProductDAO productDAO = new ProductDAO();
-                boolean isUpdated = productDAO.updateStock(productId, newStock);
+                    // Kiểm tra số lượng tồn kho có đủ để xuất không
+                    if (newStock > stock) {
+                        response.sendRedirect("AdminManagerProducts?action=managerStockError");
+                        return; // Thêm return để dừng chương trình
+                    }
 
-                if (isUpdated) {
-                    response.sendRedirect("AdminManagerProducts?action=viewProductDetail&id="+ productId);
-                } else {
-                    request.setAttribute("error", "Failed to update stock. Please try again.");
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    stock -= newStock;
+
+                    ProductDAO productDAO = new ProductDAO();
+                    boolean isUpdated = productDAO.updateStock(productId, stock);
+                    if(stock == 0){
+                        productDAO.deleteProduct(productId);
+                    }
+                    if (isUpdated) {
+                        response.sendRedirect("AdminManagerProducts?action=managerStock");
+                    } else {
+                        request.setAttribute("error", "Failed to update stock. Please try again.");
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("error", "Invalid input format. Please check your data.");
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                } catch (Exception e) {
+                    request.setAttribute("error", "An error occurred: " + e.getMessage());
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
                 }
             }
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid input format. Please check your data.");
-            request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("error", "An error occurred: " + e.getMessage());
-            request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+        }catch(Exception e){
+            
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+            /**
+             * Returns a short description of the servlet.
+             *
+             * @return a String containing servlet description
+             */
+            @Override
+            public String getServletInfo
+            
+                () {
         return "Short description";
-    }// </editor-fold>
+            }// </editor-fold>
 
-}
+        }

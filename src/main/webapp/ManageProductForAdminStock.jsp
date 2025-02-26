@@ -82,9 +82,9 @@
         <div class="sidebar">
             <h2><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
-            <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=managerStock" class="active"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
@@ -96,61 +96,37 @@
                     <tr class="table-dark">
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Description</th>
-                        <th>Price</th>
                         <th>Stock</th>
-
-                        <th>Image</th>
                         <th>Action</th>
                     </tr>
+                    <h2 style="text-align: center; color: red;">${requestScope.error}</h2>
                 <c:forEach var="product" items="${productList}">
                     <tr>
                         <td>${product.productID}</td>
                         <td>${product.productName}</td>
-                        <td class="description">
-                            <c:choose>
-                                <c:when test="${fn:length(product.description) > 20}">
-                                    <span class="short-text">${fn:substring(product.description, 0, 100)}...</span>
-                                    <span class="full-text" style="display: none;">${product.description}</span>
-                                    <button class="toggle-btn btn btn-sm btn-link">See more...</button>
-                                </c:when>
-                                <c:otherwise>
-                                    ${product.description}
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-
-                        <td>${product.price}</td>
+                        <td>${product.stock}</td>
                         <td>
-                               ${product.stock}
-                        </td>
-
-                        <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
-                        <td>
-                            <div class="product-actions">
-                                <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a href="AdminManagerProducts?action=delete&id=${product.productID}" 
-                                   onclick="return confirm('Are you sure you want to delete this product?')" 
-                                   class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Delete
-                                </a>
-                                <a href="AdminManagerProducts?action=viewProductDetail&id=${product.productID}" class="btn btn btn-info btn-sm">
-                                    <i class="fas fa-eye"></i> View Detail
-                                </a>
-                            </div>
+                            <form action="AdminManagerProducts?action=Import" method="POST"  class="stock-input-form">
+                                <input type="hidden" name="id" value="${product.productID}">
+                                <input type="hidden" name="stock" value="${product.stock}">
+                                <input type="number" name="newStock"  min="0" style="width: 80px; padding: 5px;" required>
+                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
+                                    Import
+                                </button>
+                            </form>
+                            <form action="AdminManagerProducts?action=Export" method="POST"  class="stock-input-form">
+                                <input type="hidden" name="id" value="${product.productID}">
+                                <input type="hidden" name="stock" value="${product.stock}">
+                                <input type="number" name="newStock"  min="0" style="width: 80px; padding: 5px;" required>
+                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
+                                    Export 
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
             <div style="margin-bottom: 20px;" class="action-buttons-add">
-                <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-plus-circle"></i> Add New Product
-                </a>
-                <a href="AdminManagerProducts?action=viewDelete" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-trash"></i> View Deleted Products
-                </a>
                 <a href="AdminManagerProducts?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>

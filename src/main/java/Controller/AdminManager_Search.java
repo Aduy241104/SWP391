@@ -66,46 +66,39 @@ public class AdminManager_Search extends HttpServlet {
         String query = request.getParameter("query");
         System.out.println("Query: " + query); // Kiểm tra query đầu vào
 
-        if (query == null || query.trim().equals("")) {
+        if (query == null || query.trim().isEmpty()) {
             request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
             return;
         }
 
         ProductDAO productDao = new ProductDAO();
         OrdersDAO ordersDao = new OrdersDAO();
-        userDAO userDao = new userDAO(); // Thêm userDAO để tìm kiếm người dùng
+        userDAO userDao = new userDAO(); 
 
         List<Product> productList = new ArrayList<>();
         List<Orders> ordersList = new ArrayList<>();
-        List<User> userList = new ArrayList<>(); // Thêm danh sách người dùng
+        List<User> userList = new ArrayList<>();
 
-        int userId = -1;
-        int orderId = -1;
+        boolean isNumber = query.matches("\\d+"); 
 
-        if (query != null && query.contains("+")) {
-            // Nếu có dấu + thì tìm đơn hàng
-            String[] parts = query.split("\\+");
-            if (parts.length == 2) {
-                try {
-                    userId = Integer.parseInt(parts[0].trim());
-                    orderId = Integer.parseInt(parts[1].trim());
-                    System.out.println("Searching Orders - User ID: " + userId + ", Order ID: " + orderId);
-                    ordersList = ordersDao.searchOrder(userId, orderId);
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid number format for User ID or Order ID!");
-                }
+        if (isNumber) {
+            try {
+                int orderId = Integer.parseInt(query);
+                System.out.println("Searching Orders for ID: " + orderId);
+                ordersList = ordersDao.searchOrder(orderId);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format for Order ID!");
             }
         } else {
-            // Nếu không có dấu + thì tìm sản phẩm và người dùng
             System.out.println("Searching Products and Users for: " + query);
             productList = productDao.searchProduct(query);
-            userList = userDao.searchUser(query); // Gọi hàm searchUser để tìm người dùng
+            userList = userDao.searchUser(query);
         }
 
         // Gửi dữ liệu đến JSP
         request.setAttribute("productList", productList);
         request.setAttribute("orderList", ordersList);
-        request.setAttribute("userList", userList); // Thêm danh sách người dùng vào request
+        request.setAttribute("userList", userList);
         request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
     }
 

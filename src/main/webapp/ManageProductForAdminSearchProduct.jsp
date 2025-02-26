@@ -112,6 +112,7 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+           <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
 
@@ -255,11 +256,7 @@
 
             <c:otherwise>
                 <div class="center-container">
-                    <h1 class="mess">No results found!</h1>
-                    <div class="message-box">
-                        <p>You can search for orders by entering OrderID and UserID like this:</p>
-                        <p class="example">EX: "1+1"</p>
-                    </div>
+                    <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
                 </div>
             </c:otherwise>
         </c:choose>

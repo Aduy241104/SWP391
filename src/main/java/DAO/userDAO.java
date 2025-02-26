@@ -413,26 +413,26 @@ public class userDAO {
         }
         return userList;
     }
-    
+
     public static void main(String[] args) {
-    userDAO userDao = new userDAO();
-    
-    String keyword = "john";
-    List<User> searchResults = userDao.searchUser(keyword);
-    
-    if (searchResults != null && !searchResults.isEmpty()) {
-        System.out.println("Search results for keyword: " + keyword);
-        for (User user : searchResults) {
-            System.out.println("User ID: " + user.getUserId());
-            System.out.println("Username: " + user.getUsername());
-            System.out.println("Email: " + user.getEmail());
-            System.out.println("Full Name: " + user.getFullName());
-            System.out.println("Role: " + user.getRole());
-            System.out.println("Is Active: " + user.isIsActive());
-            System.out.println("-------------------");
+        userDAO userDao = new userDAO();
+
+        String keyword = "john";
+        List<User> searchResults = userDao.searchUser(keyword);
+
+        if (searchResults != null && !searchResults.isEmpty()) {
+            System.out.println("Search results for keyword: " + keyword);
+            for (User user : searchResults) {
+                System.out.println("User ID: " + user.getUserId());
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Email: " + user.getEmail());
+                System.out.println("Full Name: " + user.getFullName());
+                System.out.println("Role: " + user.getRole());
+                System.out.println("Is Active: " + user.isIsActive());
+                System.out.println("-------------------");
+            }
+        } else {
+            System.out.println("No users found for keyword: " + keyword);
         }
-    } else {
-        System.out.println("No users found for keyword: " + keyword);
     }
-}
 }

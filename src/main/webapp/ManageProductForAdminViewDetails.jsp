@@ -125,6 +125,7 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
@@ -139,15 +140,9 @@
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
-                    <p>
-                    <form action="AdminManagerProducts?action=updateStockDetails" method="POST"  class="stock-input-form">
-                        <input type="hidden" name="id" value="${product.productID}">
-                        <input type="number" name="stock" value="${product.stock}" min="0" style="width: 80px; padding: 5px;" required>
-                        <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                            Update
-                        </button>
-                    </form>
-                    </p>
+                    <h4>
+                    Stock:${product.stock}
+                    </h4>
                     <p><div class="status">
                         <div class="status-dot
                              ${product.stock < 7 ? 'low-stock' : (product.stock < 30 ? 'medium-stock' : 'high-stock')}">

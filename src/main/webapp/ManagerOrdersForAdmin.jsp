@@ -27,6 +27,7 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"  class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
@@ -56,8 +57,8 @@
                         <td>${order.orderStatus}</td>
                         <td>
                             <div class="action-buttons">
-                                <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}&price=${order.totalAmount}&userID=${order.userId}" class="btn btn-info btn-sm">
-                                    <i style="padding-right: 5px;" class="fas fa-eye"></i> View Details
+                                <a style="margin: 5px;" href="AdminManagerOrders?action=viewDetails&id=${order.orderId}&price=${order.totalAmount}&userID=${order.userId}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> View Details
                                 </a>
                             </div>
                         </td>

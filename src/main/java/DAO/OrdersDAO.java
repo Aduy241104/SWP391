@@ -180,14 +180,13 @@ public class OrdersDAO {
         }
     }
 
-    public List<Orders> searchOrder(int userId, int orderId) {
-        String query = "SELECT * FROM Orders WHERE userId = ? AND orderId = ?";
+    public List<Orders> searchOrder(int orderId) {
+        String query = "SELECT * FROM Orders WHERE orderId = ?";
         List<Orders> listResult = new ArrayList<>();
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, orderId);
+            preparedStatement.setInt(1, orderId);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -228,7 +227,7 @@ public class OrdersDAO {
                 }
             }
         }
-        List<Orders> orders = orderDAO.searchOrder(userId, orderId);
+        List<Orders> orders = orderDAO.searchOrder(orderId);
 
         if (orders.isEmpty()) {
             System.out.println("Không tìm thấy đơn hàng.");
