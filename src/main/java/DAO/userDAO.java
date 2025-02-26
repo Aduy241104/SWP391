@@ -355,4 +355,84 @@ public class userDAO {
         return bannedUsers;
     }
 
+    // thaiv
+    public List<User> searchUser(String keyword) {
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT userID, username, password, email, fullName, createdAt, isActive FROM Users "
+                + "WHERE (username LIKE ? OR email LIKE ? OR fullName LIKE ?) "; // Chỉ tìm kiếm người dùng đang active (có thể thay đổi nếu muốn bao gồm cả banned)
+        String adminQuery = "SELECT * FROM Admins WHERE userID = ?";
+        String staffQuery = "SELECT * FROM Staffs WHERE userID = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int userId = rs.getInt("userID");
+                    String role = "Customer";
+
+                    // Kiểm tra nếu user này là Admin
+                    try ( PreparedStatement adminPs = connection.prepareStatement(adminQuery)) {
+                        adminPs.setInt(1, userId);
+                        try ( ResultSet adminRs = adminPs.executeQuery()) {
+                            if (adminRs.next()) {
+                                role = "Admin";
+                            }
+                        }
+                    }
+
+                    // Nếu không phải Admin, kiểm tra tiếp xem có phải Staff không
+                    if (role.equals("Customer")) {
+                        try ( PreparedStatement staffPs = connection.prepareStatement(staffQuery)) {
+                            staffPs.setInt(1, userId);
+                            try ( ResultSet staffRs = staffPs.executeQuery()) {
+                                if (staffRs.next()) {
+                                    role = "Staff";
+                                }
+                            }
+                        }
+                    }
+
+                    User user = new User(
+                            rs.getInt("userID"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            role,
+                            rs.getBoolean("isActive")
+                    );
+                    userList.add(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+    
+    public static void main(String[] args) {
+    userDAO userDao = new userDAO();
+    
+    String keyword = "john";
+    List<User> searchResults = userDao.searchUser(keyword);
+    
+    if (searchResults != null && !searchResults.isEmpty()) {
+        System.out.println("Search results for keyword: " + keyword);
+        for (User user : searchResults) {
+            System.out.println("User ID: " + user.getUserId());
+            System.out.println("Username: " + user.getUsername());
+            System.out.println("Email: " + user.getEmail());
+            System.out.println("Full Name: " + user.getFullName());
+            System.out.println("Role: " + user.getRole());
+            System.out.println("Is Active: " + user.isIsActive());
+            System.out.println("-------------------");
+        }
+    } else {
+        System.out.println("No users found for keyword: " + keyword);
+    }
+}
 }

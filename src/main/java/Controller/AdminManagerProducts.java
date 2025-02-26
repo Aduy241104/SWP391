@@ -161,7 +161,7 @@ public class AdminManagerProducts extends HttpServlet {
                 request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
             } catch (Exception e) {
             }
-        } else if(action.equals("viewProductDetail")){
+        } else if (action.equals("viewProductDetail")) {
             String productID_raw = request.getParameter("id");
             try {
                 int productID = Integer.parseInt(productID_raw);
@@ -263,6 +263,32 @@ public class AdminManagerProducts extends HttpServlet {
                 productDao.updateProduct(product);
 
                 response.sendRedirect("AdminManagerProducts?action=product");
+            } else if (action.equals("updateStock")) {
+                int productId = Integer.parseInt(request.getParameter("id"));
+                int newStock = Integer.parseInt(request.getParameter("stock"));
+
+                ProductDAO productDAO = new ProductDAO();
+                boolean isUpdated = productDAO.updateStock(productId, newStock);
+
+                if (isUpdated) {
+                    response.sendRedirect("AdminManagerProducts?action=product");
+                } else {
+                    request.setAttribute("error", "Failed to update stock. Please try again.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
+            } else if (action.equals("updateStockDetails")) {
+                int productId = Integer.parseInt(request.getParameter("id"));
+                int newStock = Integer.parseInt(request.getParameter("stock"));
+
+                ProductDAO productDAO = new ProductDAO();
+                boolean isUpdated = productDAO.updateStock(productId, newStock);
+
+                if (isUpdated) {
+                    response.sendRedirect("AdminManagerProducts?action=viewProductDetail&id="+ productId);
+                } else {
+                    request.setAttribute("error", "Failed to update stock. Please try again.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
             }
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid input format. Please check your data.");

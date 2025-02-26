@@ -118,6 +118,8 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
+
+                        <td>${product.price}</td>
                         <td>
                             <form action="AdminManagerProducts?action=updateStock" method="POST"  class="stock-input-form">
                                 <input type="hidden" name="id" value="${product.productID}">
@@ -127,8 +129,6 @@
                                 </button>
                             </form>
                         </td>
-                        <td>${product.price}</td>
-                        <td>${product.stock}</td>
 
                         <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
                         <td>

@@ -6,8 +6,10 @@ package Controller;
 
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
+import DAO.userDAO;
 import Model.Orders;
 import Model.Product;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -64,11 +66,18 @@ public class AdminManager_Search extends HttpServlet {
         String query = request.getParameter("query");
         System.out.println("Query: " + query); // Kiểm tra query đầu vào
 
+        if (query == null || query.trim().equals("")) {
+            request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
+            return;
+        }
+
         ProductDAO productDao = new ProductDAO();
         OrdersDAO ordersDao = new OrdersDAO();
+        userDAO userDao = new userDAO(); // Thêm userDAO để tìm kiếm người dùng
 
         List<Product> productList = new ArrayList<>();
         List<Orders> ordersList = new ArrayList<>();
+        List<User> userList = new ArrayList<>(); // Thêm danh sách người dùng
 
         int userId = -1;
         int orderId = -1;
@@ -87,14 +96,16 @@ public class AdminManager_Search extends HttpServlet {
                 }
             }
         } else {
-            // Nếu không có dấu + thì tìm sản phẩm
-            System.out.println("Searching Products for: " + query);
+            // Nếu không có dấu + thì tìm sản phẩm và người dùng
+            System.out.println("Searching Products and Users for: " + query);
             productList = productDao.searchProduct(query);
+            userList = userDao.searchUser(query); // Gọi hàm searchUser để tìm người dùng
         }
 
         // Gửi dữ liệu đến JSP
         request.setAttribute("productList", productList);
         request.setAttribute("orderList", ordersList);
+        request.setAttribute("userList", userList); // Thêm danh sách người dùng vào request
         request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
     }
 

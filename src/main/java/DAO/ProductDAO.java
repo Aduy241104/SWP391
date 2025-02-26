@@ -285,6 +285,22 @@ public class ProductDAO {
         return false;
     }
 
+    public boolean updateStock(int productID, int newStock) {
+        String query = "UPDATE Products SET stock = ? WHERE productID = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, newStock); // Giá trị số lượng mới
+            preparedStatement.setInt(2, productID); // ID của sản phẩm
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();
 

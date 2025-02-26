@@ -139,7 +139,23 @@
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
-                    <p><strong>Stock:</strong> ${product.stock}</p>
+                    <p>
+                    <form action="AdminManagerProducts?action=updateStockDetails" method="POST"  class="stock-input-form">
+                        <input type="hidden" name="id" value="${product.productID}">
+                        <input type="number" name="stock" value="${product.stock}" min="0" style="width: 80px; padding: 5px;" required>
+                        <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
+                            Update
+                        </button>
+                    </form>
+                    </p>
+                    <p><div class="status">
+                        <div class="status-dot
+                             ${product.stock < 7 ? 'low-stock' : (product.stock < 30 ? 'medium-stock' : 'high-stock')}">
+                        </div>
+                        <span>
+                            ${product.stock < 7 ? "Low Stock" : (product.stock < 30 ? "Medium Stock" : "In Stock")}
+                        </span>
+                    </div></p>
                     <div class="product-buttons">
                         <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-primary customize btn-sm">
                             <i class="fas fa-edit"></i> Edit
@@ -208,14 +224,14 @@
                                    if (toast) {
                                        // Thêm class 'show' để hiển thị Toast
                                        toast.classList.add("show");
-
+                                       
                                        // Ẩn Toast sau 3 giây
                                        setTimeout(() => {
                                            toast.classList.remove("show");
                                        }, 3000);
                                    }
                                }
-
+                               
                                // Gọi hàm showToast khi cần (ví dụ: khi thêm sản phẩm vào giỏ hàng thành công)
                                document.addEventListener("DOMContentLoaded", () => {
                                    // Giả lập thêm sản phẩm thành công
