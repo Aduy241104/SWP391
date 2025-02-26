@@ -59,33 +59,23 @@
                 transform: scale(1.05);
                 text-decoration: none;
             }
-
-            .product-actions {
-                display: grid;
-                grid-template-rows: auto auto;
-                grid-template-columns: auto;
+            .stock-input-form {
+                display: flex;
+                align-items: center;
                 gap: 5px;
-                width: 100%;
-                justify-items: center;
             }
-            .product-actions a {
-                padding: 8px 12px;
+
+            .stock-input-form input[type="number"] {
+                width: 80px;
+                padding: 5px;
                 font-size: 14px;
-                border-radius: 5px;
-                text-decoration: none;
-                width: 100%;
-                text-align: center;
             }
-            .product-actions a:nth-child(1),
-            .product-actions a:nth-child(2) {
-                grid-row: 1;
-                grid-column: span 1;
+
+            .stock-input-form button {
+                padding: 5px 10px;
+                font-size: 12px;
             }
-            .product-actions a:nth-child(3) {
-                grid-row: 2;
-                grid-column: 1 / span 2;
-                justify-self: center;
-            }
+
         </style>
     </head>
     <body>
@@ -108,13 +98,8 @@
                         <th>Description</th>
                         <th>Price</th>
                         <th>Stock</th>
+
                         <th>Image</th>
-                        <th>Category</th>
-                        <th>Active</th>
-                        <th>Size</th>
-                        <th>Age Range</th>
-                        <th>Origin</th>
-                        <th>Weight</th>
                         <th>Action</th>
                     </tr>
                 <c:forEach var="product" items="${productList}">
@@ -133,16 +118,19 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-
+                        <td>
+                            <form action="AdminManagerProducts?action=updateStock" method="POST"  class="stock-input-form">
+                                <input type="hidden" name="id" value="${product.productID}">
+                                <input type="number" name="stock" value="${product.stock}" min="0" style="width: 80px; padding: 5px;" required>
+                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
+                                    Update
+                                </button>
+                            </form>
+                        </td>
                         <td>${product.price}</td>
                         <td>${product.stock}</td>
+
                         <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
-                        <td>${product.categoryID}</td>
-                        <td>${product.isActive ? "Yes" : "No"}</td>
-                        <td>${product.size}</td>
-                        <td>${product.ageRange}</td>
-                        <td>${product.origin}</td>
-                        <td>${product.weight} kg</td>
                         <td>
                             <div class="product-actions">
                                 <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">

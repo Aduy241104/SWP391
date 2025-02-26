@@ -80,23 +80,14 @@
                 }
             }
 
-            .product-actions {
-                display: grid;
-                grid-template-rows: auto auto; 
-                grid-template-columns: 1fr 1fr;
-                min-height: 200px; 
-                padding: 15px; 
-                align-items: center; 
-                justify-items: center;
-            }
 
             .product-btn {
                 padding: 5px 0px;
                 font-size: 15px;
                 text-decoration: none;
-                text-align: center; 
-                max-width: 200px; 
-                width: 100%; 
+                text-align: center;
+                max-width: 200px;
+                width: 100%;
                 background-color: #EA83AA;
                 color: white;
                 font-size: 16px;
@@ -109,9 +100,9 @@
 
 
             .back-btn {
-                grid-row: 2; 
-                grid-column: 1 / span 2; 
-                justify-self: center; 
+                grid-row: 2;
+                grid-column: 1 / span 2;
+                justify-self: center;
             }
 
             .product-btn:hover {
@@ -139,7 +130,7 @@
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
-            <div style="margin-right: 100px; margin-top: 50px;" class="container main-content">
+            <div style="margin-right: 100px; margin-top: 100px;" class="container main-content">
                 <div class="row">
                     <div class="col-md-6" style="height: 500px;">
                         <img src="${product.imageUrl}" alt="Product Image" class="product-image">
@@ -187,7 +178,7 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 product-actions">
+                    <div class="col-md-6 action-buttons-add" style="justify-content: center; flex-wrap: wrap; max-width: 500px;">
                         <a href="AdminManagerProducts?action=addProduct" class="product-btn">
                             <i class="fas fa-plus-circle"></i> Add New<br> Product
                         </a>

@@ -144,6 +144,7 @@
                                 <th>User ID</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
+
                             </tr>
                             <c:forEach var="order" items="${OrdersList}">
                                 <tr>
@@ -151,13 +152,6 @@
                                     <td>${order.userId}</td>
                                     <td>${order.totalAmount}</td>
                                     <td>${order.orderStatus}</td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}" class="btn btn-info btn-sm">
-                                                <i style="padding-right: 5px;" class="fas fa-eye"></i> View Details
-                                            </a>
-                                        </div>
-                                    </td>
                                 </tr>
                             </c:forEach>
                         </table>
@@ -176,28 +170,22 @@
                             <tr class="table-dark">
                                 <th>User ID</th>
                                 <th>Username</th>
-                                <th>Email</th>
                                 <th>Full Name</th>
-                                <th>Role</th>
-                                <th>Action</th>
                             </tr>
                             <c:forEach var="user" items="${userTable}">
                                 <tr>
                                     <td>${user.userId}</td>
                                     <td>${user.username}</td>
-                                    <td>${user.email}</td>
                                     <td>${user.fullName}</td>
-                                    <td>${user.role}</td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="AdminManagerUsers?action=viewDetails&id=${user.userId}" class="btn btn-info btn-sm">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                        </div>
-                                    </td>
                                 </tr>
                             </c:forEach>
+
                         </table>
+                        <div style="margin-bottom: 20px;"class="action-buttons-add">
+                            <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">
+                                <i class="fas fa-arrow-left"></i> Back to Admin Page
+                            </a>
+                        </div>
                     </div>
                 </c:when>
             </c:choose>

@@ -64,10 +64,35 @@ public class AdminManagerUser extends HttpServlet {
             List<User> userList = userDao.getAllUser();
             request.setAttribute("userList", userList);
             request.getRequestDispatcher("ManageUsersForAdmin.jsp").forward(request, response);
-        }else if (action.equals("userForDashBoard")){
+        } else if (action.equals("userForDashBoard")) {
             List<User> userList = userDao.getAllUser();
             request.setAttribute("userTable", userList);
             request.getRequestDispatcher("adminDashboard.jsp?view=userTable").forward(request, response);
+        } else if (action.equals("viewUserDetails")) {
+            String UserID_raw = request.getParameter("id");
+            try { 
+                int id = Integer.parseInt(UserID_raw);
+                User user = userDao.getUserByIDHaveActive(id);
+                boolean isActive = userDao.isUserActive(id);
+                request.setAttribute("isActive", isActive);
+                request.setAttribute("user", user);
+                request.getRequestDispatcher("ManageUsersForAdminViewDetails.jsp").forward(request, response);
+            } catch (Exception e) {
+            }
+        } else if (action.equals("banUser")) {
+            int userId = Integer.parseInt(request.getParameter("id"));
+            userDao.banUser(userId);
+            response.sendRedirect("AdminManagerUser?action=user");
+
+        } else if (action.equals("unBanUser")) {
+            int userId = Integer.parseInt(request.getParameter("id"));
+            userDao.unBanUser(userId);
+            response.sendRedirect("AdminManagerUser?action=user");
+
+        }else if(action.equals("viewBan")){
+            List <User> userList = userDao.getBannedUsers();
+            request.setAttribute("userList", userList);
+            request.getRequestDispatcher("ManageUsersForAdminBanUsers.jsp").forward(request, response);
         }
     }
 

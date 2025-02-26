@@ -103,11 +103,8 @@
             <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
                 <i class="fas fa-plus-circle"></i> Add New User
             </a>
-            <a href="AdminManagerUser?action=viewBan" class="btn btn-custom btn-lg shadow">
-                <i class="fas fa-trash"></i> View Ban User
-            </a>
-            <a href="AdminManagerUser?action=userForDashBoard" class="btn btn-custom btn-lg shadow">
-                <i class="fas fa-arrow-left"></i> Back to Admin Page
+            <a href="AdminManagerUser?action=user" class="btn btn-custom btn-lg shadow">
+                <i class="fas fa-arrow-left"></i> Back to User Page
             </a>
         </div>
     </div>

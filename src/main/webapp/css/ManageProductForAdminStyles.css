@@ -22,6 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     font-weight: 600;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
+    max-width: 100px;
 }
 
 .action-buttons .btn-warning {
@@ -50,6 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     justify-content: flex-end;
     gap: 10px;
     padding-bottom: 20px;
+
 }
 
 .btn-custom {
@@ -75,4 +77,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background-color: #FCEBF2;
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+.product-actions {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto;
+    gap: 5px;
+    width: 100%;
+    justify-items: center;
+}
+.product-actions a {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+}
+.product-actions a:nth-child(1),
+.product-actions a:nth-child(2) {
+    grid-row: 1;
+    grid-column: span 1;
+}
+.product-actions a:nth-child(3) {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+    justify-self: center;
 }
