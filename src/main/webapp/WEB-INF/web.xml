@@ -77,17 +77,20 @@
         <servlet-class>Controller.ViewOrderListController</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
         <servlet-name>SignUpController</servlet-name>
         <servlet-class>Controller.SignUpController</servlet-class>
-=======
+    </servlet>
+    <servlet>
         <servlet-name>DeleteReviewContronller</servlet-name>
         <servlet-class>Controller.DeleteReviewContronller</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddReviewController</servlet-name>
         <servlet-class>Controller.AddReviewController</servlet-class>
->>>>>>> 0f1216d3eaac8c47ef59c39627211faaf77eb0ac
+    </servlet>
+    <servlet>
+        <servlet-name>AdminManageStaff</servlet-name>
+        <servlet-class>Controller.AdminManageStaff</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
@@ -172,17 +175,20 @@
         <url-pattern>/ViewOrderListController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
         <servlet-name>SignUpController</servlet-name>
         <url-pattern>/SignUpController</url-pattern>
-=======
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>DeleteReviewContronller</servlet-name>
         <url-pattern>/DeleteReview</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddReviewController</servlet-name>
         <url-pattern>/AddReview</url-pattern>
->>>>>>> 0f1216d3eaac8c47ef59c39627211faaf77eb0ac
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageStaff</servlet-name>
+        <url-pattern>/AdminManageStaff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

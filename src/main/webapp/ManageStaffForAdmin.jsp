@@ -1,13 +1,14 @@
 <%-- 
-    Document   : ManagerOrdersForAdmin
-    Created on : Feb 15, 2025, 2:41:56 PM
-    Author     : thaiv
+    Document   : ManageStaffForAdmin
+    Created on : Feb 27, 2025, 1:13:52 PM
+    Author     : NHATHCE181222
 --%>
 
 <%@page import="java.util.List"%>
 <%@page import="Model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -55,43 +56,43 @@
     <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
         <div  class="main-content">
-            <h2 class="text-center"><i class="fas fa-users"></i> Manage Users</h2>
+            <h2 class="text-center"><i class="fas fa-users"></i> Manage Staff</h2>
             <table class="table table-bordered table-hover mt-4">
                 <tr class="table-dark">
-                    <th>User ID</th>
-                    <th>Username</th>
+                    <th>Staff ID</th>
                     <th>Full Name</th>
+                    <th>Is Active</th>
                     <th>Action</th>
                 </tr>
-            <c:forEach var="user" items="${userList}">
+            <c:forEach var="staff" items="${staffList}">
                 <tr>
-                    <td>${user.userId}</td>
-                    <td>${user.username}</td>
-                    <td>${user.fullName}</td>
+                    <td>${staff.staffID}</td>
+                    <td>${staff.fullName}</td>
+                    <td>${staff.isActive}</td>
                     <td>
                         <div class="product-actions">
                             <c:choose>
-                                <c:when test="${user.role eq 'Admin'}">
+                                <c:when test="${staff.role eq 'Admin'}">
                                     <button  style="padding: 5px 18px;" style="margin-left: 10px;" class="btn btn-secondary btn-sm" disabled>
                                         <i class="fas fa-ban"></i> Disabled
                                     </button>
                                 </c:when>
-                                <c:when test="${user.isActive eq true}">
-                                    <a style="padding: 5px 16px;" href="AdminManagerUser?action=banUser&id=${user.userId}" 
+                                <c:when test="${staff.isActive eq true}">
+                                    <a style="padding: 5px 16px;" href="AdminManagerStaff?action=banUser&id=${staff.staffID}" 
                                        onclick="return confirm('Are you sure you want to ban this user?')" 
                                        class="btn btn-danger btn-sm">
                                         <i class="fas fa-ban"></i> Ban User
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="AdminManagerUser?action=unBanUser&id=${user.userId}" 
+                                    <a href="AdminManagerStaff?action=unBanUser&id=${staff.staffID}" 
                                        onclick="return confirm('Are you sure you want to unban this user?')" 
                                        class="btn btn-success btn-sm">
                                         <i class="fas fa-check"></i> Unban User
                                     </a>
                                 </c:otherwise>
                             </c:choose>
-                            <a href="AdminManagerUser?action=viewUserDetails&id=${user.userId}" class="btn btn-info btn-sm">
+                            <a href="AdminManagerStaff?action=viewUserDetails&id=${user.userId}" class="btn btn-info btn-sm">
                                 <i class="fas fa-eye"></i> View Detail
                             </a>
                         </div>
@@ -103,10 +104,10 @@
         </table>
         <div style="margin-bottom: 20px;" class="action-buttons-add">
             <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
-                <i class="fas fa-plus-circle"></i> Add New User
+                <i class="fas fa-plus-circle"></i> Add New Staff
             </a>
             <a href="AdminManagerUser?action=viewBan" class="btn btn-custom btn-lg shadow">
-                <i class="fas fa-trash"></i> View Ban User
+                <i class="fas fa-trash"></i> View Ban Staff
             </a>
             <a href="AdminManagerUser?action=userForDashBoard" class="btn btn-custom btn-lg shadow">
                 <i class="fas fa-arrow-left"></i> Back to Admin Page
