@@ -70,7 +70,7 @@ public class AdminManagerUser extends HttpServlet {
             request.getRequestDispatcher("adminDashboard.jsp?view=userTable").forward(request, response);
         } else if (action.equals("viewUserDetails")) {
             String UserID_raw = request.getParameter("id");
-            try { 
+            try {
                 int id = Integer.parseInt(UserID_raw);
                 User user = userDao.getUserByIDHaveActive(id);
                 boolean isActive = userDao.isUserActive(id);
@@ -89,10 +89,12 @@ public class AdminManagerUser extends HttpServlet {
             userDao.unBanUser(userId);
             response.sendRedirect("AdminManagerUser?action=user");
 
-        }else if(action.equals("viewBan")){
-            List <User> userList = userDao.getBannedUsers();
+        } else if (action.equals("viewBan")) {
+            List<User> userList = userDao.getBannedUsers();
             request.setAttribute("userList", userList);
             request.getRequestDispatcher("ManageUsersForAdminBanUsers.jsp").forward(request, response);
+        } else if (action.equals("addUser")) {
+            response.sendRedirect("ManageUsersForAdminAddUser.jsp");
         }
     }
 
@@ -107,7 +109,46 @@ public class AdminManagerUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        if (action.equals("addUser")) {
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String email = request.getParameter("email");
+            String fullName = request.getParameter("fullName");
+            String role = request.getParameter("role");
+            String isActive_raw = request.getParameter("isActive");
+
+            userDAO userDao = new userDAO();
+            boolean checkUserName = userDao.checkExistUsername(username);
+            boolean checkEmail = userDao.checkExistEmail(email);
+
+            try {
+                boolean isActive = Boolean.parseBoolean(isActive_raw);
+
+                if (checkUserName || checkEmail) {
+                    System.out.println("Username or Email already exists. Redirecting...");
+                    request.setAttribute("nameError", checkUserName ? "Username Already Exists!" : null);
+                    request.setAttribute("emailError", checkEmail ? "Email Already Exists!" : null);
+
+                  
+                    request.getRequestDispatcher("ManageUsersForAdminAddUser.jsp").forward(request, response);
+                    return;
+                }
+
+                if (userDao.addUser(username, password, email, fullName, role, isActive)) {
+                    response.sendRedirect("AdminManagerUser?action=user");
+                } else {
+                    System.out.println("Failed to add user. Forwarding back to addUser page.");
+                    request.setAttribute("generalError", "Failed to add user. Please try again.");
+                    request.getRequestDispatcher("ManageUsersForAdminAddUser.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); 
+                request.setAttribute("generalError", "An error occurred: " + e.getMessage());
+                request.getRequestDispatcher("ManageUsersForAdminAddUser.jsp").forward(request, response);
+            }
+
+        }
     }
 
     /**
