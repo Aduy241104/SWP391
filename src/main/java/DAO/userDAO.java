@@ -236,7 +236,38 @@ public class userDAO {
         }
         return user;
     }
+    // thaiv
 
+    public boolean checkExistUsername(String username) {
+        String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+// thaiv
+    public boolean checkExistEmail(String email) {
+        String query = "SELECT COUNT(*) FROM Users WHERE email = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //thaiv
     public boolean updateUser(int userId, String fullName, String email) {
         String query = "UPDATE Users SET fullName = ?, email = ? WHERE userID = ?";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
@@ -473,6 +504,62 @@ public class userDAO {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    /**
+     * Thaiv
+     */
+    public boolean addUser(String username, String password, String email, String fullName, String role, boolean isActive) {
+        String insertUserQuery = "INSERT INTO Users (username, password, email, fullName, createdAt, isActive) VALUES (?, ?, ?, ?, GETDATE(), ?)";
+        String insertAdminQuery = "INSERT INTO Admins (userID) VALUES (?)";
+        String insertStaffQuery = "INSERT INTO Staffs (userID) VALUES (?)";
+        String checkExistQuery = "SELECT COUNT(*) FROM Users WHERE username = ? OR email = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(checkExistQuery);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, email);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next() && resultSet.getInt(1) > 0) {
+                return false;
+            }
+
+            preparedStatement = connection.prepareStatement(insertUserQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, fullName);
+            preparedStatement.setBoolean(5, isActive);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                return false; // Thêm user thất bại
+            }
+
+            resultSet = preparedStatement.getGeneratedKeys();
+            int userId = -1;
+            if (resultSet.next()) {
+                userId = resultSet.getInt(1);
+            } else {
+                return false;
+            }
+
+            if ("Admin".equalsIgnoreCase(role)) {
+                preparedStatement = connection.prepareStatement(insertAdminQuery);
+                preparedStatement.setInt(1, userId);
+                preparedStatement.executeUpdate();
+            } else if ("Staff".equalsIgnoreCase(role)) {
+                preparedStatement = connection.prepareStatement(insertStaffQuery);
+                preparedStatement.setInt(1, userId);
+                preparedStatement.executeUpdate();
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static void main(String[] args) {
