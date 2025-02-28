@@ -46,7 +46,7 @@
     <div class="sidebar">
         <h2><i class="fas fa-cogs"></i> Admin</h2>
         <a href="AdminManagerUser?action=user" ><i class="fas fa-users"></i> Manage Users</a>
-        <a href="AdminManagerStaff?action=staff" class="active"><i class="fas fa-users"></i> Manage Staffs</a>
+        <a href="AdminManageStaff?action=staff" class="active"><i class="fas fa-users"></i> Manage Staff</a>
         <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
         <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
         <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
@@ -103,7 +103,7 @@
 
         </table>
         <div style="margin-bottom: 20px;" class="action-buttons-add">
-            <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
+            <a href="ManageStaffsForAdminAddStaff.jsp" class="btn btn-custom btn-lg shadow">
                 <i class="fas fa-plus-circle"></i> Add New Staff
             </a>
             <a href="AdminManagerUser?action=viewBan" class="btn btn-custom btn-lg shadow">

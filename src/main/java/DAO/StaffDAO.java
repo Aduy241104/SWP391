@@ -9,6 +9,7 @@ import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,26 +55,84 @@ public class StaffDAO {
         return staffList;
     }
 
+    public boolean addStaff(String username, String email, String fullName, String password, boolean isActive) {
+        String insertUserQuery = "INSERT INTO Users (username, email, fullName, password, isActive) VALUES (?, ?, ?, ?, ?)";
+        String insertStaffQuery = "INSERT INTO Staffs (userID) VALUES (?)";
+
+        try ( PreparedStatement psUser = connection.prepareStatement(insertUserQuery, Statement.RETURN_GENERATED_KEYS)) {
+            psUser.setString(1, username);
+            psUser.setString(2, email);
+            psUser.setString(3, fullName);
+            psUser.setString(4, password);
+            psUser.setBoolean(5, isActive);
+            psUser.executeUpdate();
+
+            // Lấy userID vừa tạo
+            ResultSet generatedKeys = psUser.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int userID = generatedKeys.getInt(1);
+
+                // Thêm vào bảng Staffs
+                try ( PreparedStatement psStaff = connection.prepareStatement(insertStaffQuery)) {
+                    psStaff.setInt(1, userID);
+                    psStaff.executeUpdate();
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkExistUsername(String username) {
+        String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, username);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkExistEmail(String email) {
+        String query = "SELECT COUNT(*) FROM Users WHERE email = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, email);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        // Tạo đối tượng StaffDAO để gọi phương thức
         StaffDAO staffDAO = new StaffDAO();
 
-        // Gọi phương thức getAllStaffs()
-        List<Staff> staffList = staffDAO.getAllStaffs();
+        // Dữ liệu nhân viên cần thêm
+        String username = "staff02";
+        String email = "staff02@gmail.com";
+        String fullName = "Staff Two";
+        String password = "pass123";
+        String role = "Staff";
 
-        // Kiểm tra nếu danh sách rỗng
-        if (staffList == null || staffList.isEmpty()) {
-            System.out.println("Không có nhân viên nào trong danh sách.");
+        // Gọi hàm addStaff để thêm nhân viên
+        boolean isAdded = staffDAO.addStaff(username, email, fullName, password, true);
+
+        // Kiểm tra kết quả
+        if (isAdded) {
+            System.out.println("✅ Nhân viên mới đã được thêm thành công!");
         } else {
-            // Duyệt danh sách và in thông tin
-            System.out.println("Danh sách nhân viên:");
-            for (Staff staff : staffList) {
-                System.out.println("ID: " + staff.getStaffID()
-                        + ", Username: " + staff.getUsername()
-                        + ", Email: " + staff.getEmail()
-                        + ", Full Name: " + staff.getFullName()
-                        + ", Created At: " + staff.getCreatedAt());
-            }
+            System.out.println("❌ Thêm nhân viên thất bại!");
         }
     }
 }
