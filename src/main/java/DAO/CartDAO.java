@@ -65,7 +65,7 @@ public class CartDAO {
 
     public int getCartID(int userID) {
         String query = "SELECT cartID FROM Cart WHERE userID = ?";
-        
+
         int cartID = -1;
         try {
             connection = new DBContext().getConnect();
@@ -116,109 +116,147 @@ public class CartDAO {
         }
         return 0;
     }
-    
-    
-    public int createCart (int userID) {
+
+    public int createCart(int userID) {
         String query = "INSERT INTO Cart (userID) VALUES (?)";
-         int cartID = -1;
-         
-         try {
+        int cartID = -1;
+
+        try {
             connection = new DBContext().getConnect();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
-            
-            while(resultSet.next()) {
+
+            while (resultSet.next()) {
                 cartID = resultSet.getInt(1);
             }
-            
+
         } catch (Exception e) {
-             System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
-         return cartID;
+        return cartID;
     }
-    
-    
+
     public boolean checkOwnCart(int cartID, int cartItemsID) {
         String query = "SELECT cartItemID FROM CartItems WHERE cartItemID = ? AND cartID = ?";
-        
+
         try {
-             connection = new DBContext().getConnect();
-             preparedStatement = connection.prepareStatement(query);
-             preparedStatement.setInt(1, cartItemsID);
-             preparedStatement.setInt(2, cartID);
-             resultSet = preparedStatement.executeQuery();
-             
-             while (resultSet.next()) {
-                 if (resultSet.getInt(1) != 0) {
-                     return true;
-                 }
-            } 
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, cartItemsID);
+            preparedStatement.setInt(2, cartID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) != 0) {
+                    return true;
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return false;
     }
-    
-    public int checkProductIncart(int cartID,int productID) {
+
+    public int checkProductIncart(int cartID, int productID) {
         String query = "SELECT cartItemID FROM CartItems WHERE cartID = ? AND productID = ?";
-      
+
         try {
-             connection = new DBContext().getConnect();
-             preparedStatement = connection.prepareStatement(query);
-             preparedStatement.setInt(1,cartID );
-             preparedStatement.setInt(2, productID);
-             resultSet = preparedStatement.executeQuery();
-             
-             if (resultSet.next()) {
-                 return resultSet.getInt(1);
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, cartID);
+            preparedStatement.setInt(2, productID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return -1;
     }
-    
-    public int getQuantity (int cartItemID) {
+
+    public int getQuantity(int cartItemID) {
         String query = "SELECT quantity FROM CartItems WHERE cartItemID = ?";
-        
+
         try {
-              connection = new DBContext().getConnect();
-              preparedStatement = connection.prepareStatement(query);
-              preparedStatement.setInt(1,cartItemID);
-              resultSet = preparedStatement.executeQuery();
-              
-              if(resultSet.next()) {
-                  return resultSet.getInt(1);
-              }
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, cartItemID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return -1;
     }
-    
-    
-    public boolean addNewProduct(int cartID,int productID, int quantity) {
-        String query = "INSERT CartItems (cartID, productID, quantity)\n" +
-                       "VALUES (?,?,?)";
-        
+
+    public boolean addNewProduct(int cartID, int productID, int quantity) {
+        String query = "INSERT CartItems (cartID, productID, quantity)\n"
+                + "VALUES (?,?,?)";
+
         try {
-              connection = new DBContext().getConnect();
-              preparedStatement = connection.prepareStatement(query);
-              preparedStatement.setInt(1,cartID);
-              preparedStatement.setInt(2,productID);
-              preparedStatement.setInt(3,quantity);
-              
-              int rowEffect = preparedStatement.executeUpdate();
-              if(rowEffect > 0) {
-                  return true;
-              }
-                      
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, cartID);
+            preparedStatement.setInt(2, productID);
+            preparedStatement.setInt(3, quantity);
+
+            int rowEffect = preparedStatement.executeUpdate();
+            if (rowEffect > 0) {
+                return true;
+            }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return false;
     }
-    
+
+    public double getTotalPriceByCartItemID(int[] array) {
+        if (array == null || array.length == 0) {
+            return 0;
+        }
+
+        StringBuilder query = new StringBuilder("SELECT SUM(tol) as totalPrice\n"
+                + "FROM (SELECT cartItemID, sum(pro.price * crt.quantity) as tol\n"
+                + "      FROM CartItems as crt\n"
+                + "      INNER JOIN Products as pro\n"
+                + "      ON pro.productID = crt.productID\n"
+                + "      GROUP BY cartItemID) AS total\n"
+                + "WHERE cartItemID IN (");
+
+        for (int i = 0; i < array.length; i++) {
+            query.append("?");
+            if (i < array.length - 1) {
+                query.append(", ");
+            }
+        }
+        query.append(")");
+
+        double totalPrice = 0;
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query.toString());
+
+            for (int i = 0; i < array.length; i++) {
+                preparedStatement.setInt(i + 1, array[i]);
+            }
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                totalPrice = resultSet.getDouble("totalPrice");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return totalPrice;
+    }
+
 }
