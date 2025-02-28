@@ -1,7 +1,7 @@
-<%--
-    Document   : ManageUserForAdminAddUserPage
-    Created on : Feb 26, 2025, 
-    Author     : thaiv
+<%-- 
+    Document   : ManageStaffsForAdminAddStaff
+    Created on : Feb 27, 2025, 11:11:33 PM
+    Author     : NHATHCE181222
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -94,8 +94,8 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2><i class="fas fa-cogs"></i> Admin</h2>
-            <a href="AdminManagerUser?action=user" class="active"><i class="fas fa-users"></i> Manage Users</a>
-            <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
+            <a href="AdminManagerUser?action=user""><i class="fas fa-users"></i> Manage Users</a>
+            <a href="AdminManageStaff?action=staff" class="active"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
@@ -105,10 +105,9 @@
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
 
             <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New User</h2>
-                <input type="hidden" value="user" name="userSearch">
+                <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Staff</h2>
 
-                <form action="AdminManagerUser?action=addUser" method="Post" class="form-container" 
+                <form action="AdminManageStaff?action=addStaff" method="POST" class="form-container" 
                       onsubmit="return validatePassword()">
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -140,8 +139,6 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Role:</label>
                         <select class="form-control" name="role" required>
-                            <option value="Admin">Admin</option>
-                            <option value="Customer">Customer</option>
                             <option value="Staff">Staff</option>
                         </select>
                     </div>
@@ -158,7 +155,7 @@
                 </c:if>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-lg btn-custom btn-save"><i class="fas fa-save"></i> Save User</button>
+                    <button type="submit" class="btn btn-lg btn-custom btn-save"><i class="fas fa-save"></i> Save Staff</button>
                     <a href="AdminManagerUser?action=user" class="btn btn-lg btn-custom btn-cancel"><i class="fas fa-times"></i> Cancel</a>
                 </div>
             </form>

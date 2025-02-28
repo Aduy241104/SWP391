@@ -14,14 +14,10 @@ import java.util.List;
  */
 public class TestDATA {
     public static void main(String[] args) {
-      commentDAO cmd = new commentDAO();
-      Review review = new Review(9, 1, 4, "holaaa");
-      boolean check = cmd.addReview(review);
-      if(check) {
-          System.out.println("done");
-      }else{
-          System.out.println("fail");
-      }
+        CartDAO crt = new CartDAO();
+        int arr [] = {58,59};
+        double rs = crt.getTotalPriceByCartItemID(arr);
+        System.out.println(rs);
      
     }
     

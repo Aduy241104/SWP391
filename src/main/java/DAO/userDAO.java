@@ -322,6 +322,19 @@ public class userDAO {
         return false;
     }
 
+    // Kiểm tra username đã tồn tại chưa
+    public boolean isUsernameExists(String username) throws SQLException {
+        String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu username đã tồn tại
+            }
+        }
+         return false;
+    }
+
     // thaiv
     public boolean banUser(int userId) {
         String query = "UPDATE Users SET isActive = 0 WHERE userID = ?";
@@ -333,6 +346,53 @@ public class userDAO {
         }
         return false;
     }
+
+    // Kiểm tra email đã tồn tại chưa
+    public boolean isEmailExists(String email) {
+        String query = "SELECT COUNT(*) FROM Users WHERE email = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu email đã tồn tại
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Đăng ký tài khoản
+    public boolean signUpUser(String username, String password, String confirmPassword, String email, String fullName) throws SQLException {
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Mật khẩu nhập lại không khớp.");
+            return false;
+        }
+
+        if (isUsernameExists(username)) {
+            System.out.println("Tên đăng nhập đã tồn tại.");
+            return false;
+        }
+
+        if (isEmailExists(email)) {
+            System.out.println("Email đã được sử dụng.");
+            return false;
+        }
+
+        String insertQuery = "INSERT INTO Users (username, password, email, fullName, createdAt) VALUES (?, ?, ?, ?, GETDATE())";
+        try ( PreparedStatement ps = connection.prepareStatement(insertQuery)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setString(3, email);
+            ps.setString(4, fullName);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
     public boolean unBanUser(int userId) {
         String query = "UPDATE Users SET isActive = 1 WHERE userID = ?";
