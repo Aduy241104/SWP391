@@ -64,6 +64,7 @@
                 </tr>
             <c:forEach var="user" items="${userList}">
                 <tr>
+                <input type="hidden" value="user" name="userSearch">
                     <td>${user.userId}</td>
                     <td>${user.username}</td>
                     <td>${user.fullName}</td>
@@ -101,7 +102,7 @@
 
         </table>
         <div style="margin-bottom: 20px;" class="action-buttons-add">
-            <a href="AdminManagerUser?action=addUser" class="btn btn-custom btn-lg shadow">
+            <a href="ManageUsersForAdminAddUser.jsp" class="btn btn-custom btn-lg shadow">
                 <i class="fas fa-plus-circle"></i> Add New User
             </a>
             <a href="AdminManagerUser?action=viewBan" class="btn btn-custom btn-lg shadow">

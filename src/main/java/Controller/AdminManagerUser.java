@@ -130,7 +130,6 @@ public class AdminManagerUser extends HttpServlet {
                     request.setAttribute("nameError", checkUserName ? "Username Already Exists!" : null);
                     request.setAttribute("emailError", checkEmail ? "Email Already Exists!" : null);
 
-                  
                     request.getRequestDispatcher("ManageUsersForAdminAddUser.jsp").forward(request, response);
                     return;
                 }
@@ -143,7 +142,7 @@ public class AdminManagerUser extends HttpServlet {
                     request.getRequestDispatcher("ManageUsersForAdminAddUser.jsp").forward(request, response);
                 }
             } catch (Exception e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
                 request.setAttribute("generalError", "An error occurred: " + e.getMessage());
                 request.getRequestDispatcher("ManageUsersForAdminAddUser.jsp").forward(request, response);
             }

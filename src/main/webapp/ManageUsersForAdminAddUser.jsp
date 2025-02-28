@@ -105,6 +105,7 @@
 
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New User</h2>
+                <input type="hidden" value="user" name="userSearch">
 
                 <form action="AdminManagerUser?action=addUser" method="Post" class="form-container" 
                       onsubmit="return validatePassword()">
