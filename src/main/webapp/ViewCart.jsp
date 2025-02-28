@@ -38,89 +38,77 @@
 
                 <c:set var="totalPrice" value="0" />
                 <c:choose>
-                    <c:when test="${not empty cartList}"> 
+                    <c:when test="${not empty cartList}">
                         <c:forEach items="${requestScope.cartList}" var="x">
                             <div class="col-md-12 row bag">
-                                <div class="col-md-3 product_img">                   
+                                <div class="col-md-3 product_img">
                                     <img src="${x.product.imageUrl}" alt="product">
                                     <div style="width: 170px" class="function_place">
-                                        <!--                                        <form style="width: 70%" class="function_add">
-                                                                                    <i class="fa-solid fa-minus"></i>
-                                                                                    <input name="" style="width: 21px;" type="text" value="${x.quantity}" max="${x.product.stock}" readonly>           
-                                                                                    <i style="margin-left: 2px;" class="fa-solid fa-plus"></i>
-                                                                                </form>  -->
-
                                         <form style="width: 70%" class="function_add" action="EditCart" method="GET">
-                                            <!-- Nút giảm số lượng -->
                                             <i class="fa-solid fa-minus" onclick="updateQuantity(this, -1)"></i>
-
-                                            <!-- Ô nhập số lượng -->
                                             <input name="quantity" style="width: 21px;" type="text" value="${x.quantity}" max="${x.product.stock}" readonly>
-                                            <input name="cartItemID" style="width: 21px;" type="hidden" value="${x.cartItemID}" >
-                                            <input name="action" style="width: 21px;" type="hidden" value="edit" >
-
-                                            <!-- Nút tăng số lượng -->
+                                            <input name="cartItemID" type="hidden" value="${x.cartItemID}">
+                                            <input name="action" type="hidden" value="edit">
                                             <i class="fa-solid fa-plus" onclick="updateQuantity(this, 1)" style="margin-left: 2px;"></i>
                                         </form>
                                         <div class="wish-list">
-                                            <a href="EditCart?cartItemID=${x.cartItemID}&action=delete" style="color: red"> <i class="fa-solid fa-trash"></i></a>
-                                        </div>  
+                                            <a href="EditCart?cartItemID=${x.cartItemID}&action=delete" style="color: red">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-9 product_detail">
                                     <div class="header-productDetail">
                                         <p>${x.product.productName}</p>
-                                        <c:if test = "${x.product.stock > 0}">
-                                            <input type="checkbox" id="id" 
-                                                   name="item" 
+                                        <c:if test="${x.product.stock > 0}">
+                                            <input type="checkbox" class="cart-checkbox"
                                                    value="${x.cartItemID}"
-                                                   data-quantity="${x.quantity}" 
-                                                   data-price="${x.product.price}" 
-                                                   onchange="updateTotalPrice()"
-                                                   >
+                                                   data-price="${x.product.price}"
+                                                   onchange="updateTotalPrice()">
                                         </c:if>
                                     </div>
                                     <p>Price: ${x.product.price} $</p>
-                                    <p>In Stock: ${(x.product.stock == 0)? "out of stock" : x.product.stock} </p>
-                                </div>     
+                                    <p>In Stock: ${(x.product.stock == 0) ? "out of stock" : x.product.stock}</p>
+                                </div>
                                 <div class="col-md-12">
-                                    <div class="bottom-line">
-                                    </div>
-                                </div>     
-                            </div>  
-                            <c:set var="totalPrice" value="${totalPrice + (x.quantity * x.product.price)}" />
+                                    <div class="bottom-line"></div>
+                                </div>
+                            </div>
+                            <c:set var="totalPrice" value="${totalPrice + (x.quantity * x.product.price)}"/>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <div class="">
+                        <div>
                             <img src="img/empty-cart.png" alt="alt"/>
                             <h4 style="margin-top: 40px; margin-left:45px">Your cart is empty</h4>
-                            <p style="margin-top:10px; margin-bottom: 20px ">Add something to make me happy 💕💕</p>
-                            <a style="padding: 7px 30px; text-align: center; border-radius: 9px; background-color: pink; margin-left: 65px" href="ViewProductListController">Go Shopping</a>
+                            <p style="margin-top:10px; margin-bottom: 20px">Add something to make me happy 💕💕</p>
+                            <a style="padding: 7px 30px; text-align: center; border-radius: 9px; background-color: pink; margin-left: 65px"
+                               href="ViewProductListController">Go Shopping</a>
                         </div>
                     </c:otherwise>
                 </c:choose>
             </div>
-            <form class="col-md-4 summary">
+
+            <!-- Form Checkout -->
+            <form class="col-md-4 summary" action="CreateOrder" method="POST" onsubmit="prepareForm(event)">
                 <h3 class="col-md-12 vf">Summary</h3>
                 <div class="col-md-12 Summary_detail">
                     <div class="Summary_detail-1 gena">
-                        <p>Subtotal</i></p>
-                        <p>${totalPrice}$</p>
+                        <p>Subtotal</p>
+                        <p id="totalPriceDisplay">0$</p>
                     </div>
                     <div class="Summary_detail-2 gena">
-                        <p>Estimated Delivery & Handling</i></p>
+                        <p>Estimated Delivery & Handling</p>
                         <p>Free</p>
                     </div>
                 </div>
-                <div class="col-md-12 Summary_detail">
-                    <div class="Summary_detail-1 gena">
-                        <p>Subtotal</i></p>
-                        <p>${totalPrice}$</p>
-                    </div>
-                </div>
+
+                <!-- Input ẩn để lưu sản phẩm được chọn -->
+                <div id="selectedItemsContainer"></div>
+
                 <div class="col-md-12 check-out text-center">
-                    <button class="check-out-button" style="background-color: green;">
+                    <button type="submit" class="check-out-button" style="background-color: green;">
                         <p>Checkout</p>
                     </button>
                 </div>
@@ -131,37 +119,60 @@
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
 
-
         <script>
+            function prepareForm(event) {
+                let selectedItemsContainer = document.getElementById("selectedItemsContainer");
+                selectedItemsContainer.innerHTML = ""; // Xóa dữ liệu cũ
+
+                let checkboxes = document.querySelectorAll(".cart-checkbox:checked");
+                if (checkboxes.length === 0) {
+                    alert("Please select at least one product before checkout!");
+                    event.preventDefault(); // Ngăn form submit nếu không có sản phẩm nào được chọn
+                    return;
+                }
+
+                checkboxes.forEach(checkbox => {
+                    let input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "selectedItems";
+                    input.value = checkbox.value; // Chỉ lấy cartItemID
+
+                    selectedItemsContainer.appendChild(input);
+                });
+            }
+
+            function updateTotalPrice() {
+                let checkboxes = document.querySelectorAll(".cart-checkbox:checked");
+                let totalPrice = 0;
+
+                checkboxes.forEach(checkbox => {
+                    let price = parseFloat(checkbox.getAttribute("data-price"));
+                    let productContainer = checkbox.closest(".product_detail");
+                    let quantityInput = productContainer.parentElement.querySelector("input[name='quantity']");
+                    let quantity = parseInt(quantityInput.value);
+                    totalPrice += price * quantity;
+                });
+
+                document.getElementById("totalPriceDisplay").innerText = totalPrice.toFixed(2) + " $";
+            }
+
             function updateQuantity(element, change) {
-                // Lấy thẻ input trong cùng form
                 const input = element.parentElement.querySelector("input[name='quantity']");
-                const max = parseInt(input.getAttribute("max")); // Lấy giá trị max
-                const min = 1; // Giá trị nhỏ nhất là 1
-                let quantity = parseInt(input.value); // Lấy giá trị hiện tại của ô input
+                const max = parseInt(input.getAttribute("max"));
+                const min = 1;
+                let quantity = parseInt(input.value);
 
-                // Kiểm tra nếu số lượng đã đạt min và người dùng nhấn "-"
-                if (quantity === min && change < 0) {
-                    return; // Dừng lại, không giảm nữa
+                if ((quantity === min && change < 0) || (quantity === max && change > 0)) {
+                    return;
                 }
 
-                // Kiểm tra nếu số lượng đã đạt max và người dùng nhấn "+"
-                if (quantity === max && change > 0) {
-                    return; // Dừng lại, không tăng nữa
-                }
-
-                // Tăng hoặc giảm số lượng
                 quantity += change;
-
-                // Cập nhật giá trị mới
                 input.value = quantity;
 
                 // Gửi form tự động
-                const form = element.parentElement; // Lấy form chứa thẻ input
-                form.submit(); // Gửi form
+                const form = element.parentElement;
+                form.submit();
             }
         </script>
-
-
     </body>
 </html>
