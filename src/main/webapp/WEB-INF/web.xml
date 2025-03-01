@@ -96,6 +96,14 @@
         <servlet-name>CreateOrderController</servlet-name>
         <servlet-class>Controller.CreateOrderController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewOrderDetailController</servlet-name>
+        <servlet-class>Controller.ViewOrderDetailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CancelOrderController</servlet-name>
+        <servlet-class>Controller.CancelOrderController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -197,6 +205,14 @@
     <servlet-mapping>
         <servlet-name>CreateOrderController</servlet-name>
         <url-pattern>/CreateOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOrderDetailController</servlet-name>
+        <url-pattern>/ViewOrderDetailController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelOrderController</servlet-name>
+        <url-pattern>/CancelOrderController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

@@ -99,7 +99,7 @@
                 <div class="col-lg-9">
                     <c:forEach var="order" items="${orderList}">
                         <div class="card order-card mb-3">
-                            <a href="#" class="text-decoration-none text-dark">
+                            <a href="ViewOrderDetailController?orderId=${order.orderId}" class="text-decoration-none text-dark">
                                 <div class="row">
                                     <div class="col-md-3"><strong>ID:</strong> ${order.orderId}</div>
                                     <div class="col-md-3"><strong>Date:</strong> ${order.createdAt}</div>
