@@ -4,24 +4,27 @@
  */
 package Controller;
 
-import DAO.ProductDAO;
-import DAO.commentDAO;
-import Model.Product;
-import Model.Review;
+import DAO.orderDAO;
+import DAO.OrderDetailDAO;
+import DAO.OrdersDAO;
+import Model.Orders;
+import Model.OrderDetail;
+import Model.User;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
- * @author DUY
+ * @author Nguyen Phu Quy CE180789
  */
-public class ViewFeedbackController extends HttpServlet {
+public class CancelOrderController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +43,10 @@ public class ViewFeedbackController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewFeedbackController</title>");
+            out.println("<title>Servlet CancelOrderController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewFeedbackController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CancelOrderController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,23 +65,28 @@ public class ViewFeedbackController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int productID = Integer.parseInt(request.getParameter("productID"));
-            commentDAO cmt = new commentDAO();
-            ProductDAO productDAO = new ProductDAO();
-            Product product = productDAO.getProductByID(productID);
-           
+            String action = request.getParameter("action");
+            String orderIDParam = request.getParameter("id");
 
-            List<Review> listReview = cmt.getReviewByProductIDss(productID);
-            double avgRating = cmt.getAvergeRating(productID);
+            if ("cancelOrder".equals(action) && orderIDParam != null) {
 
-            request.setAttribute("product", product);
-            request.setAttribute("avgRating", avgRating);
-            request.setAttribute("productID", productID);
-            request.setAttribute("listReview", listReview);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/FeedbackProduct.jsp");
-            rd.forward(request, response);
+                int orderID = Integer.parseInt(orderIDParam);
+
+                orderDAO ordersDAO = new orderDAO();
+                boolean isDeleted = ordersDAO.CancelOrderById(orderID);
+
+                if (isDeleted) {
+                    request.setAttribute("successMessage", "Đơn hàng đã được xóa thành công!");
+                } else {
+                    request.setAttribute("errorMessage", "Xóa đơn hàng thất bại! Có thể đơn hàng không tồn tại.");
+                }
+
+                response.sendRedirect("ViewOrderListController");
+            }
         } catch (Exception e) {
-            response.sendRedirect("error.jsp");
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi xử lý yêu cầu!");
+            request.getRequestDispatcher("orderList.jsp").forward(request, response);
         }
     }
 

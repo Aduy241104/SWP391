@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Model.Cart;
 import Model.OrderDetail;
 import Utils.DBContext;
 import java.sql.Connection;
@@ -69,13 +70,28 @@ public class OrderDetailDAO {
         return orderDetailsList;
     }
 
-    public static void main(String[] args) {
-        OrderDetailDAO dao = new OrderDetailDAO();  // ✅ Tạo object
-        List<OrderDetail> details = dao.getOrderDetailById(1);  // ✅ Gọi hàm từ object
+    public boolean addOrderDetail(int orderID, int productID, int quantity, double price) {
+        String query = "INSERT INTO OrderDetails (orderID, productID, quantity, price) \n"
+                + "VALUES (?,?,?,?)";
 
-        for (OrderDetail detail : details) {
-            System.out.println(detail.getProductName() + " - " + detail.getOrderStatus());
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderID);
+            preparedStatement.setInt(2, productID);
+            preparedStatement.setInt(3, quantity);
+            preparedStatement.setDouble(4, price);
+            
+            int rowEffect = preparedStatement.executeUpdate();
+            
+            if(rowEffect > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+        return false;
+
     }
 
 }

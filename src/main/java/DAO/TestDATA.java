@@ -4,6 +4,8 @@
  */
 package DAO;
 
+import Model.Cart;
+import Model.Orders;
 import Model.Product;
 import Model.Review;
 import java.util.List;
@@ -14,11 +16,10 @@ import java.util.List;
  */
 public class TestDATA {
     public static void main(String[] args) {
-        CartDAO crt = new CartDAO();
-        int arr [] = {58,59};
-        double rs = crt.getTotalPriceByCartItemID(arr);
+      Orders or = new Orders(1, 190, "Phường Tân Bình", "0374721054");
+     OrdersDAO ord = new OrdersDAO();
+     int rs = ord.addOrder(or);
         System.out.println(rs);
-     
     }
     
 }

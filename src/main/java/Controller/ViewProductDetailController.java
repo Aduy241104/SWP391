@@ -62,14 +62,10 @@ public class ViewProductDetailController extends HttpServlet {
             // Lấy productID từ request
             int productID = Integer.parseInt(request.getParameter("productID"));
            String isAdded = request.getParameter("isAdded");
-            // Gọi DAO để lấy thông tin sản phẩm
-            System.out.println("productID = " + productID);
-            System.out.println(isAdded);
+            
             ProductDAO productDAO = new ProductDAO();
             Product product = productDAO.getProductByID(productID);
-            
-            
-            
+ 
             if (product != null) {
                 List<Product> listRelatedProduct = productDAO.getRelatedProduct(product.getCategoryID());
                 

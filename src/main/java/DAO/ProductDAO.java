@@ -98,7 +98,7 @@ public class ProductDAO {
     }
 
     public List<Product> searchProduct(String keySearch) {
-        String query = "SELECT * FROM Products WHERE productName LIKE ?";
+        String query = "SELECT * FROM Products WHERE productName LIKE ? AND isActive = 1";
 
         List<Product> listResult = new ArrayList<>();
         try {

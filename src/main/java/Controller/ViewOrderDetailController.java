@@ -4,24 +4,26 @@
  */
 package Controller;
 
-import DAO.ProductDAO;
-import DAO.commentDAO;
-import Model.Product;
-import Model.Review;
+import DAO.orderDAO;
+import DAO.OrderDetailDAO;
+import Model.Orders;
+import Model.OrderDetail;
+import Model.User;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
- * @author DUY
+ * @author Nguyen Phu Quy CE180789
  */
-public class ViewFeedbackController extends HttpServlet {
+public class ViewOrderDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +42,10 @@ public class ViewFeedbackController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewFeedbackController</title>");
+            out.println("<title>Servlet ViewOrderDetailController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewFeedbackController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewOrderDetailController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,25 +63,49 @@ public class ViewFeedbackController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int productID = Integer.parseInt(request.getParameter("productID"));
-            commentDAO cmt = new commentDAO();
-            ProductDAO productDAO = new ProductDAO();
-            Product product = productDAO.getProductByID(productID);
-           
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-            List<Review> listReview = cmt.getReviewByProductIDss(productID);
-            double avgRating = cmt.getAvergeRating(productID);
-
-            request.setAttribute("product", product);
-            request.setAttribute("avgRating", avgRating);
-            request.setAttribute("productID", productID);
-            request.setAttribute("listReview", listReview);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/FeedbackProduct.jsp");
-            rd.forward(request, response);
-        } catch (Exception e) {
-            response.sendRedirect("error.jsp");
+        // Kiểm tra đăng nhập
+        if (user == null) {
+            response.sendRedirect("signIn.jsp");
+            return;
         }
+
+        // Lấy orderId từ request và kiểm tra null
+        String orderIdStr = request.getParameter("orderId");
+        if (orderIdStr == null || orderIdStr.trim().isEmpty()) {
+            request.setAttribute("error", "Không tìm thấy orderId!");
+            RequestDispatcher rd = request.getRequestDispatcher("/errorPage.jsp");
+            rd.forward(request, response);
+            return;
+        }
+
+        int orderId;
+        try {
+            orderId = Integer.parseInt(orderIdStr);
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "orderId không hợp lệ!");
+            RequestDispatcher rd = request.getRequestDispatcher("/errorPage.jsp");
+            rd.forward(request, response);
+            return;
+        }
+
+        orderDAO orderDAO = new orderDAO();
+        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+
+        // Lấy thông tin đơn hàng
+        Orders order = orderDAO.getOrderById(orderId);
+
+        // Lấy danh sách chi tiết đơn hàng
+        List<OrderDetail> orderDetails = orderDetailDAO.getOrderDetailById(orderId);
+
+        // Gửi dữ liệu đến JSP
+        request.setAttribute("order", order);
+        request.setAttribute("OrderDetails", orderDetails);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/orderDetail.jsp");
+        rd.forward(request, response);
     }
 
     /**
