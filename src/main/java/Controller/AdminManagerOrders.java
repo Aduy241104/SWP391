@@ -192,6 +192,16 @@ public class AdminManagerOrders extends HttpServlet {
             } catch (NumberFormatException e) {
 
             }
+        } else if (action.equals("ordersForDashBoard")) {
+            OrdersDAO ordersDao = new OrdersDAO();
+            List<Orders> OrdersList = ordersDao.getAllOrders();
+            request.setAttribute("OrdersList", OrdersList);
+            request.getRequestDispatcher("adminDashboard.jsp?view=orderTable").forward(request, response);
+        } else if (action.equals("order")) {
+            OrdersDAO orderDao = new OrdersDAO();
+            List<Orders> orderList = orderDao.getAllOrders();
+            request.setAttribute("orderList", orderList);
+            request.getRequestDispatcher("ManagerOrdersForAdmin.jsp").forward(request, response);
         }
     }
 

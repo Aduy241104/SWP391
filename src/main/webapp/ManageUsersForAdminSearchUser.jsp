@@ -123,63 +123,49 @@
         </div>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
-            <jsp:param name="page" value="product"/>
+            <jsp:param name="page" value="user"/>
         </jsp:include>
 
         <c:choose>
-            <c:when test="${not empty productList}">
+            <c:when test="${not empty userList}">
                 <div class="main-content">
                     <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
                     <table class="table table-bordered table-hover mt-4">
                         <tr class="table-dark">
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Image</th>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
                             <th>Action</th>
                         </tr>
-                        <c:forEach var="product" items="${productList}">
+                        <c:forEach var="user" items="${userList}">
                             <tr>
-                                <td>${product.productID}</td>
-                                <td>${product.productName}</td>
-                                <td class="description">
-                                    <c:choose>
-                                        <c:when test="${fn:length(product.description) > 20}">
-                                            <span class="short-text">${fn:substring(product.description, 0, 100)}...</span>
-                                            <span class="full-text" style="display: none;">${product.description}</span>
-                                            <button class="toggle-btn btn btn-sm btn-link">See more...</button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${product.description}
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-
-                                <td>${product.price}</td>
-                                <td>
-                                    <form action="AdminManagerProducts?action=updateStock" method="POST"  class="stock-input-form">
-                                        <input type="hidden" name="id" value="${product.productID}">
-                                        <input type="number" name="stock" value="${product.stock}" min="0" style="width: 80px; padding: 5px;" required>
-                                        <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                                            Update
-                                        </button>
-                                    </form>
-                                </td>
-
-                                <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
+                                <td>${user.userId}</td>
+                                <td>${user.username}</td>
+                                <td>${user.fullName}</td>
                                 <td>
                                     <div class="product-actions">
-                                        <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
-                                        <a href="AdminManagerProducts?action=delete&id=${product.productID}" 
-                                           onclick="return confirm('Are you sure you want to delete this product?')" 
-                                           class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </a>
-                                        <a href="AdminManagerProducts?action=viewProductDetail&id=${product.productID}" class="btn btn btn-info btn-sm">
+                                        <c:choose>
+                                            <c:when test="${user.role eq 'Admin'}">
+                                                <button  style="padding: 5px 18px;" style="margin-left: 10px;" class="btn btn-secondary btn-sm" disabled>
+                                                    <i class="fas fa-ban"></i> Disabled
+                                                </button>
+                                            </c:when>
+                                            <c:when test="${user.isActive eq true}">
+                                                <a style="padding: 5px 16px;" href="AdminManagerUser?action=banUser&id=${user.userId}" 
+                                                   onclick="return confirm('Are you sure you want to ban this user?')" 
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-ban"></i> Ban User
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="AdminManagerUser?action=unBanUser&id=${user.userId}" 
+                                                   onclick="return confirm('Are you sure you want to unban this user?')" 
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i> Unban User
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="AdminManagerUser?action=viewUserDetails&id=${user.userId}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> View Detail
                                         </a>
                                     </div>
@@ -188,23 +174,21 @@
                         </c:forEach>
                     </table>
                     <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Product Page
+                        <a href="AdminManagerUser?action=user" class="btn btn-custom btn-lg shadow">
+                            <i class="fas fa-arrow-left"></i> Back to User Page
                         </a>
                     </div>
                 </div>
             </c:when>
-
-
             <c:otherwise>
                 <div class="center-container">
                     <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
                 </div>
-                 <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Product Page
-                        </a>
-                    </div>
+                <div style="margin-bottom: 20px;" class="action-buttons-add">
+                    <a href="AdminManagerUser?action=user" class="btn btn-custom btn-lg shadow">
+                        <i class="fas fa-arrow-left"></i> Back to User Page
+                    </a>
+                </div>
             </c:otherwise>
         </c:choose>
         <script>

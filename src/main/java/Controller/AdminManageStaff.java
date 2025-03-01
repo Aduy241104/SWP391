@@ -67,8 +67,8 @@ public class AdminManageStaff extends HttpServlet {
             request.getRequestDispatcher("ManageStaffForAdmin.jsp").forward(request, response);
         } else if (action.equals("staffForDashBoard")) {
             List<Staff> staffList = StaffDAO.getAllStaffs();
-            request.setAttribute("staffList", staffList);
-            request.getRequestDispatcher("adminDashboard.jsp?view=userTable").forward(request, response);
+            request.setAttribute("staffTable", staffList);
+            request.getRequestDispatcher("adminDashboard.jsp?view=staffTable").forward(request, response);
 //        } else if (action.equals("viewUserDetails")) {
 //            String StaffID_raw = request.getParameter("id");
 //            try { 
@@ -95,36 +95,36 @@ public class AdminManageStaff extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String action = request.getParameter("action");
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
 
-    if ("addStaff".equals(action)) {
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String fullName = request.getParameter("fullName");
-        String password = request.getParameter("password");
-        boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+        if ("addStaff".equals(action)) {
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String fullName = request.getParameter("fullName");
+            String password = request.getParameter("password");
+            boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
 
-        StaffDAO staffDAO = new StaffDAO();
-        boolean checkUserName = staffDAO.checkExistUsername(username);
-        boolean checkEmail = staffDAO.checkExistEmail(email);
+            StaffDAO staffDAO = new StaffDAO();
+            boolean checkUserName = staffDAO.checkExistUsername(username);
+            boolean checkEmail = staffDAO.checkExistEmail(email);
 
-        if (checkUserName || checkEmail) {
-            request.setAttribute("nameError", checkUserName ? "Username Already Exists!" : null);
-            request.setAttribute("emailError", checkEmail ? "Email Already Exists!" : null);
-            request.getRequestDispatcher("ManageStaffsForAdminAddStaff.jsp").forward(request, response);
-            return;
-        }
+            if (checkUserName || checkEmail) {
+                request.setAttribute("nameError", checkUserName ? "Username Already Exists!" : null);
+                request.setAttribute("emailError", checkEmail ? "Email Already Exists!" : null);
+                request.getRequestDispatcher("ManageStaffsForAdminAddStaff.jsp").forward(request, response);
+                return;
+            }
 
-        boolean success = staffDAO.addStaff(username, email, fullName, password, isActive);
-        if (success) {
-            response.sendRedirect("AdminManageStaff?action=staff");
-        } else {
-            request.setAttribute("generalError", "Failed to add staff. Please try again.");
-            request.getRequestDispatcher("ManageStaffsForAdminAddStaff.jsp").forward(request, response);
+            boolean success = staffDAO.addStaff(username, email, fullName, password, isActive);
+            if (success) {
+                response.sendRedirect("AdminManageStaff?action=staff");
+            } else {
+                request.setAttribute("generalError", "Failed to add staff. Please try again.");
+                request.getRequestDispatcher("ManageStaffsForAdminAddStaff.jsp").forward(request, response);
+            }
         }
     }
-}
 
     /**
      * Returns a short description of the servlet.

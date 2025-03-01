@@ -56,26 +56,32 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="searchAll"/>
+        </jsp:include>
 
 
-            <div class="main-content">
-                <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
-                <div class="stats-container">
-                    <div onclick="location.href = 'AdminManagerUser?action=userForDashBoard';" style="cursor: pointer;" class="stat-box">
-                        <h3>${countUser}</h3>
-                    <p><i class="fas fa-user"></i> Customers</p>
+        <div class="main-content">
+            <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
+            <div class="stats-container">
+                <div onclick="location.href = 'AdminManagerUser?action=userForDashBoard';" style="cursor: pointer;" class="stat-box">
+                    <h3>${countUser}</h3>
+                    <p><i class="fas fa-user"></i> Users</p>
+                </div>
+                <div onclick="location.href = 'AdminManageStaff?action=staffForDashBoard';" style="cursor: pointer;" class="stat-box">
+                    <h3>${countStaff}</h3>
+                    <p><i class="fas fa-project-diagram"></i> Staff</p>
                 </div>
                 <div onclick="location.href = 'AdminManagerProducts?action=productForDashBoard';" style="cursor: pointer;" class="stat-box">
                     <h3>${count}</h3>
                     <p><i class="fas fa-project-diagram"></i> Products</p>
                 </div>
-                <div onclick="location.href = 'AdminManagerProducts?action=ordersForDashBoard';" style="cursor: pointer;" class="stat-box">
+                <div onclick="location.href = 'AdminManagerOrders?action=ordersForDashBoard';" style="cursor: pointer;" class="stat-box">
                     <h3>${countOrders}</h3>
                     <p><i class="fas fa-shopping-bag"></i> Orders</p>
                 </div>
@@ -87,7 +93,7 @@
             <div class="col-md-4 product-container">
 
                 <c:choose>
-                    <c:when test="${empty productList && empty OrdersList && empty userTable}">
+                    <c:when test="${empty productList && empty OrdersList && empty userTable && empty staffTable}">
                         <h3 style="font-size: 50px; text-align: center;">
                             Welcome back, <span class="admin-name">${sessionScope.user.fullName}</span>! 🎉 Let’s make today awesome! 💪
                         </h3>
@@ -139,7 +145,7 @@
                         <table class="table table-bordered table-hover mt-4">
                             <div class="header">
                                 <h2>Manage Orders</h2>
-                                <a href="AdminManagerProducts?action=order" class="see-all-btn">See all →</a>
+                                <a href="AdminManagerOrders?action=order" class="see-all-btn">See all →</a>
                             </div>
                             <tr class="table-dark">
                                 <th>Order ID</th>
@@ -182,6 +188,32 @@
                                 </tr>
                             </c:forEach>
 
+                        </table>
+                        <div style="margin-bottom: 20px;"class="action-buttons-add">
+                            <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">
+                                <i class="fas fa-arrow-left"></i> Back to Admin Page
+                            </a>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${view eq 'staffTable'}">
+                        <table class="table table-bordered table-hover mt-4">
+                            <div class="header">
+                                <h2>Manage User</h2>
+                                <a href="AdminManageStaff?action=staff" class="see-all-btn">See all →</a>
+                            </div>
+                            <tr class="table-dark">
+                                <th>Staff ID</th>
+                                <th>Full Name</th>
+                                <th>Is Active</th>
+                            </tr>
+                            <c:forEach var="staff" items="${staffTable}">
+                                <tr>
+                                    <td>${staff.staffID}</td>
+                                    <td>${staff.fullName}</td>
+                                    <td>${staff.isActive}</td>
+                                </tr>
+                            </c:forEach>
                         </table>
                         <div style="margin-bottom: 20px;"class="action-buttons-add">
                             <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">

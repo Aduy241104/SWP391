@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +63,13 @@ public class AdminManagerUser extends HttpServlet {
         userDAO userDao = new userDAO();
         if (action.equals("user")) {
             List<User> userList = userDao.getAllUser();
-            request.setAttribute("userList", userList);
+            List<User> activeUser = new ArrayList<>();
+            for (User user : userList) {
+                if (user.isIsActive()) {
+                    activeUser.add(user);
+                }
+            }
+            request.setAttribute("userList", activeUser);
             request.getRequestDispatcher("ManageUsersForAdmin.jsp").forward(request, response);
         } else if (action.equals("userForDashBoard")) {
             List<User> userList = userDao.getAllUser();
@@ -95,7 +102,7 @@ public class AdminManagerUser extends HttpServlet {
             request.getRequestDispatcher("ManageUsersForAdminBanUsers.jsp").forward(request, response);
         } else if (action.equals("addUser")) {
             response.sendRedirect("ManageUsersForAdminAddUser.jsp");
-        }
+        } 
     }
 
     /**

@@ -16,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,8 @@ public class AdminManager_Search extends HttpServlet {
             throws ServletException, IOException {
         String query = request.getParameter("query");
         System.out.println("Query: " + query); // Kiểm tra query đầu vào
+        String page = request.getParameter("page");
+        System.out.println(page);
 
         if (query == null || query.trim().isEmpty()) {
             request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
@@ -73,33 +76,58 @@ public class AdminManager_Search extends HttpServlet {
 
         ProductDAO productDao = new ProductDAO();
         OrdersDAO ordersDao = new OrdersDAO();
-        userDAO userDao = new userDAO(); 
+        userDAO userDao = new userDAO();
 
         List<Product> productList = new ArrayList<>();
         List<Orders> ordersList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
 
-        boolean isNumber = query.matches("\\d+"); 
-
-        if (isNumber) {
-            try {
-                int orderId = Integer.parseInt(query);
+        int orderId = 0;
+        try {
+            orderId = Integer.parseInt(query);
+        } catch (NumberFormatException e) {
+            orderId = 0;
+        }
+        boolean isNumber = query.matches("\\d+");
+        if (page.equals("order")) {
+            if (isNumber) {
                 System.out.println("Searching Orders for ID: " + orderId);
                 ordersList = ordersDao.searchOrder(orderId);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid number format for Order ID!");
+                request.setAttribute("orderList", ordersList);
+                request.getRequestDispatcher("ManagerOrdersForAdminSearchOrder.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("ManagerOrdersForAdminSearchOrder.jsp").forward(request, response);
             }
-        } else {
+        } else if (page.equals("user")) {
+            userList = userDao.searchUser(query);
+            request.setAttribute("userList", userList);
+            request.getRequestDispatcher("ManageUsersForAdminSearchUser.jsp").forward(request, response);
+
+        } else if (page.equals("product")) {
             System.out.println("Searching Products and Users for: " + query);
             productList = productDao.searchProduct(query);
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
+        } else if (page.equals("stock")) {
+            System.out.println("Searching Products and Users for: " + query);
+            HttpSession session = request.getSession();
+            session.setAttribute("query", query);
+            productList = productDao.searchProduct(query);
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageProductForAdminSearchForStockUpdate.jsp").forward(request, response);
+        } else if (page.equals("searchAll")) {
+            if (isNumber) {
+                ordersList = ordersDao.searchOrder(orderId);
+                request.setAttribute("orderList", ordersList);
+            }
             userList = userDao.searchUser(query);
+            request.setAttribute("userList", userList);
+            productList = productDao.searchProduct(query);
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("ManageAdminSearchAll.jsp").forward(request, response);
+
         }
 
-        // Gửi dữ liệu đến JSP
-        request.setAttribute("productList", productList);
-        request.setAttribute("orderList", ordersList);
-        request.setAttribute("userList", userList);
-        request.getRequestDispatcher("ManageProductForAdminSearchProduct.jsp").forward(request, response);
     }
 
     /**

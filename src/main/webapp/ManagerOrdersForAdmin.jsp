@@ -27,26 +27,28 @@
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"  class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerOrders?action=order"  class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="order"/>
+        </jsp:include>
 
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
-                <table class="table table-bordered table-hover mt-4">
-                    <tr class="table-dark">
-                        <th>Order ID</th>
-                        <th>User ID</th>
-                        <th>Total Amount</th>
-                        <th>Created At</th>
-                        <th>Address</th>
-                        <th>Phone Number</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
+        <div class="main-content">
+            <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
+            <table class="table table-bordered table-hover mt-4">
+                <tr class="table-dark">
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Total Amount</th>
+                    <th>Created At</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
                 <c:forEach var="order" items="${orderList}">
                     <tr>
                         <td>${order.orderId}</td>
@@ -79,7 +81,7 @@
                 <a href="AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-times"></i> View Canceled Orders
                 </a>
-                <a href="AdminManagerProducts?action=ordersForDashBoard" class="btn btn-custom btn-lg shadow">
+                <a href="AdminManagerOrders?action=ordersForDashBoard" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>
             </div>
