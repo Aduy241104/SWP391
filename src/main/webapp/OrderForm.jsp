@@ -4,7 +4,8 @@
     Author     : DUY
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -70,7 +71,7 @@
                 <div style="width: 48%; border-radius: 9px;" class="container mt-5 hus">
 
                     <ul style="list-style: none;margin-top: 50px;" class="list-group">
-                        
+
                     <c:forEach var="c" items="${requestScope.listCart}">
                         <li style="border-bottom: 1px solid rgb(184, 184, 184); display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px;" class="">
                             <img style="width: 20%;" src="${c.product.imageUrl}" alt="">
@@ -85,10 +86,14 @@
                         </li>
                     </c:forEach>
 
-                   
+
                 </ul>
-                <form class="" style="padding: 30px;">
-               
+                <form action="ConfirmOrder" method="POST" accept-charset="UTF-8" class="" style="padding: 30px;">
+                    <c:forEach var="x" items="${requestScope.listCart}">
+                        <input type="hidden" name="cartItemID" value="${x.cartItemID}">
+                    </c:forEach>
+
+                    <input type="hidden" name="totalAmount" value="${requestScope.totalAmount}">
                     <h2 style="text-align: center;" class="mb-3">Customer information</h2>
                     <div class="mb-3">
                         <label class="form-label">Full Name</label>
@@ -124,7 +129,7 @@
                     <h4>Total amount</h4>
 
                     <h5 class="mb-3">Tax: <strong class="text-danger">38.000đ</strong></h5>
-                    <h5 class="mb-3">Tổng tiền: <strong class="text-danger">${requestScope.totalAmount}</strong></h5>
+                    <h5 class="mb-3">Total Amount: <strong class="text-danger">${requestScope.totalAmount}</strong></h5>
 
                     <button type="submit" class="btn w-100 p-3 mt-4 custome-btn">ĐẶT HÀNG</button>
                 </form>  
@@ -146,41 +151,61 @@
                 // Thêm danh sách tỉnh/thành phố
                 data.forEach(province => {
                     let option = document.createElement("option");
-                    option.value = province.name;
+                    option.value = province.name; // Lưu tên vào value
+                    option.dataset.code = province.code; // Lưu code vào data-code
                     option.textContent = province.name;
                     provinceSelect.appendChild(option);
                 });
 
                 // Khi chọn tỉnh/thành phố, load quận/huyện tương ứng
                 provinceSelect.addEventListener("change", function () {
-                    let selectedProvince = data.find(p => p.name == this.value);
-                    districtSelect.innerHTML = '<option value="">Chọn Quận / Huyện</option>';
-                    wardSelect.innerHTML = '<option value="">Chọn Phường / Xã</option>';
+                    let selectedCode = this.options[this.selectedIndex].dataset.code; // Lấy code từ data-code
+                    let selectedProvince = data.find(p => p.code == selectedCode);
 
-                    selectedProvince.districts.forEach(district => {
-                        let option = document.createElement("option");
-                        option.value = district.code;
-                        option.textContent = district.name;
-                        districtSelect.appendChild(option);
-                    });
+                    districtSelect.innerHTML = '<option value="" data-code="">Chọn Quận / Huyện</option>';
+                    wardSelect.innerHTML = '<option value="" data-code="">Chọn Phường / Xã</option>';
+
+                    if (selectedProvince) {
+                        selectedProvince.districts.forEach(district => {
+                            let option = document.createElement("option");
+                            option.value = district.name; // Lưu tên vào value
+                            option.dataset.code = district.code; // Lưu code vào data-code
+                            option.textContent = district.name;
+                            districtSelect.appendChild(option);
+                        });
+                    }
                 });
 
                 // Khi chọn quận/huyện, load phường/xã tương ứng
                 districtSelect.addEventListener("change", function () {
-                    let selectedProvince = data.find(p => p.name == provinceSelect.value);
-                    let selectedDistrict = selectedProvince.districts.find(d => d.code == this.value);
-                    wardSelect.innerHTML = '<option value="">Chọn Phường / Xã</option>';
+                    let selectedProvinceCode = provinceSelect.options[provinceSelect.selectedIndex].dataset.code;
+                    let selectedDistrictCode = this.options[this.selectedIndex].dataset.code;
 
-                    selectedDistrict.wards.forEach(ward => {
+                    let selectedProvince = data.find(p => p.code == selectedProvinceCode);
+                    let selectedDistrict = selectedProvince?.districts.find(d => d.code == selectedDistrictCode);
+
+                    wardSelect.innerHTML = '<option value="" data-code="">Chọn Phường / Xã</option>';
+
+                    if (selectedDistrict && selectedDistrict.wards.length > 0) {
+                        selectedDistrict.wards.forEach(ward => {
+                            let option = document.createElement("option");
+                            option.value = ward.name; // Lưu tên vào value
+                            option.dataset.code = ward.code; // Lưu code vào data-code
+                            option.textContent = ward.name;
+                            wardSelect.appendChild(option);
+                        });
+                    } else {
                         let option = document.createElement("option");
-                        option.value = ward.code;
-                        option.textContent = ward.name;
+                        option.value = "Không có dữ liệu";
+                        option.dataset.code = "0"; // Đánh dấu không có dữ liệu
+                        option.textContent = "Không có dữ liệu";
                         wardSelect.appendChild(option);
-                    });
+                    }
                 });
             }
 
             loadProvinces();
+
         </script>
 
     </body>

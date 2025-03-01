@@ -5,6 +5,7 @@
 package DAO;
 
 import Model.Cart;
+import Model.Orders;
 import Model.Product;
 import Model.Review;
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.List;
  */
 public class TestDATA {
     public static void main(String[] args) {
-        CartDAO crt = new CartDAO();
-        Cart cart = crt.getCartItemByID(62);
-        System.out.println(cart.toString());
-     
+      Orders or = new Orders(1, 190, "Phường Tân Bình", "0374721054");
+     OrdersDAO ord = new OrdersDAO();
+     int rs = ord.addOrder(or);
+        System.out.println(rs);
     }
     
 }

@@ -66,7 +66,7 @@ public class ViewFeedbackController extends HttpServlet {
             commentDAO cmt = new commentDAO();
             ProductDAO productDAO = new ProductDAO();
             Product product = productDAO.getProductByID(productID);
-            System.out.println(product.toString());
+           
 
             List<Review> listReview = cmt.getReviewByProductIDss(productID);
             double avgRating = cmt.getAvergeRating(productID);

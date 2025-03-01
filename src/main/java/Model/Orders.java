@@ -30,6 +30,15 @@ public class Orders {
         this.orderStatus = orderStatus;
     }
 
+    public Orders(int userId, double totalAmount, String address, String phoneNumber) {
+        this.userId = userId;
+        this.totalAmount = totalAmount;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+    
+    
+
     public Orders() {
     }
 

@@ -9,6 +9,7 @@ import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,41 +208,41 @@ public class OrdersDAO {
         return listResult;
     }
 
-    // test xiu nhe :)))
-    public static void main(String[] args) {
-        OrdersDAO orderDAO = new OrdersDAO();
+    public int addOrder(Orders order) {
+        String query = "INSERT INTO Orders (userID,totalAmount,address,phoneNumber)\n"
+                + "VALUES (?,?,?,?)";
 
-        // Ví dụ nhập từ người dùng
-        String userInput = "1+3"; // Người dùng nhập "1+3" tức là userID = 1, orderID = 3
+        int rs = -1;
+        try {
+            preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, order.getUserId());
+            preparedStatement.setDouble(2, order.getTotalAmount());
+            preparedStatement.setString(3, order.getAddress());
+            preparedStatement.setString(4, order.getPhoneNumber());
 
-        int userId = -1;
-        int orderId = -1;
-        if (userInput.contains("+")) {
-            String[] parts = userInput.split("\\+");
-            if (parts.length == 2) {
-                try {
-                    userId = Integer.parseInt(parts[0].trim());
-                    orderId = Integer.parseInt(parts[1].trim());
-                } catch (NumberFormatException e) {
-                    System.out.println("Lỗi chuyển đổi số: " + e.getMessage());
+            int affectedRows = preparedStatement.executeUpdate();
+
+            // Kiểm tra xem có dòng nào được chèn không
+            if (affectedRows > 0) {
+                resultSet = preparedStatement.getGeneratedKeys();
+                while (resultSet.next()) {
+                    rs = resultSet.getInt(1);
                 }
             }
-        }
-        List<Orders> orders = orderDAO.searchOrder(orderId);
 
-        if (orders.isEmpty()) {
-            System.out.println("Không tìm thấy đơn hàng.");
-        } else {
-            for (Orders order : orders) {
-                System.out.println("Mã đơn hàng: " + order.getOrderId());
-                System.out.println("Mã khách hàng: " + order.getUserId());
-                System.out.println("Tổng tiền: " + order.getTotalAmount());
-                System.out.println("Ngày tạo: " + order.getCreatedAt());
-                System.out.println("Địa chỉ: " + order.getAddress());
-                System.out.println("Số điện thoại: " + order.getPhoneNumber());
-                System.out.println("Trạng thái: " + order.getOrderStatus());
-                System.out.println("---------------------------");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Đóng resultSet để tránh rò rỉ bộ nhớ
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+        return rs;
     }
+
 }
