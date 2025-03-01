@@ -5,12 +5,16 @@
 package Controller;
 
 import DAO.CartDAO;
+import Model.Cart;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -30,21 +34,33 @@ public class CreateOrderController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String itemChecked[] = request.getParameterValues("selectedItems");
-        
+
         if (itemChecked != null) {
             int[] selectedItemIDs = new int[itemChecked.length];
 
             for (int i = 0; i < itemChecked.length; i++) {
                 try {
-                    selectedItemIDs[i] = Integer.parseInt(itemChecked[i]); 
+                    selectedItemIDs[i] = Integer.parseInt(itemChecked[i]);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
+
+            CartDAO crd = new CartDAO();
             
-               CartDAO crd = new CartDAO();
-               double totalAmount = crd.getTotalPriceByCartItemID(selectedItemIDs);
-               System.out.println(totalAmount);
+            double totalAmount = crd.getTotalPriceByCartItemID(selectedItemIDs);
+            List<Cart> listCart = new ArrayList<>();
+            
+            for(int i = 0; i < selectedItemIDs.length; i++) {
+                Cart cart = crd.getCartItemByID(selectedItemIDs[i]);
+                listCart.add(cart);
+            }
+            
+            request.setAttribute("totalAmount", totalAmount);
+            request.setAttribute("listCart", listCart);
+            
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrderForm.jsp");
+            rd.forward(request, response);  
         }
 
     }

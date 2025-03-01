@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Model.Cart;
 import Model.Product;
 import Model.Review;
 import java.util.List;
@@ -15,9 +16,8 @@ import java.util.List;
 public class TestDATA {
     public static void main(String[] args) {
         CartDAO crt = new CartDAO();
-        int arr [] = {58,59};
-        double rs = crt.getTotalPriceByCartItemID(arr);
-        System.out.println(rs);
+        Cart cart = crt.getCartItemByID(62);
+        System.out.println(cart.toString());
      
     }
     
