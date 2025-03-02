@@ -6,9 +6,11 @@ package Controller;
 
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
+import DAO.StaffDAO;
 import DAO.userDAO;
 import Model.Orders;
 import Model.Product;
+import Model.Staff;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -77,10 +79,12 @@ public class AdminManager_Search extends HttpServlet {
         ProductDAO productDao = new ProductDAO();
         OrdersDAO ordersDao = new OrdersDAO();
         userDAO userDao = new userDAO();
+        StaffDAO staffDao = new StaffDAO();
 
         List<Product> productList = new ArrayList<>();
         List<Orders> ordersList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
+        List<Staff> staffList = new ArrayList<>();
 
         int orderId = 0;
         try {
@@ -116,16 +120,36 @@ public class AdminManager_Search extends HttpServlet {
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdminSearchForStockUpdate.jsp").forward(request, response);
         } else if (page.equals("searchAll")) {
-            if (isNumber) {
-                ordersList = ordersDao.searchOrder(orderId);
-                request.setAttribute("orderList", ordersList);
-            }
-            userList = userDao.searchUser(query);
-            request.setAttribute("userList", userList);
-            productList = productDao.searchProduct(query);
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("ManageAdminSearchAll.jsp").forward(request, response);
+            String role = (String) request.getSession().getAttribute("role"); 
 
+            if ("staff".equals(role)) {
+                if (isNumber) {
+                    ordersList = ordersDao.searchOrder(orderId);
+                    request.setAttribute("orderList", ordersList);
+                }
+                productList = productDao.searchProduct(query);
+                request.setAttribute("productList", productList);
+            } else {
+                if (isNumber) {
+                    ordersList = ordersDao.searchOrder(orderId);
+                    request.setAttribute("orderList", ordersList);
+                }
+                userDao = new userDAO();
+                staffDao = new StaffDAO();
+
+                userList = userDao.searchUser(query);
+                request.setAttribute("userList", userList);
+                productList = productDao.searchProduct(query);
+                request.setAttribute("productList", productList);
+                staffList = staffDao.searchStaff(query);
+                request.setAttribute("staffList", staffList);
+            }
+
+            request.getRequestDispatcher("ManageAdminSearchAll.jsp").forward(request, response);
+        } else if (page.equals("staff")) {
+            staffList = staffDao.searchStaff(query);
+            request.setAttribute("staffList", staffList);
+            request.getRequestDispatcher("ManageStaffForAdminSearchStaff.jsp").forward(request, response);
         }
 
     }

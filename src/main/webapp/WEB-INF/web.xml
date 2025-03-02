@@ -108,6 +108,10 @@
         <servlet-name>ConfirmOrderController</servlet-name>
         <servlet-class>Controller.ConfirmOrderController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffManagerOrders</servlet-name>
+        <servlet-class>Controller.StaffManagerOrders</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -221,6 +225,10 @@
     <servlet-mapping>
         <servlet-name>ConfirmOrderController</servlet-name>
         <url-pattern>/ConfirmOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManagerOrders</servlet-name>
+        <url-pattern>/StaffManagerOrders</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

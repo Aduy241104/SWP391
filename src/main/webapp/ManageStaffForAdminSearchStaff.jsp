@@ -112,71 +112,85 @@
         </style>
     </head>
     <body>
-        <jsp:include page="Component/sidebarAdmin.jsp"/>
+        <div class="sidebar">
+            <h2><i class="fas fa-cogs"></i> Admin</h2>
+            <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
+            <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
+            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
-            <jsp:param name="page" value="order"/>
+            <jsp:param name="page" value="staff"/>
         </jsp:include>
 
-        <%
-            String role = (String) session.getAttribute("role");
-        %>
         <c:choose>
-            <c:when test="${not empty orderList}">
+            <c:when test="${not empty staffList}">
                 <div class="main-content">
-                    <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
+                    <h2 class="text-center"><i class="fas fa-users"></i> Manage Staff</h2>
                     <table class="table table-bordered table-hover mt-4">
                         <tr class="table-dark">
-                            <th>Order ID</th><th>User ID</th><th>Total Amount</th><th>Created At</th><th>Address</th><th>Phone Number</th><th>Status</th><th>Action</th>
+                            <th>Staff ID</th>
+                            <th>Full Name</th>
+                            <th>Is Active</th>
+                            <th>Action</th>
                         </tr>
-                        <c:forEach var="order" items="${orderList}">
+                        <c:forEach var="staff" items="${staffList}">
                             <tr>
-                                <td>${order.orderId}</td>
-                                <td>${order.userId}</td>
-                                <td>${order.totalAmount}</td>
-                                <td>${order.createdAt}</td>
-                                <td>${order.address}</td>
-                                <td>${order.phoneNumber}</td>
-                                <td>${order.orderStatus}</td>
+                                <td>${staff.staffID}</td>
+                                <td>${staff.fullName}</td>
+                                <td>${staff.isActive}</td>
                                 <td>
-                                    <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}&price=${order.totalAmount}&userID=${order.userId}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View Details</a>
+                                    <div class="product-actions">
+                                        <c:choose>
+                                            <c:when test="${staff.role eq 'Admin'}">
+                                                <button  style="padding: 5px 18px;" style="margin-left: 10px;" class="btn btn-secondary btn-sm" disabled>
+                                                    <i class="fas fa-ban"></i> Disabled
+                                                </button>
+                                            </c:when>
+                                            <c:when test="${staff.isActive eq true}">
+                                                <a style="padding: 5px 16px;" href="AdminManagerStaff?action=banUser&id=${staff.staffID}" 
+                                                   onclick="return confirm('Are you sure you want to ban this user?')" 
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-ban"></i> Ban User
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="AdminManagerStaff?action=unBanUser&id=${staff.staffID}" 
+                                                   onclick="return confirm('Are you sure you want to unban this user?')" 
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i> Unban User
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="AdminManagerStaff?action=viewUserDetails&id=${user.userId}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i> View Detail
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </c:forEach>
-                    </table>
 
-                    <% if ("admin".equals(role)) { %>
+
+                    </table>
                     <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="AdminManagerProducts?action=order" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Order Page
+                        <a href="AdminManageStaff?action=staff" class="btn btn-custom btn-lg shadow">
+                            <i class="fas fa-arrow-left"></i> Back to Staff Page
                         </a>
                     </div>
-                    <% } else { %>
-                    <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="StaffManagerOrders?action=orders" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Order Page
-                        </a>
-                    </div>
-                    <% }%>
                 </div>
             </c:when>
             <c:otherwise>
                 <div class="center-container">
                     <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
                 </div>
-
-                <% if ("admin".equals(role)) { %>
                 <div style="margin-bottom: 20px;" class="action-buttons-add">
-                    <a href="AdminManagerProducts?action=orders" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Order Page
+                    <a href="AdminManagerUser?action=user" class="btn btn-custom btn-lg shadow">
+                        <i class="fas fa-arrow-left"></i> Back to User Page
                     </a>
                 </div>
-                <% } else { %>
-                <div style="margin-bottom: 20px;" class="action-buttons-add">
-                    <a href="StaffManagerOrders?action=orders" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Order Page
-                    </a>
-                </div>
-                <% }%>
             </c:otherwise>
         </c:choose>
         <script>

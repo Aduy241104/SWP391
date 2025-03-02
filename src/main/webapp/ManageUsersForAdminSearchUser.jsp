@@ -129,7 +129,7 @@
         <c:choose>
             <c:when test="${not empty userList}">
                 <div class="main-content">
-                    <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
+                    <h2 class="text-center"><i class="fas fa-users"></i> Manage Users</h2>
                     <table class="table table-bordered table-hover mt-4">
                         <tr class="table-dark">
                             <th>User ID</th>

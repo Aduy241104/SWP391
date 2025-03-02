@@ -113,38 +113,48 @@
                 color: #000;
             }
 
-
-
-
         </style>
     </head>
-    <body>
-        <!-- Sidebar -->
+    <body>                
+        <%
+            String role = (String) session.getAttribute("role");
+        %>
+
+        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
+            <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
+        <% } else { %>
+        <div class="sidebar">
+            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
+            <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+        </div>
+        <% }%>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
-             <jsp:param name="page" value="product"/>
+            <jsp:param name="page" value="product"/>
         </jsp:include>
 
-            <div style="margin-right: 100px; margin-top: 100px;" class="container main-content">
-                <div class="row">
-                    <div class="col-md-6" style="height: 500px;">
-                        <img src="${product.imageUrl}" alt="Product Image" class="product-image">
+        <div style="margin-right: 100px; margin-top: 100px;" class="container main-content">
+            <div class="row">
+                <div class="col-md-6" style="height: 500px;">
+                    <img src="${product.imageUrl}" alt="Product Image" class="product-image">
                 </div>
                 <div class="col-md-6">
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
                     <h4>
-                    Stock:${product.stock}
+                        Stock:${product.stock}
                     </h4>
                     <p><div class="status">
                         <div class="status-dot
@@ -222,14 +232,14 @@
                                    if (toast) {
                                        // Thêm class 'show' để hiển thị Toast
                                        toast.classList.add("show");
-                                       
+
                                        // Ẩn Toast sau 3 giây
                                        setTimeout(() => {
                                            toast.classList.remove("show");
                                        }, 3000);
                                    }
                                }
-                               
+
                                // Gọi hàm showToast khi cần (ví dụ: khi thêm sản phẩm vào giỏ hàng thành công)
                                document.addEventListener("DOMContentLoaded", () => {
                                    // Giả lập thêm sản phẩm thành công

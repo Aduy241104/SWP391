@@ -112,15 +112,29 @@
         </style>
     </head>
     <body>
+       <%
+            String role = (String) session.getAttribute("role");
+        %>
+
+        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
+            <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock" class="active"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
+        <% } else { %>
+        <div class="sidebar">
+            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
+            <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+        </div>
+        <% }%>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
             <jsp:param name="page" value="product"/>
@@ -159,13 +173,7 @@
 
                                 <td>${product.price}</td>
                                 <td>
-                                    <form action="AdminManagerProducts?action=updateStock" method="POST"  class="stock-input-form">
-                                        <input type="hidden" name="id" value="${product.productID}">
-                                        <input type="number" name="stock" value="${product.stock}" min="0" style="width: 80px; padding: 5px;" required>
-                                        <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                                            Update
-                                        </button>
-                                    </form>
+                                    ${product.stock}
                                 </td>
 
                                 <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
@@ -200,11 +208,11 @@
                 <div class="center-container">
                     <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
                 </div>
-                 <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Product Page
-                        </a>
-                    </div>
+                <div style="margin-bottom: 20px;" class="action-buttons-add">
+                    <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
+                        <i class="fas fa-arrow-left"></i> Back to Product Page
+                    </a>
+                </div>
             </c:otherwise>
         </c:choose>
         <script>

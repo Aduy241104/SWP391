@@ -79,7 +79,6 @@ public class AdminManagerProducts extends HttpServlet {
         if (action.equals("product")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
-
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdmin.jsp").forward(request, response);
         } else if (action.equals("BackToAdminDashboard")) {
@@ -209,6 +208,7 @@ public class AdminManagerProducts extends HttpServlet {
 
         try {
             if ("addProduct".equals(action)) {
+
                 String productName = request.getParameter("productName");
                 String priceStr = request.getParameter("price");
                 String description = request.getParameter("description");
@@ -234,13 +234,21 @@ public class AdminManagerProducts extends HttpServlet {
                 int categoryID = (categoryIDStr != null && !categoryIDStr.trim().isEmpty()) ? Integer.parseInt(categoryIDStr) : 0;
                 double weight = (weightStr != null && !weightStr.trim().isEmpty()) ? Double.parseDouble(weightStr) : 0.0;
                 boolean isActive = (isActiveStr != null && !isActiveStr.trim().isEmpty()) ? Boolean.parseBoolean(isActiveStr) : false;
-
                 ProductDAO productDao = new ProductDAO();
-                Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
-                productDao.addProduct(product);
-
-                response.sendRedirect("AdminManagerProducts?action=product");
-
+                boolean exists = productDao.isProductNameAndCategoryExist(productName, categoryID);
+                if (exists) {
+                    Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
+                    request.setAttribute("product", product);
+                    CategoryDAO categoryDAO = new CategoryDAO();
+                    List<Category> categoryList = categoryDAO.getAllCategory();
+                    request.setAttribute("categoryList", categoryList);
+                    request.setAttribute("error", "Product with this name and category already exists!");
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                } else {
+                    Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
+                    productDao.addProduct(product);
+                    response.sendRedirect("AdminManagerProducts?action=product");
+                }
             } else if ("editProduct".equals(action)) {
                 String productIDStr = request.getParameter("productID");
                 String productName = request.getParameter("productName");

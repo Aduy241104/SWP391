@@ -115,6 +115,39 @@ public class StaffDAO {
         return false;
     }
 
+    //thaiv
+    public List<Staff> searchStaff(String keyword) {
+        List<Staff> staffList = new ArrayList<>();
+        String query = "SELECT s.staffID, u.userID, u.username, u.email, u.fullName, u.createdAt, u.isActive "
+                + "FROM Staffs s JOIN Users u ON s.userID = u.userID "
+                + "WHERE u.username LIKE ? OR u.email LIKE ? OR u.fullName LIKE ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            String searchKeyword = "%" + keyword + "%";
+            ps.setString(1, searchKeyword);
+            ps.setString(2, searchKeyword);
+            ps.setString(3, searchKeyword);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    staffList.add(new Staff(
+                            rs.getInt("staffID"),
+                            String.valueOf(rs.getInt("userID")),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            "Staff",
+                            rs.getBoolean("isActive")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return staffList;
+    }
+
     public static void main(String[] args) {
         StaffDAO staffDAO = new StaffDAO();
 
@@ -124,15 +157,17 @@ public class StaffDAO {
         String fullName = "Staff Two";
         String password = "pass123";
         String role = "Staff";
+        String keyword = "staff";
+        List<Staff> searchResults = staffDAO.searchStaff(keyword);
 
-        // Gọi hàm addStaff để thêm nhân viên
-        boolean isAdded = staffDAO.addStaff(username, email, fullName, password, true);
-
-        // Kiểm tra kết quả
-        if (isAdded) {
-            System.out.println("✅ Nhân viên mới đã được thêm thành công!");
+        // Hiển thị kết quả tìm kiếm
+        if (searchResults.isEmpty()) {
+            System.out.println("❌ Không tìm thấy nhân viên nào!");
         } else {
-            System.out.println("❌ Thêm nhân viên thất bại!");
+            System.out.println("✅ Danh sách nhân viên tìm thấy:");
+            for (Staff staff : searchResults) {
+                System.out.println("- " + staff.getFullName() + " (" + staff.getUsername() + ")");
+            }
         }
     }
 }

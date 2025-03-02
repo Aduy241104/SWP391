@@ -26,6 +26,9 @@
                 <% if (role.equals("admin")) { %>
                 <a href="AdminManagerProducts?action=productForDashBoard">Manage for Admin</a> |
                 <% } %>
+                <% if (role.equals("staff")) { %>
+                <a href="StaffManagerOrders?action=ordersForDashBoard">Manage for Staff</a> |
+                <% } %>
                 <a href="LogoutController">Logout</a>
                 <% } else { %>
                 <a href="signIn.jsp">Sign In</a>
