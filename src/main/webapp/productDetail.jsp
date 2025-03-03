@@ -108,9 +108,15 @@
                     <p class="product-price">${product.price}$</p>
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
                     <p><strong>Stock:</strong> ${product.stock}</p>
+
+                    <div class="quantity-place">
+                        <button id="decrease"><i class="fa-solid fa-minus"></i></button>
+                        <input type="text" id="quantity" readonly value="1" min="1" max="${product.stock}">
+                        <button id="increase"><i class="fa-solid fa-plus"></i></button>
+                    </div>
                     <div class="product-buttons">
 
-                        <a class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
+                        <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
                         <a class="btn customize" href="AddToCart?productID=4&quantity=3">Buy Now</a>
                     </div>
                     <div class="">
@@ -141,7 +147,7 @@
 
                 <div class="col-md-6" style="height: 375px;">
                     <h2>Rating 4.5⭐</h2>
-                   <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
+                    <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
 
                 </div>
 
@@ -157,28 +163,28 @@
             <div class="row">
                 <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
                 <c:forEach var="ctl" items="${requestScope.listRelatedProduct}">
-                     <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
-                    <a href="ViewProductDetailController?productID=${ctl.productID}">
-                        <div class="rxs" href="">
-                            <img src="${ctl.imageUrl}" alt="">
-                            <div class="suggest-product_infor">
-                                <h5>${ctl.productName}</h5>
-                                <p>${ctl.price}</p>
-                                <a href="" class="hxe">Add To Cart</a>
+                    <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
+                        <a href="ViewProductDetailController?productID=${ctl.productID}">
+                            <div class="rxs" href="">
+                                <img src="${ctl.imageUrl}" alt="">
+                                <div class="suggest-product_infor">
+                                    <h5>${ctl.productName}</h5>
+                                    <p>${ctl.price}</p>
+                                    <a href="" class="hxe">Add To Cart</a>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>          
+                        </a>
+                    </div>          
                 </c:forEach>
-                
-               
-                
-                   
+
+
+
+
             </div>
         </div>
 
 
-                        <c:if test="${not empty isAdded}">
+        <c:if test="${not empty isAdded}">
             <div class="toast-container">
                 <div class="toast" id="success-toast">
                     Added Product to Cart
@@ -192,6 +198,7 @@
         </footer>
 
 
+        <script src="Js/Prdt.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             // Hàm hiển thị Toast
