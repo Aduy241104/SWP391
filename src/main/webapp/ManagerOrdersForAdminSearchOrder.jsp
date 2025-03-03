@@ -112,107 +112,71 @@
         </style>
     </head>
     <body>
-       <%
-            String role = (String) session.getAttribute("role");
-        %>
-
-        <% if ("admin".equals(role)) { %>
-        <div class="sidebar">
-            <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
-            <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
-            <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" class="active"><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
-        </div>
-        <% } else { %>
-        <div class="sidebar">
-            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
-            <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
-        </div>
-        <% }%>
-
+        <jsp:include page="Component/sidebarAdmin.jsp"/>
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
-            <jsp:param name="page" value="product"/>
+            <jsp:param name="page" value="order"/>
         </jsp:include>
 
+        <%
+            String role = (String) session.getAttribute("role");
+        %>
         <c:choose>
-            <c:when test="${not empty productList}">
+            <c:when test="${not empty orderList}">
                 <div class="main-content">
-                    <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
+                    <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
                     <table class="table table-bordered table-hover mt-4">
                         <tr class="table-dark">
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Image</th>
-                            <th>Action</th>
+                            <th>Order ID</th><th>User ID</th><th>Total Amount</th><th>Created At</th><th>Address</th><th>Phone Number</th><th>Status</th><th>Action</th>
                         </tr>
-                        <c:forEach var="product" items="${productList}">
+                        <c:forEach var="order" items="${orderList}">
                             <tr>
-                                <td>${product.productID}</td>
-                                <td>${product.productName}</td>
-                                <td class="description">
-                                    <c:choose>
-                                        <c:when test="${fn:length(product.description) > 20}">
-                                            <span class="short-text">${fn:substring(product.description, 0, 100)}...</span>
-                                            <span class="full-text" style="display: none;">${product.description}</span>
-                                            <button class="toggle-btn btn btn-sm btn-link">See more...</button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${product.description}
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-
-                                <td>${product.price}</td>
+                                <td>${order.orderId}</td>
+                                <td>${order.userId}</td>
+                                <td>${order.totalAmount}</td>
+                                <td>${order.createdAt}</td>
+                                <td>${order.address}</td>
+                                <td>${order.phoneNumber}</td>
+                                <td>${order.orderStatus}</td>
                                 <td>
-                                    ${product.stock}
-                                </td>
-
-                                <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
-                                <td>
-                                    <div class="product-actions">
-                                        <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
-                                        <a href="AdminManagerProducts?action=delete&id=${product.productID}" 
-                                           onclick="return confirm('Are you sure you want to delete this product?')" 
-                                           class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </a>
-                                        <a href="AdminManagerProducts?action=viewProductDetail&id=${product.productID}" class="btn btn btn-info btn-sm">
-                                            <i class="fas fa-eye"></i> View Detail
-                                        </a>
-                                    </div>
+                                    <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}&price=${order.totalAmount}&userID=${order.userId}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View Details</a>
                                 </td>
                             </tr>
                         </c:forEach>
                     </table>
+
+                    <% if ("admin".equals(role)) { %>
                     <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Product Page
+                        <a href="AdminManagerProducts?action=order" class="btn btn-custom btn-lg shadow">
+                            <i class="fas fa-arrow-left"></i> Back to Order Page
                         </a>
                     </div>
+                    <% } else { %>
+                    <div style="margin-bottom: 20px;" class="action-buttons-add">
+                        <a href="StaffManagerOrders?action=orders" class="btn btn-custom btn-lg shadow">
+                            <i class="fas fa-arrow-left"></i> Back to Order Page
+                        </a>
+                    </div>
+                    <% }%>
                 </div>
             </c:when>
-
-
             <c:otherwise>
                 <div class="center-container">
                     <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
                 </div>
+
+                <% if ("admin".equals(role)) { %>
                 <div style="margin-bottom: 20px;" class="action-buttons-add">
-                    <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Product Page
+                    <a href="AdminManagerProducts?action=orders" class="btn btn-custom btn-lg shadow">
+                        <i class="fas fa-arrow-left"></i> Back to Order Page
                     </a>
                 </div>
+                <% } else { %>
+                <div style="margin-bottom: 20px;" class="action-buttons-add">
+                    <a href="StaffManagerOrders?action=orders" class="btn btn-custom btn-lg shadow">
+                        <i class="fas fa-arrow-left"></i> Back to Order Page
+                    </a>
+                </div>
+                <% }%>
             </c:otherwise>
         </c:choose>
         <script>

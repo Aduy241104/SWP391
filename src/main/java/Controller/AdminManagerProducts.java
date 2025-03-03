@@ -7,10 +7,12 @@ package Controller;
 import DAO.CategoryDAO;
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
+import DAO.StaffDAO;
 import DAO.userDAO;
 import Model.Category;
 import Model.Orders;
 import Model.Product;
+import Model.Staff;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +21,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.List;
@@ -76,7 +79,6 @@ public class AdminManagerProducts extends HttpServlet {
         if (action.equals("product")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
-
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdmin.jsp").forward(request, response);
         } else if (action.equals("BackToAdminDashboard")) {
@@ -91,11 +93,7 @@ public class AdminManagerProducts extends HttpServlet {
             List<Product> productList = pDao.getProductList();
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("adminDashboard.jsp?view=productTable").forward(request, response);
-        } else if (action.equals("ordersForDashBoard")) {
-            OrdersDAO ordersDao = new OrdersDAO();
-            List<Orders> OrdersList = ordersDao.getAllOrders();
-            request.setAttribute("OrdersList", OrdersList);
-            request.getRequestDispatcher("adminDashboard.jsp?view=orderTable").forward(request, response);
+
         } else if (action.equals("count")) {
             ProductDAO productDao = new ProductDAO();
             List<Product> productList = productDao.getProductList();
@@ -104,21 +102,20 @@ public class AdminManagerProducts extends HttpServlet {
             OrdersDAO OrdersDAO = new OrdersDAO();
             userDAO userDao = new userDAO();
             List<User> userList = userDao.getAllUser();
+            StaffDAO staffDao = new StaffDAO();
+            List<Staff> staffList = staffDao.getAllStaffs();
             Double totalAmount = OrdersDAO.getTotalAmountOfDeliveredOrders();
+            int countStaff = staffList.size();
             int countOrders = OrdersList.size();
             int count = productList.size();
             int countUser = userList.size();
+            request.getSession().setAttribute("countStaff", countStaff);
             request.getSession().setAttribute("totalAmount", totalAmount);
             request.getSession().setAttribute("countOrders", countOrders);
             request.getSession().setAttribute("count", count);
             request.getSession().setAttribute("countUser", countUser);
             request.setAttribute("count", count);
             request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
-        } else if (action.equals("order")) {
-            OrdersDAO orderDao = new OrdersDAO();
-            List<Orders> orderList = orderDao.getAllOrders();
-            request.setAttribute("orderList", orderList);
-            request.getRequestDispatcher("ManagerOrdersForAdmin.jsp").forward(request, response);
         } else if (action.equals("delete")) {
             ProductDAO productDao = new ProductDAO();
             String id_raw = request.getParameter("id");
@@ -184,6 +181,14 @@ public class AdminManagerProducts extends HttpServlet {
             request.setAttribute("error", "Export quantity cannot exceed stock quantity!");
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
+        } else if (action.equals("managerStockSearch")) {
+            HttpSession session = request.getSession();
+            String query = (String) session.getAttribute("query");
+            ProductDAO pDao = new ProductDAO();
+            List<Product> productList = pDao.getProductList();
+            request.setAttribute("query", query);
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("AdminManager_Search?page=stock&query=" + query).forward(request, response);
         }
 
     }
@@ -203,6 +208,7 @@ public class AdminManagerProducts extends HttpServlet {
 
         try {
             if ("addProduct".equals(action)) {
+
                 String productName = request.getParameter("productName");
                 String priceStr = request.getParameter("price");
                 String description = request.getParameter("description");
@@ -228,13 +234,21 @@ public class AdminManagerProducts extends HttpServlet {
                 int categoryID = (categoryIDStr != null && !categoryIDStr.trim().isEmpty()) ? Integer.parseInt(categoryIDStr) : 0;
                 double weight = (weightStr != null && !weightStr.trim().isEmpty()) ? Double.parseDouble(weightStr) : 0.0;
                 boolean isActive = (isActiveStr != null && !isActiveStr.trim().isEmpty()) ? Boolean.parseBoolean(isActiveStr) : false;
-
                 ProductDAO productDao = new ProductDAO();
-                Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
-                productDao.addProduct(product);
-
-                response.sendRedirect("AdminManagerProducts?action=product");
-
+                boolean exists = productDao.isProductNameAndCategoryExist(productName, categoryID);
+                if (exists) {
+                    Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
+                    request.setAttribute("product", product);
+                    CategoryDAO categoryDAO = new CategoryDAO();
+                    List<Category> categoryList = categoryDAO.getAllCategory();
+                    request.setAttribute("categoryList", categoryList);
+                    request.setAttribute("error", "Product with this name and category already exists!");
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                } else {
+                    Product product = new Product(productName, description, price, stock, imagePath, categoryID, isActive, size, ageRange, origin, weight);
+                    productDao.addProduct(product);
+                    response.sendRedirect("AdminManagerProducts?action=product");
+                }
             } else if ("editProduct".equals(action)) {
                 String productIDStr = request.getParameter("productID");
                 String productName = request.getParameter("productName");
@@ -307,7 +321,7 @@ public class AdminManagerProducts extends HttpServlet {
 
                     ProductDAO productDAO = new ProductDAO();
                     boolean isUpdated = productDAO.updateStock(productId, stock);
-                    if(stock == 0){
+                    if (stock == 0) {
                         productDAO.deleteProduct(productId);
                     }
                     if (isUpdated) {
@@ -323,22 +337,71 @@ public class AdminManagerProducts extends HttpServlet {
                     request.setAttribute("error", "An error occurred: " + e.getMessage());
                     request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
                 }
+            } else if (action.equals("ImportStock")) {
+                String query = request.getParameter("query");
+                int productId = Integer.parseInt(request.getParameter("id"));
+                int newStock = Integer.parseInt(request.getParameter("newStock"));
+                int stock = Integer.parseInt(request.getParameter("stock"));
+
+                ProductDAO productDAO = new ProductDAO();
+                newStock += stock;
+
+                boolean isUpdated = productDAO.updateStock(productId, newStock);
+                request.setAttribute("query", query);
+                if (isUpdated) {
+                    response.sendRedirect("AdminManagerProducts?action=managerStockSearch");
+                } else {
+                    request.setAttribute("error", "Failed to update stock. Please try again.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
+            } else if (action.equals("ExportStock")) {
+                String query = request.getParameter("query");
+                try {
+                    int productId = Integer.parseInt(request.getParameter("id"));
+                    int newStock = Integer.parseInt(request.getParameter("newStock"));
+                    int stock = Integer.parseInt(request.getParameter("stock"));
+
+                    // Kiểm tra số lượng tồn kho có đủ để xuất không
+                    if (newStock > stock) {
+                        response.sendRedirect("AdminManagerProducts?action=managerStockSearch");
+                        return; // Thêm return để dừng chương trình
+                    }
+
+                    stock -= newStock;
+
+                    ProductDAO productDAO = new ProductDAO();
+                    boolean isUpdated = productDAO.updateStock(productId, stock);
+                    if (stock == 0) {
+                        productDAO.deleteProduct(productId);
+                    }
+                    request.setAttribute("query", query);
+                    if (isUpdated) {
+                        response.sendRedirect("AdminManagerProducts?action=managerStockSearch");
+                    } else {
+                        request.setAttribute("error", "Failed to update stock. Please try again.");
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("error", "Invalid input format. Please check your data.");
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                } catch (Exception e) {
+                    request.setAttribute("error", "An error occurred: " + e.getMessage());
+                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+                }
             }
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
     }
 
-            /**
-             * Returns a short description of the servlet.
-             *
-             * @return a String containing servlet description
-             */
-            @Override
-            public String getServletInfo
-            
-                () {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
-            }// </editor-fold>
+    }// </editor-fold>
 
-        }
+}

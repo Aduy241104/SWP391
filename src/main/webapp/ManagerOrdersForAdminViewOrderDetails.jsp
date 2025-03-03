@@ -8,6 +8,7 @@
 <%@page import="Model.Orders"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -44,17 +45,17 @@
                 align-items: center;
                 margin-bottom: 20px;
                 padding: 15px;
-                background-color: #f0f0f0; /* Đổi màu nền nhạt hơn, nhẹ nhàng hơn */
+                background-color: #f0f0f0;
                 border-radius: 5px;
-                font-weight: 500; /* Giảm độ đậm của chữ */
+                font-weight: 500;
             }
             .customer-info p {
-                margin: 0 8px; /* Giảm khoảng cách giữa các mục */
-                font-size: 14px; /* Giảm kích thước chữ nhỏ hơn */
-                color: #333; /* Đổi màu chữ thành xám đậm, dễ đọc hơn */
+                margin: 0 8px;
+                font-size: 14px;
+                color: #333;
             }
             .customer-info strong {
-                color: #ED1164; /* Giữ màu hồng cho chữ "strong" (như tiêu đề) để nổi bật */
+                color: #ED1164;
             }
             .table-responsive {
                 margin-top: 20px;
@@ -88,12 +89,30 @@
                 font-size: 14px;
                 border-radius: 5px;
             }
-            .btn-success { background-color: #28a745; border-color: #28a745; }
-            .btn-danger { background-color: #dc3545; border-color: #dc3545; }
-            .btn-custom { background-color: #EA83AA; color: #fff; border-color: #ED1164; }
-            .btn-success:hover { background-color: #218838; border-color: #218838; }
-            .btn-danger:hover { background-color: #c82333; border-color: #c82333; }
-            .btn-custom:hover { background-color: #F9D1E1;  }
+            .btn-success {
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+            .btn-danger {
+                background-color: #dc3545;
+                border-color: #dc3545;
+            }
+            .btn-custom {
+                background-color: #EA83AA;
+                color: #fff;
+                border-color: #ED1164;
+            }
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #218838;
+            }
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #c82333;
+            }
+            .btn-custom:hover {
+                background-color: #F9D1E1;
+            }
             .no-orders {
                 text-align: center;
                 color: #dc3545;
@@ -115,17 +134,32 @@
         </style>
     </head>
     <body>
+        <%
+            String role = (String) session.getAttribute("role");
+        %>
+
+        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
-            <h2 style="color: white; text-align: start;"><i class="fas fa-cogs"></i> Admin</h2>
+            <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerOrders?action=order" class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
-
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        <% } else { %>
+        <div class="sidebar">
+            <h2  style="color: white; margin-bottom: 10px;text-align: start;" ><i class="fas fa-cogs"></i> Staff</h2>
+            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="StaffManagerOrders?action=orders" class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+        </div>
+        <% }%>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="order"/>
+        </jsp:include>
 
         <div class="main-content">
             <div class="container">
@@ -214,10 +248,15 @@
                         </c:when>
                     </c:choose>
                 </c:if>
-
-                <a href="AdminManagerProducts?action=order" style="margin-left: 450px;" class="btn btn-custom btn-lg shadow">
+                <% if ("admin".equals(role)) { %>
+                <a href="AdminManagerOrders?action=order" style="margin-left: 450px;" class="btn btn-custom btn-lg shadow">
                     <i style="padding-right: 10px;" class="fas fa-arrow-left"></i> Back to Manage Orders
-                </a>
+                </a>  
+                <% } else { %>
+                <a href="StaffManagerOrders?action=orders" style="margin-left: 450px;" class="btn btn-custom btn-lg shadow">
+                    <i style="padding-right: 10px;" class="fas fa-arrow-left"></i> Back to Manage Orders
+                </a>  
+                <% }%>
             </div>
         </div>
     </body>

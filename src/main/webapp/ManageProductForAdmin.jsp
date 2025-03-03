@@ -75,35 +75,50 @@
                 padding: 5px 10px;
                 font-size: 12px;
             }
-
         </style>
     </head>
     <body>
+        <%
+            String role = (String) session.getAttribute("role");
+        %>
+
+        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
+            <h2 style="color: white; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
+        <% } else { %>
+        <div class="sidebar">
+            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
+            <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+        </div>
+        <% }%>
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="product"/>
+        </jsp:include>
 
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
-                <table class="table table-bordered table-hover mt-4">
-                    <tr class="table-dark">
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Stock</th>
+        <div class="main-content">
+            <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
+            <table class="table table-bordered table-hover mt-4">
+                <tr class="table-dark">
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Stock</th>
 
-                        <th>Image</th>
-                        <th>Action</th>
-                    </tr>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>
                 <c:forEach var="product" items="${productList}">
                     <tr>
                         <td>${product.productID}</td>
@@ -123,7 +138,7 @@
 
                         <td>${product.price}</td>
                         <td>
-                               ${product.stock}
+                            ${product.stock}
                         </td>
 
                         <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
@@ -145,6 +160,7 @@
                     </tr>
                 </c:forEach>
             </table>
+            <% if ("admin".equals(role)) {%>
             <div style="margin-bottom: 20px;" class="action-buttons-add">
                 <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
                     <i class="fas fa-plus-circle"></i> Add New Product
@@ -156,30 +172,43 @@
                     <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>
             </div>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".toggle-btn").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let td = this.closest("td");
-                        td.classList.toggle("expanded");
+            <% } else { %>
+            <div style="margin-bottom: 20px;" class="action-buttons-add">
+                <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-plus-circle"></i> Add New Product
+                </a>
+                <a href="AdminManagerProducts?action=viewDelete" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-trash"></i> View Deleted Products
+                </a>
+                <a href="StaffManagerOrders?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-arrow-left"></i> Back to Staff Page
+                </a>
+            </div>
 
-                        let shortText = td.querySelector(".short-text");
-                        let fullText = td.querySelector(".full-text");
+            <% }%>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.querySelectorAll(".toggle-btn").forEach(button => {
+                        button.addEventListener("click", function () {
+                            let td = this.closest("td");
+                            td.classList.toggle("expanded");
 
-                        if (td.classList.contains("expanded")) {
-                            fullText.style.display = "inline";
-                            shortText.style.display = "none";
-                            this.textContent = "Collapse";
-                        } else {
-                            fullText.style.display = "none";
-                            shortText.style.display = "inline";
-                            this.textContent = "See more...";
-                        }
+                            let shortText = td.querySelector(".short-text");
+                            let fullText = td.querySelector(".full-text");
+
+                            if (td.classList.contains("expanded")) {
+                                fullText.style.display = "inline";
+                                shortText.style.display = "none";
+                                this.textContent = "Collapse";
+                            } else {
+                                fullText.style.display = "none";
+                                shortText.style.display = "inline";
+                                this.textContent = "See more...";
+                            }
+                        });
                     });
                 });
-            });
 
-        </script>
+            </script>
     </body>
 </html>

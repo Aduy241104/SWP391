@@ -176,35 +176,37 @@ public class StaffDAO {
         return false;
     }
 
-    public static void main(String[] args) {
-        StaffDAO staffDAO = new StaffDAO();
-        
-        // ID hợp lệ (thay đổi ID này thành một ID thực tế trong database)
-        int validStaffId = 1;
-        Staff staff = staffDAO.getStaffById(validStaffId);
-        
-        if (staff != null) {
-            System.out.println("✅ Lấy thông tin nhân viên thành công!");
-            System.out.println("Staff ID: " + staff.getStaffID());
+    //thaiv
+    public List<Staff> searchStaff(String keyword) {
+        List<Staff> staffList = new ArrayList<>();
+        String query = "SELECT s.staffID, u.userID, u.username, u.email, u.fullName, u.createdAt, u.isActive "
+                + "FROM Staffs s JOIN Users u ON s.userID = u.userID "
+                + "WHERE u.username LIKE ? OR u.email LIKE ? OR u.fullName LIKE ?";
 
-            System.out.println("Username: " + staff.getUsername());
-            System.out.println("Email: " + staff.getEmail());
-            System.out.println("Full Name: " + staff.getFullName());
-            System.out.println("Created At: " + staff.getCreatedAt());
-            System.out.println("Role: " + staff.getRole());
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            String searchKeyword = "%" + keyword + "%";
+            ps.setString(1, searchKeyword);
+            ps.setString(2, searchKeyword);
+            ps.setString(3, searchKeyword);
 
-        } else {
-            System.out.println("❌ Không tìm thấy nhân viên với ID: " + validStaffId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    staffList.add(new Staff(
+                            rs.getInt("staffID"),
+                            String.valueOf(rs.getInt("userID")),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            "Staff",
+                            rs.getBoolean("isActive")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Test với ID không hợp lệ
-        int invalidStaffId = -1; // ID này không tồn tại trong database
-        Staff staffNotFound = staffDAO.getStaffById(invalidStaffId);
-
-        if (staffNotFound == null) {
-            System.out.println("✅ Test với ID không hợp lệ thành công. Không tìm thấy nhân viên.");
-        } else {
-            System.out.println("❌ Lỗi: Lẽ ra không tìm thấy nhân viên nhưng lại có dữ liệu.");
-        }
+        return staffList;
     }
+
 }

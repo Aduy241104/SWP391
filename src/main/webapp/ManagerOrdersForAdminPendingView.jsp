@@ -22,17 +22,11 @@
         <link rel="stylesheet" href="css/ManageProductForAdminStyles.css"/>
     </head>
     <body>
-        <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
-            <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
-            <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"  class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
-        </div>
+        <jsp:include page="Component/sidebarAdmin.jsp"/>
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="order"/>
+        </jsp:include>
 
             <div class="main-content">
                 <h2 class="text-center"><i class="fas fa-shopping-cart"></i> Manage Orders</h2>
@@ -75,23 +69,7 @@
                     </tr>
                 </c:forEach>
             </table>
-            <div class="action-buttons-add">
-                <a  href="AdminManagerOrders?action=FunctionsOfOrderManagement&func=Pending" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-hourglass-half"></i> View Pending Orders
-                </a> 
-                <a  href="AdminManagerOrders?action=FunctionsOfOrderManagement&func=Shipping" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-truck"></i> View Shipping Orders
-                </a>
-                <a href="AdminManagerOrders?action=FunctionsOfOrderManagement&func=Delivered" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-clipboard-check"></i> View Delivered Orders
-                </a>
-                <a href="AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-times"></i> View Canceled Orders
-                </a>
-                <a href="AdminManagerProducts?action=order" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-arrow-left"></i> Back to Manage Orders
-                </a>
-            </div>
+              <jsp:include page="Component/actionButtonOrder.jsp"/>
 
         </div>
     </body>

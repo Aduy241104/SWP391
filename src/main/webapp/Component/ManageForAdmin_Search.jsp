@@ -17,9 +17,11 @@
             <form action="AdminManager_Search" method="GET">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
+                    <input type="hidden" name="page" value="<%= request.getParameter("page")%>">
                     <input type="text" name="query" placeholder="Search here">
                 </div>
             </form>
+
         </div>
     </body>
 </html>

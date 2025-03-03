@@ -102,4 +102,45 @@ public class orderDAO {
         }
         return orders;
     }
+    public Orders getOrderById(int orderId) {
+        Orders order = null;
+        String query = "SELECT * FROM Orders WHERE orderID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) { // Chỉ có 1 đơn hàng
+                int userID = resultSet.getInt("userID");
+                double totalAmount = resultSet.getDouble("totalAmount");
+                Date createdAt = resultSet.getDate("createdAt");
+                String address = resultSet.getString("address");
+                String phoneNumber = resultSet.getString("phoneNumber");
+                String orderStatus = resultSet.getString("orderStatus");
+
+                order = new Orders(orderId, userID, totalAmount, createdAt, address, phoneNumber, orderStatus);
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting order by ID: " + e.getMessage());
+        }
+        return order; // Chỉ trả về một đơn hàng hoặc null nếu không tìm thấy
+    }
+
+    public boolean CancelOrderById(int orderID) {
+        String query = "DELETE FROM Orders WHERE orderID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderID);
+            int rowsDeleted = preparedStatement.executeUpdate(); // Trả về số hàng bị xóa
+            System.out.println("Xóa order ID: " + orderID + " | rowDeleted: " + rowsDeleted);
+            return rowsDeleted > 0; // Trả về true nếu xóa thành công
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Nếu có lỗi, trả về false
+    }
 }

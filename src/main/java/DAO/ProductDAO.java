@@ -98,7 +98,7 @@ public class ProductDAO {
     }
 
     public List<Product> searchProduct(String keySearch) {
-        String query = "SELECT * FROM Products WHERE productName LIKE ?";
+        String query = "SELECT * FROM Products WHERE productName LIKE ? AND isActive = 1";
 
         List<Product> listResult = new ArrayList<>();
         try {
@@ -301,29 +301,34 @@ public class ProductDAO {
         return false;
     }
 
+    //thaiv
+    public boolean isProductNameAndCategoryExist(String productName, int categoryID) {
+        String query = "SELECT COUNT(*) FROM Products WHERE productName = ? AND categoryID = ? AND isActive = 1";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, productName);
+            preparedStatement.setInt(2, categoryID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1); // Lấy số lượng bản ghi khớp
+                return count > 0; // Trả về true nếu có ít nhất 1 bản ghi tồn tại
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Trả về false nếu không tìm thấy hoặc có lỗi
+    }
+
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();
 
-        // Tạo một sản phẩm để update
-        Product product = new Product();
-        product.setProductID(21); // ID của sản phẩm cần update
-        product.setProductName("New Toy Name");
-        product.setDescription("Updated description for the toy");
-        product.setPrice(29.99);
-        product.setStock(50);
-        product.setImageUrl("https://example.com/new-image.jpg");
-        product.setCategoryID(1);
-        product.setSize("Medium");
-        product.setAgeRange("3-5 years");
-        product.setOrigin("China");
-        product.setWeight(0.5);
-
-        // Gọi method update
-        boolean isUpdated = productDAO.updateProduct(product);
-        if (isUpdated) {
-            System.out.println("Product updated successfully!");
+        boolean exists = productDAO.isProductNameAndCategoryExist("Thai", 1);
+        if (exists) {
+            System.out.println("Product with this name and category already exists!");
         } else {
-            System.out.println("Failed to update product.");
+            System.out.println("Product does not exist. You can add it.");
         }
     }
 }

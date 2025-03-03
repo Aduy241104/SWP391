@@ -259,4 +259,42 @@ public class CartDAO {
         return totalPrice;
     }
 
+    public Cart getCartItemByID(int cartItemID) {
+        String query = "SELECT crt.cartItemID, crt.quantity,\n"
+                + "Prd.productID, Prd.productName, Prd.description,Prd.price,Prd.stock, Prd.imageUrl, Prd.isActive\n"
+                + "FROM CartItems AS crt\n"
+                + "INNER JOIN Products AS Prd \n"
+                + "ON Prd.productID = crt.productID\n"
+                + "WHERE cartItemID = ? AND Prd.isActive = 1";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, cartItemID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int cartItemIDs = resultSet.getInt("cartItemID");
+                int quantity = resultSet.getInt("quantity");
+                int productID = resultSet.getInt("productID");
+                String productName = resultSet.getString("productName");
+                String description = resultSet.getString("description");
+                double price = resultSet.getDouble("price");
+                int stock = resultSet.getInt("stock");
+                String imageUrl = resultSet.getString("imageUrl");
+                boolean isActive = resultSet.getBoolean("isActive");
+
+                Product product = new Product(productID, productName, description, price, stock, imageUrl, isActive);
+                Cart cart = new Cart(cartItemIDs, 0, quantity, product);
+                return  cart;
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+
+    }
+
 }

@@ -93,86 +93,109 @@
             .btn-cancel:hover {
                 background-color: #cc005f;
             }
-
+            .error-message {
+                color: #ff1a75;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
-        <!-- Sidebar -->
+        <%
+            String role = (String) session.getAttribute("role");
+        %>
+
+        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
-            <h2><i class="fas fa-cogs"></i> Admin</h2>
+            <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManagerProducts?action=product"  class="active"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
+        <% } else { %>
+        <div class="sidebar">
+            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
+            <a href="StaffManagerOrders?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+        </div>
+        <% }%>
 
-        
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="product"/>
+        </jsp:include>
 
 
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
-
-                <form action="AdminManagerProducts?action=addProduct" method="Post"  class="form-container" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Product Name:</label>
-                            <input type="text" class="form-control" name="productName" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Price ($):</label>
-                            <input type="number" class="form-control" name="price" step="0.01" required>
-                        </div>
+        <div class="main-content">
+            <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Product</h2>
+            <c:if test="${not empty error}">
+                <div class="error-message">${error}</div>
+            </c:if>
+            <form action="AdminManagerProducts?action=addProduct" method="Post" class="form-container" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Product Name:</label>
+                        <input type="text" class="form-control" name="productName" value="${product.productName}" required>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Description:</label>
-                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Price ($):</label>
+                        <input type="number" class="form-control" name="price" step="0.01" value="${product.price}" required>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Stock:</label>
-                            <input type="number" class="form-control" name="stock" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Category:</label>
-                            <select class="form-control" name="categoryID" required>
+                <div class="mb-3">
+                    <label class="form-label">Description:</label>
+                    <textarea class="form-control" name="description" rows="3" required>${product.description}</textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Stock:</label>
+                        <input type="number" class="form-control" name="stock" value="${product.stock}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Category:</label>
+                        <select class="form-control" name="categoryID" required>
                             <c:forEach var="category" items="${categoryList}">
-                                <option value="${category.categoryID}">${category.categoryName}</option>
+                                <option value="${category.categoryID}" ${category.categoryID == product.categoryID ? 'selected' : ''}>
+                                    ${category.categoryName}
+                                </option>
                             </c:forEach>
                         </select>
                     </div>
-
                 </div>
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Size:</label>
-                        <input type="text" class="form-control" name="size" required>
+                        <input type="text" class="form-control" name="size" value="${product.size}" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Age Range:</label>
-                        <input type="text" class="form-control" name="ageRange" required>
+                        <input type="text" class="form-control" name="ageRange" value="${product.ageRange}" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Origin:</label>
-                        <input type="text" class="form-control" name="origin" required>
+                        <input type="text" class="form-control" name="origin" value="${product.origin}" required>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Weight (kg):</label>
-                        <input type="number" class="form-control" name="weight" step="0.01" required>
+                        <input type="number" class="form-control" name="weight" step="0.01" value="${product.weight}" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Active:</label>
                         <select class="form-control" name="isActive">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
+                            <option value="true" ${product.isActive ? 'selected' : ''}>Yes</option>
+                            <option value="false" ${!product.isActive ? 'selected' : ''}>No</option>
                         </select>
                     </div>
                 </div>
@@ -180,6 +203,9 @@
                 <div class="mb-3">
                     <label class="form-label">Product Image:</label>
                     <input type="file" class="form-control" name="image" accept="image/*" required>
+                    <c:if test="${not empty product.imageUrl}">
+                        <small>Current image path: ${product.imageUrl}</small>
+                    </c:if>
                 </div>
 
                 <div class="text-center">

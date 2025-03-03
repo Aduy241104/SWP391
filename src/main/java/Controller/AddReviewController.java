@@ -39,6 +39,8 @@ public class AddReviewController extends HttpServlet {
              User user = (User) session.getAttribute("user");
              Review review = new Review(productID, user.getUserId(), rating, reviewText);
              
+              System.out.println(reviewText);
+             
             commentDAO cmt = new commentDAO();
             
             boolean check = cmt.addReview(review);
