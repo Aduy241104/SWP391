@@ -95,20 +95,6 @@ public class userDAO {
         return false;
     }
 
-//    public String checkUserExistence(String identifier) {
-//        String query = "SELECT username, email FROM Users WHERE username = ? OR email = ?";
-//        try (PreparedStatement ps = connection.prepareStatement(query)) {
-//            ps.setString(1, identifier);
-//            ps.setString(2, identifier);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                return "exists";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "not_exists";
-//    }
     public List<User> getAllUser() {
         List<User> userList = new ArrayList<>();
         String query = "SELECT userID, username, password, email, fullName, createdAt, isActive FROM Users";

@@ -34,6 +34,18 @@ public class Staff {
     public Staff() {
     }
 
+    public Staff(int staffID, String username, String email, String fullName, Date createdAt, String role, boolean isActive) {
+        this.staffID = staffID;
+        this.username = username;
+        this.email = email;
+        this.fullName = fullName;
+        this.createdAt = createdAt;
+        this.role = role;
+        this.isActive = isActive;
+    }
+
+    
+
     public int getStaffID() {
         return staffID;
     }

@@ -114,25 +114,97 @@ public class StaffDAO {
         }
         return false;
     }
+    
+    public boolean banStaff(int staffId) {
+        String query = "UPDATE Users SET isActive = 0 WHERE userID = (SELECT userID FROM Staffs WHERE staffID = ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean unBanStaff(int staffId) {
+        String query = "UPDATE Users SET isActive = 1 WHERE userID = (SELECT userID FROM Staffs WHERE staffID = ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public Staff getStaffById(int staffId) {
+        String query = "SELECT s.staffID, u.userID, u.username, u.email, u.fullName, u.createdAt, u.isActive "
+                 + "FROM Staffs s JOIN Users u ON s.userID = u.userID WHERE s.staffID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("staffID"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            "Staff",
+                            rs.getBoolean("isActive")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean isStaffActive(int staffId) {
+        String query = "SELECT u.isActive FROM Users u JOIN Staffs s ON u.userID = s.userID WHERE s.staffID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("isActive");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         StaffDAO staffDAO = new StaffDAO();
+        
+        // ID hợp lệ (thay đổi ID này thành một ID thực tế trong database)
+        int validStaffId = 1;
+        Staff staff = staffDAO.getStaffById(validStaffId);
+        
+        if (staff != null) {
+            System.out.println("✅ Lấy thông tin nhân viên thành công!");
+            System.out.println("Staff ID: " + staff.getStaffID());
 
-        // Dữ liệu nhân viên cần thêm
-        String username = "staff02";
-        String email = "staff02@gmail.com";
-        String fullName = "Staff Two";
-        String password = "pass123";
-        String role = "Staff";
+            System.out.println("Username: " + staff.getUsername());
+            System.out.println("Email: " + staff.getEmail());
+            System.out.println("Full Name: " + staff.getFullName());
+            System.out.println("Created At: " + staff.getCreatedAt());
+            System.out.println("Role: " + staff.getRole());
 
-        // Gọi hàm addStaff để thêm nhân viên
-        boolean isAdded = staffDAO.addStaff(username, email, fullName, password, true);
-
-        // Kiểm tra kết quả
-        if (isAdded) {
-            System.out.println("✅ Nhân viên mới đã được thêm thành công!");
         } else {
-            System.out.println("❌ Thêm nhân viên thất bại!");
+            System.out.println("❌ Không tìm thấy nhân viên với ID: " + validStaffId);
+        }
+
+        // Test với ID không hợp lệ
+        int invalidStaffId = -1; // ID này không tồn tại trong database
+        Staff staffNotFound = staffDAO.getStaffById(invalidStaffId);
+
+        if (staffNotFound == null) {
+            System.out.println("✅ Test với ID không hợp lệ thành công. Không tìm thấy nhân viên.");
+        } else {
+            System.out.println("❌ Lỗi: Lẽ ra không tìm thấy nhân viên nhưng lại có dữ liệu.");
         }
     }
 }

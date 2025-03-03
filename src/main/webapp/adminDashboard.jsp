@@ -62,14 +62,16 @@
         </div>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
-
-
             <div class="main-content">
                 <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
                 <div class="stats-container">
                     <div onclick="location.href = 'AdminManagerUser?action=userForDashBoard';" style="cursor: pointer;" class="stat-box">
                         <h3>${countUser}</h3>
                     <p><i class="fas fa-user"></i> Customers</p>
+                </div>
+                <div onclick="location.href = 'AdminManageStaff?action=staffForDashBoard';" style="cursor: pointer;" class="stat-box">
+                    <h3>${count}</h3>
+                    <p><i class="fas fa-project-diagram"></i> Staffs</p>
                 </div>
                 <div onclick="location.href = 'AdminManagerProducts?action=productForDashBoard';" style="cursor: pointer;" class="stat-box">
                     <h3>${count}</h3>
@@ -179,6 +181,33 @@
                                     <td>${user.userId}</td>
                                     <td>${user.username}</td>
                                     <td>${user.fullName}</td>
+                                </tr>
+                            </c:forEach>
+
+                        </table>
+                        <div style="margin-bottom: 20px;"class="action-buttons-add">
+                            <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">
+                                <i class="fas fa-arrow-left"></i> Back to Admin Page
+                            </a>
+                        </div>
+                    </div>
+                </c:when>
+                    <c:when test="${view eq 'staffTable'}">
+                        <table class="table table-bordered table-hover mt-4">
+                            <div class="header">
+                                <h2>Manage Staff</h2>
+                                <a href="AdminManageStaff?action=staff" class="see-all-btn">See all →</a>
+                            </div>
+                            <tr class="table-dark">
+                                <th>Staff ID</th>
+                                <th>Full Name</th>
+                                <th>Is Active</th>
+                            </tr>
+                            <c:forEach var="staff" items="${staffTable}">
+                                <tr>
+                                    <td>${staff.staffID}</td>
+                                    <td>${staff.fullName}</td>
+                                    <td>${staff.isActive}</td>
                                 </tr>
                             </c:forEach>
 
