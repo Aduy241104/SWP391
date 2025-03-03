@@ -114,6 +114,67 @@ public class StaffDAO {
         }
         return false;
     }
+    
+    public boolean banStaff(int staffId) {
+        String query = "UPDATE Users SET isActive = 0 WHERE userID = (SELECT userID FROM Staffs WHERE staffID = ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean unBanStaff(int staffId) {
+        String query = "UPDATE Users SET isActive = 1 WHERE userID = (SELECT userID FROM Staffs WHERE staffID = ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public Staff getStaffById(int staffId) {
+        String query = "SELECT s.staffID, u.userID, u.username, u.email, u.fullName, u.createdAt, u.isActive "
+                 + "FROM Staffs s JOIN Users u ON s.userID = u.userID WHERE s.staffID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("staffID"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            "Staff",
+                            rs.getBoolean("isActive")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean isStaffActive(int staffId) {
+        String query = "SELECT u.isActive FROM Users u JOIN Staffs s ON u.userID = s.userID WHERE s.staffID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("isActive");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     //thaiv
     public List<Staff> searchStaff(String keyword) {
@@ -148,26 +209,4 @@ public class StaffDAO {
         return staffList;
     }
 
-    public static void main(String[] args) {
-        StaffDAO staffDAO = new StaffDAO();
-
-        // Dữ liệu nhân viên cần thêm
-        String username = "staff02";
-        String email = "staff02@gmail.com";
-        String fullName = "Staff Two";
-        String password = "pass123";
-        String role = "Staff";
-        String keyword = "staff";
-        List<Staff> searchResults = staffDAO.searchStaff(keyword);
-
-        // Hiển thị kết quả tìm kiếm
-        if (searchResults.isEmpty()) {
-            System.out.println("❌ Không tìm thấy nhân viên nào!");
-        } else {
-            System.out.println("✅ Danh sách nhân viên tìm thấy:");
-            for (Staff staff : searchResults) {
-                System.out.println("- " + staff.getFullName() + " (" + staff.getUsername() + ")");
-            }
-        }
-    }
 }

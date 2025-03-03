@@ -61,6 +61,7 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
+
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
             <jsp:param name="page" value="searchAll"/>
         </jsp:include>
@@ -76,6 +77,11 @@
                 <div onclick="location.href = 'AdminManageStaff?action=staffForDashBoard';" style="cursor: pointer;" class="stat-box">
                     <h3>${countStaff}</h3>
                     <p><i class="fas fa-project-diagram"></i> Staff</p>
+
+                </div>
+                <div onclick="location.href = 'AdminManageStaff?action=staffForDashBoard';" style="cursor: pointer;" class="stat-box">
+                    <h3>${count}</h3>
+                    <p><i class="fas fa-project-diagram"></i> Staffs</p>
                 </div>
                 <div onclick="location.href = 'AdminManagerProducts?action=productForDashBoard';" style="cursor: pointer;" class="stat-box">
                     <h3>${count}</h3>
@@ -196,10 +202,12 @@
                         </div>
                     </div>
                 </c:when>
-                <c:when test="${view eq 'staffTable'}">
+
+                    <c:when test="${view eq 'staffTable'}">
                         <table class="table table-bordered table-hover mt-4">
                             <div class="header">
-                                <h2>Manage User</h2>
+                                <h2>Manage Staff</h2>
+
                                 <a href="AdminManageStaff?action=staff" class="see-all-btn">See all →</a>
                             </div>
                             <tr class="table-dark">

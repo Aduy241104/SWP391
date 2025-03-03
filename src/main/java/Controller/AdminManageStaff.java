@@ -61,7 +61,7 @@ public class AdminManageStaff extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         StaffDAO StaffDAO = new StaffDAO();
-        if (action.equals("staff")) {
+        if (action.equals("staff")) {   
             List<Staff> staffList = StaffDAO.getAllStaffs();
             request.setAttribute("staffList", staffList);
             request.getRequestDispatcher("ManageStaffForAdmin.jsp").forward(request, response);
@@ -69,19 +69,23 @@ public class AdminManageStaff extends HttpServlet {
             List<Staff> staffList = StaffDAO.getAllStaffs();
             request.setAttribute("staffTable", staffList);
             request.getRequestDispatcher("adminDashboard.jsp?view=staffTable").forward(request, response);
-//        } else if (action.equals("viewUserDetails")) {
-//            String StaffID_raw = request.getParameter("id");
-//            try { 
-//                int id = Integer.parseInt(StaffID_raw);
-//                Staff staff = StaffDAO.getUserByIDHaveActive(id);
-//                boolean isActive = userDao.isUserActive(id);
-//                request.setAttribute("isActive", isActive);
-//                request.setAttribute("user", user);
-//                request.getRequestDispatcher("ManageUsersForAdminViewDetails.jsp").forward(request, response);
-//            } catch (Exception e) {
-//            }
         } else if (action.equals("addStaff")) {
             response.sendRedirect("ManageStaffsForAdminAddStaff.jsp");
+        } else if (action.equals("banStaff")) {
+            int staffID = Integer.parseInt(request.getParameter("id"));
+            StaffDAO.banStaff(staffID);
+            response.sendRedirect("AdminManageStaff?action=staff");
+        } else if (action.equals("unBanStaff")) {
+            int staffID = Integer.parseInt(request.getParameter("id"));
+            StaffDAO.unBanStaff(staffID);
+            response.sendRedirect("AdminManageStaff?action=staff");
+        } else if (action.equals("viewStaffDetails")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Staff staff = StaffDAO.getStaffById(id);
+            boolean isActive = StaffDAO.isStaffActive(id);
+            request.setAttribute("isActive", isActive);
+            request.setAttribute("staff", staff);
+            request.getRequestDispatcher("ManageStaffsForAdminViewDetails.jsp").forward(request, response);
         }
     }
 
