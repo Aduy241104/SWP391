@@ -312,13 +312,13 @@ public class ProductDAO {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int count = resultSet.getInt(1); // Lấy số lượng bản ghi khớp
-                return count > 0; // Trả về true nếu có ít nhất 1 bản ghi tồn tại
+                int count = resultSet.getInt(1); 
+                return count > 0; 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false; // Trả về false nếu không tìm thấy hoặc có lỗi
+        return false; 
     }
 
     public static void main(String[] args) {

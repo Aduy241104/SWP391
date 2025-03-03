@@ -5,15 +5,19 @@
 package Controller;
 
 import DAO.OrderDetailDAO;
+import DAO.OrderRecordsDAO;
 import DAO.OrdersDAO;
 import Model.OrderDetail;
+import Model.OrderRecords;
 import Model.Orders;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +67,14 @@ public class AdminManagerOrders extends HttpServlet {
             throws ServletException, IOException {
         String action = (String) request.getParameter("action");
         String orderID = request.getParameter("id");
-
+        HttpSession session = request.getSession();
+        String role = (String) session.getAttribute("role");
+        User user = (User) session.getAttribute("user");
         if (action.equals("FunctionsOfOrderManagement")) {
             String func = request.getParameter("func");
             OrdersDAO ordersdao = new OrdersDAO();
             List<Orders> ordersList = ordersdao.getOrdersByStatus(func);
+
             switch (func) {
                 case "Pending":
                     request.setAttribute("ordersList", ordersList);
@@ -100,6 +107,12 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
+                    if ("staff".equals(role)) {
+                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
+                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
+                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                }
                 ordersDao.updateOrderStatusToShipping(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Pending").forward(request, response);
             } catch (NumberFormatException e) {
@@ -109,7 +122,12 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
-                ordersDao.cancelPendingOrder(OrderID);
+                 if ("staff".equals(role)) {
+                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
+                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
+                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                }                ordersDao.cancelPendingOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Pending").forward(request, response);
             } catch (NumberFormatException e) {
 
@@ -118,6 +136,12 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
+                if ("staff".equals(role)) {
+                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
+                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
+                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                }
                 ordersDao.cancelShippingOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Shipping").forward(request, response);
             } catch (NumberFormatException e) {
@@ -127,6 +151,12 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
+                 if ("staff".equals(role)) {
+                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
+                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
+                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                }
                 ordersDao.updateOrderStatusToDelivered(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Shipping").forward(request, response);
             } catch (NumberFormatException e) {
@@ -136,6 +166,12 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
+                if ("staff".equals(role)) {
+                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
+                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
+                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                }
                 ordersDao.restoreCancelledOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled").forward(request, response);
             } catch (NumberFormatException e) {
@@ -145,6 +181,12 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
+                if ("staff".equals(role)) {
+                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
+                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
+                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                }
                 ordersDao.deleteCancelledOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled").forward(request, response);
             } catch (NumberFormatException e) {

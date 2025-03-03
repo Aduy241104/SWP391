@@ -12,6 +12,7 @@
         <url-pattern>/EditCart</url-pattern>
         <url-pattern>/AddToCart</url-pattern>
         <url-pattern>/viewProfileController</url-pattern>
+        <url-pattern>/AdminManagerOrders</url-pattern>
     </filter-mapping>
     <!-- User Controllers -->
     <servlet>
