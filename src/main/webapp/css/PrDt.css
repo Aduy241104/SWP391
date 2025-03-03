@@ -119,3 +119,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background-color: white;
     border: 1px solid red;
  }
+ 
+ .quantity-place {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+ .quantity-place input {
+    width: 120px;
+    text-align: center;
+    padding: 2px 6px;
+    margin: 0;
+    margin-left: 5px;
+    margin-top: 2px;
+ }
+
+ .quantity-place button {
+    padding: 4px 12px;
+    position: absolute;
+    border: 2px solid white;
+    background-color: rgb(237, 17, 100);
+    color: white;
+
+}
+
+ .quantity-place button:last-child {
+       left: 20%;
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
+ }
+
+ .quantity-place button:first-child {
+    
+     border-top-left-radius: 7px;
+     border-bottom-left-radius: 7px;
+ }
