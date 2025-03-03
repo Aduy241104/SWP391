@@ -29,20 +29,21 @@
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
-             <jsp:param name="page" value="user"/>
+            <jsp:param name="page" value="user"/>
         </jsp:include>
 
-            <div class="main-content container">
-                <h2 class="text-center"><i class="fas fa-user"></i> User Details</h2>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4>Personal Information</h4>
-                        <table class="table table-bordered">
-                            <tr><th>User ID</th><td>${user.userId}</td></tr>
+        <div class="main-content container">
+            <h2 class="text-center"><i class="fas fa-user"></i> User Details</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Personal Information</h4>
+                    <table class="table table-bordered">
+                        <tr><th>User ID</th><td>${user.userId}</td></tr>
                         <tr><th>Username</th><td>${user.username}</td></tr>
                         <tr><th>Email</th><td>${user.email}</td></tr>
                         <tr><th>Full Name</th><td>${user.fullName}</td></tr>

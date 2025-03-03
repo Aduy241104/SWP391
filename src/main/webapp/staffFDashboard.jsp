@@ -80,7 +80,7 @@
                     <p><i class="fas fa-shopping-bag"></i> Revenue</p>
                 </div>
             </div>
-            <div class="col-md-4 product-container">
+                    <div style="margin-left: 70px;" class="col-md-4 product-container">
 
                 <c:choose>
                     <c:when test="${empty productList and empty OrdersList }">

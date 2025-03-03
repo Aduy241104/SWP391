@@ -25,6 +25,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.List;
+import java.text.DecimalFormat;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -109,8 +110,10 @@ public class AdminManagerProducts extends HttpServlet {
             int countOrders = OrdersList.size();
             int count = productList.size();
             int countUser = userList.size();
+            DecimalFormat df = new DecimalFormat("#,###");
+            String formattedRevenue = df.format(totalAmount);
             request.getSession().setAttribute("countStaff", countStaff);
-            request.getSession().setAttribute("totalAmount", totalAmount);
+            request.getSession().setAttribute("totalAmount", formattedRevenue);
             request.getSession().setAttribute("countOrders", countOrders);
             request.getSession().setAttribute("count", count);
             request.getSession().setAttribute("countUser", countUser);

@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -78,7 +79,9 @@ public class StaffManagerOrders extends HttpServlet {
             Double totalAmount = ordersDao.getTotalAmountOfDeliveredOrders();
             int countOrders = ordersList.size();
             int count = productList.size();
-            request.getSession().setAttribute("totalAmount", totalAmount);
+           DecimalFormat df = new DecimalFormat("#,###");
+            String formattedRevenue = df.format(totalAmount);
+            request.getSession().setAttribute("totalAmount", formattedRevenue);
             request.getSession().setAttribute("countOrders", countOrders);
             request.getSession().setAttribute("count", count);
             request.getRequestDispatcher("staffFDashboard.jsp?view=null").forward(request, response);

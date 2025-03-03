@@ -105,24 +105,21 @@
                         </tr>
                     </c:forEach>
                 </table>
-                <div style="margin-bottom: 20px;" class="action-buttons-add">
-                    <a href="ManageStaffsForAdminAddStaff.jsp" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-plus-circle"></i> Add New Staff
-                    </a>
-                    <a href="AdminManageStaff?action=viewBan" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-trash"></i> View Ban Staff
-                    </a>
-                    <a href="AdminManageStaff?action=staffForDashBoard" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Admin Page
-                    </a>
-                </div>
+
             </c:when>
             <c:otherwise>
                 <h2 class="text-center text-danger mt-4"><i class="fas fa-exclamation-circle"></i>No staff were banned.</h2>
             </c:otherwise>
         </c:choose>
+        <div style="margin-bottom: 20px;" class="action-buttons-add">
+            <a href="ManageStaffsForAdminAddStaff.jsp" class="btn btn-custom btn-lg shadow">
+                <i class="fas fa-plus-circle"></i> Add New Staff
+            </a>
+            <a href="AdminManageStaff?action=staff" class="btn btn-custom btn-lg shadow">
+                <i class="fas fa-arrow-left"></i> Back to Staff Page
+            </a>
+        </div>
 
-        
     </div>
 </body>
 </html>

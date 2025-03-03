@@ -8,6 +8,8 @@
 <%@page import="Model.Orders"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +33,7 @@
             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
-        
+
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
             <jsp:param name="page" value="order"/>
         </jsp:include>
@@ -53,7 +55,9 @@
                     <tr>
                         <td>${order.orderId}</td>
                         <td>${order.userId}</td>
-                        <td>${order.totalAmount}</td>
+                        <td>
+                            <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
+                        </td>
                         <td>${order.createdAt}</td>
                         <td>${order.address}</td>
                         <td>${order.phoneNumber}</td>

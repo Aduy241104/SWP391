@@ -5,6 +5,7 @@
 package Controller;
 
 import DAO.StaffDAO;
+import DAO.userDAO;
 import Model.Staff;
 import Model.User;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -63,7 +65,13 @@ public class AdminManageStaff extends HttpServlet {
         StaffDAO StaffDAO = new StaffDAO();
         if (action.equals("staff")) {   
             List<Staff> staffList = StaffDAO.getAllStaffs();
-            request.setAttribute("staffList", staffList);
+            List<Staff> activeUser = new ArrayList<>();
+            for (Staff staff : staffList) {
+                if (staff.isIsActive()) {
+                    activeUser.add(staff);
+                }
+            }
+            request.setAttribute("staffList", activeUser);
             request.getRequestDispatcher("ManageStaffForAdmin.jsp").forward(request, response);
         } else if (action.equals("staffForDashBoard")) {
             List<Staff> staffList = StaffDAO.getAllStaffs();
@@ -83,9 +91,23 @@ public class AdminManageStaff extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Staff staff = StaffDAO.getStaffById(id);
             boolean isActive = StaffDAO.isStaffActive(id);
+            int userID = StaffDAO.getUserIDByStaffID(id);
+            userDAO userDao = new userDAO();
+            User user = userDao.getUserById(userID);
+            request.setAttribute("user", user);
             request.setAttribute("isActive", isActive);
             request.setAttribute("staff", staff);
             request.getRequestDispatcher("ManageStaffsForAdminViewDetails.jsp").forward(request, response);
+        } else if(action.equals("viewBan")){
+             List<Staff> staffList = StaffDAO.getAllStaffs();
+            List<Staff> activeUser = new ArrayList<>();
+            for (Staff staff : staffList) {
+                if (!staff.isIsActive()) {
+                    activeUser.add(staff);
+                }
+            }
+            request.setAttribute("staffList", activeUser);
+            request.getRequestDispatcher("ManageStaffsForAdminViewBanStaff.jsp").forward(request, response);
         }
     }
 

@@ -10,6 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -132,14 +133,16 @@
                             <tr>
                                 <td>${order.orderId}</td>
                                 <td>${order.userId}</td>
-                                <td>${order.totalAmount}</td>
-                                <td>${order.createdAt}</td>
-                                <td>${order.address}</td>
-                                <td>${order.phoneNumber}</td>
-                                <td>${order.orderStatus}</td>
                                 <td>
-                                    <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}&price=${order.totalAmount}&userID=${order.userId}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View Details</a>
-                                </td>
+                            <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
+                            </td>
+                            <td>${order.createdAt}</td>
+                            <td>${order.address}</td>
+                            <td>${order.phoneNumber}</td>
+                            <td>${order.orderStatus}</td>
+                            <td>
+                                <a href="AdminManagerOrders?action=viewDetails&id=${order.orderId}&price=${order.totalAmount}&userID=${order.userId}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View Details</a>
+                            </td>
                             </tr>
                         </c:forEach>
                     </table>

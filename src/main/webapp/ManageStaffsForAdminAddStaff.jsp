@@ -158,7 +158,7 @@
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-lg btn-custom btn-save"><i class="fas fa-save"></i> Save Staff</button>
-                    <a href="AdminManagerUser?action=user" class="btn btn-lg btn-custom btn-cancel"><i class="fas fa-times"></i> Cancel</a>
+                    <a href="AdminManageStaff?action=staff" class="btn btn-lg btn-custom btn-cancel"><i class="fas fa-times"></i> Cancel</a>
                 </div>
             </form>
             <script>

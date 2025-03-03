@@ -208,5 +208,20 @@ public class StaffDAO {
         }
         return staffList;
     }
+        public int getUserIDByStaffID(int staffID) {
+        String query = "SELECT Users.userID FROM Staffs INNER JOIN Users ON Staffs.userID = Users.userID WHERE Staffs.staffID = ?";
+        int userID = -1; // Giá trị mặc định nếu không tìm thấy
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userID = rs.getInt("userID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userID;
+    }
 
 }

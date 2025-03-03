@@ -8,8 +8,9 @@
 <%@page import="java.util.List"%>
 <%@page import="Model.*"%>
 <%@page import="DAO.*"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:if test="${empty count or empty countOrders or empty totalAmount or empty countUser}">
     <c:redirect url="AdminManagerProducts?action=count"/>
 </c:if>
@@ -79,10 +80,6 @@
                     <p><i class="fas fa-project-diagram"></i> Staff</p>
 
                 </div>
-                <div onclick="location.href = 'AdminManageStaff?action=staffForDashBoard';" style="cursor: pointer;" class="stat-box">
-                    <h3>${count}</h3>
-                    <p><i class="fas fa-project-diagram"></i> Staffs</p>
-                </div>
                 <div onclick="location.href = 'AdminManagerProducts?action=productForDashBoard';" style="cursor: pointer;" class="stat-box">
                     <h3>${count}</h3>
                     <p><i class="fas fa-project-diagram"></i> Products</p>
@@ -92,15 +89,15 @@
                     <p><i class="fas fa-shopping-bag"></i> Orders</p>
                 </div>
                 <div class="stat-box stat-box_revenue" style="background-color: #ED1164">
-                    <h3>${totalAmount}Ð</h3>
+                    <h3>${totalAmount}₫</h3>
                     <p><i class="fas fa-shopping-bag"></i> Revenue</p>
                 </div>
             </div>
-            <div class="col-md-4 product-container">
+                    <div style="margin-left: 70px;" class="col-md-4 product-container">
 
                 <c:choose>
                     <c:when test="${empty productList && empty OrdersList && empty userTable && empty staffTable}">
-                        <h3 style="font-size: 50px; text-align: center;">
+                        <h3 style=" font-size: 50px; text-align: center;">
                             Welcome back, <span class="admin-name">${sessionScope.user.fullName}</span>! 🎉 Let’s make today awesome! 💪
                         </h3>
                     </c:when>
@@ -164,7 +161,9 @@
                                 <tr>
                                     <td>${order.orderId}</td>
                                     <td>${order.userId}</td>
-                                    <td>${order.totalAmount}</td>
+                                    <td>
+                                        <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
+                                    </td>
                                     <td>${order.orderStatus}</td>
                                 </tr>
                             </c:forEach>
@@ -203,36 +202,36 @@
                     </div>
                 </c:when>
 
-                    <c:when test="${view eq 'staffTable'}">
-                        <table class="table table-bordered table-hover mt-4">
-                            <div class="header">
-                                <h2>Manage Staff</h2>
+                <c:when test="${view eq 'staffTable'}">
+                    <table class="table table-bordered table-hover mt-4">
+                        <div class="header">
+                            <h2>Manage Staff</h2>
 
-                                <a href="AdminManageStaff?action=staff" class="see-all-btn">See all →</a>
-                            </div>
-                            <tr class="table-dark">
-                                <th>Staff ID</th>
-                                <th>Full Name</th>
-                                <th>Is Active</th>
-                            </tr>
-                            <c:forEach var="staff" items="${staffTable}">
-                                <tr>
-                                    <td>${staff.staffID}</td>
-                                    <td>${staff.fullName}</td>
-                                    <td>${staff.isActive}</td>
-                                </tr>
-                            </c:forEach>
-                        </table>
-                        <div style="margin-bottom: 20px;"class="action-buttons-add">
-                            <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">
-                                <i class="fas fa-arrow-left"></i> Back to Admin Page
-                            </a>
+                            <a href="AdminManageStaff?action=staff" class="see-all-btn">See all →</a>
                         </div>
+                        <tr class="table-dark">
+                            <th>Staff ID</th>
+                            <th>Full Name</th>
+                            <th>Is Active</th>
+                        </tr>
+                        <c:forEach var="staff" items="${staffTable}">
+                            <tr>
+                                <td>${staff.staffID}</td>
+                                <td>${staff.fullName}</td>
+                                <td>${staff.isActive}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                    <div style="margin-bottom: 20px;"class="action-buttons-add">
+                        <a href="AdminManagerProducts?action=BackToAdminDashboard" class="btn btn-custom btn-lg shadow">
+                            <i class="fas fa-arrow-left"></i> Back to Admin Page
+                        </a>
                     </div>
-                </c:when>
-            </c:choose>
-        </div>
-
+                </div>
+            </c:when>
+        </c:choose>
     </div>
+
+</div>
 </body>
 </html>

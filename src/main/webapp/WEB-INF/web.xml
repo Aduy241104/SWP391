@@ -13,6 +13,11 @@
         <url-pattern>/AddToCart</url-pattern>
         <url-pattern>/viewProfileController</url-pattern>
         <url-pattern>/AdminManagerOrders</url-pattern>
+        <url-pattern>/AdminManagerProducts</url-pattern>
+        <url-pattern>/AdminManagerProducts</url-pattern>
+        <url-pattern>/AdminManageStaff</url-pattern>
+        <url-pattern>/AdminManager_Search</url-pattern>
+        <url-pattern>/StaffManagerOrders</url-pattern>
     </filter-mapping>
     <!-- User Controllers -->
     <servlet>
