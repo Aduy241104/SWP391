@@ -77,11 +77,11 @@
                         <span><a href="">New Release </a> / <a href="">Toys</a></span>
                         <h3>All Toys (<p style="display: inline; color: palevioletred;">${requestScope.productList.size()}</p>)</h3>
 
-                    </div>
-                    <div class="col-md-6 header-bodyWeb-component_2">
-                        <!-- <span>Hide Filters  <i class="fa-solid fa-sliders"></i></span>
-                        <span>Sort by  <i class="fa-solid fa-sort"></i></span> -->
-                        <h3>Hello ${sessionScope.user.fullName} 😻</h3>
+                </div>
+                <div class="col-md-6 header-bodyWeb-component_2">
+                    <!-- <span>Hide Filters  <i class="fa-solid fa-sliders"></i></span>
+                    <span>Sort by  <i class="fa-solid fa-sort"></i></span> -->
+                    <h3>Hello ${sessionScope.user.fullName} 😻</h3>
                 </div>
             </nav>
 
@@ -90,75 +90,29 @@
                 <!-- Most Popular Products -->
                 <div class="row rtxs">
                     <h1 style="text-align: center; color: palevioletred; width: 100%;">Most Popular Products</h1>
-                    <div class="col-lg-2 items">
-                        <a href="">
-                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 items">
-                        <a href="">
-                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-2 items">
-                        <a href="">
-                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-2 items">
-                        <a href="">
-                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-2 items">
-                        <a href="">
-                            <img src="img/do-choi-xe-trai-cay-winwintoys-5-300x300.jpg" alt="">
-                            <div class="information">
-                                <p>Just in</p>
-                                <p>Nike pagasus 41 PQ</p>
-                                <p>Men's Road Running Shoes 1 Colour</p>
-                                <p>3,829,000đ</p>
-                            </div>
-                        </a>
-                    </div>
+                    <c:forEach var="product" items="${bestSeller}">
+                        <div class="col-lg-2 items">
+                            <a href="ViewProductDetailController?productID=${product.productID}">
+                                <img src="${product.imageUrl}" alt="">
+                                <div class="information">
+                                    <p>Just in</p>
+                                    <p>${product.productName}</p>
+                                    <p>${product.description}</p>
+                                    <p>${product.price}$</p>
+                                </div>
+                            </a>
+                        </div>
+                    </c:forEach>
                 </div>
 
-
                 <div class="col-md-2 left-menu custom-scroll">
-                    <form class="filter-group" action="">
+                    <form class="filter-group" action="FilterProduct">
                         <div>
                             <h4>Age Range</h4>
-                            <select class="age-range" name="" id="">
-                                <option value="">From 1 to 3 year olds</option>
-                                <option value="">From 0 to 1 year olds</option>
-                                <option value="">From 3 years olds</option>
+                            <select class="age-range" name="age" id="">
+                                <option value="1-3">From 1 to 3 year olds</option>
+                                <option value="0-1">From 0 to 1 year olds</option>
+                                <option value="3">From 3 years olds</option>
                             </select>
 
                         </div>
@@ -171,50 +125,23 @@
                                     <label for="category">${cate.categoryName}</label>
                                 </div>
                             </c:forEach>
-
                         </div>
-
                         <div class="filter-group-2">
-                            <h4>Origin</h4>
+                            <h4>Price</h4>
 
                             <div>
-                                <input name="country" type="checkbox">
-                                <label for="">VietNam</label>
+                                <input name="price" type="checkbox" value="1">
+                                <label for="">From 0$ to 50$</label>
                             </div>
-
                             <div>
-                                <input name="country" type="checkbox">
-                                <label for="">America</label>
-
-                            </div>
-
-                            <div>
-                                <input name="country" type="checkbox">
-                                <label for="">France</label>
-                            </div>
-                        </div>
-
-
-                        <div class="filter-group-2">
-                            <h4>Origin</h4>
-
-                            <div>
-                                <input name="price" type="checkbox">
-                                <label for="">From 10$ to 50$</label>
-                            </div>
-
-                            <div>
-                                <input name="country" type="checkbox">
+                                <input name="price" type="checkbox" value="2">
                                 <label for="">From 50$ to 100$</label>
-
                             </div>
-
                             <div>
-                                <input name="country" type="checkbox">
+                                <input name="price" type="checkbox" value="3">
                                 <label for="">More than 100$</label>
                             </div>
                         </div>
-
                         <button type="submit">Apply</button>
                     </form>
                 </div>
@@ -248,6 +175,5 @@
         <footer style="margin-top: 80px;" class="container-fluid" id="footer">
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
-
     </body>
 </html>

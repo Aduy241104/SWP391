@@ -40,74 +40,55 @@
                         <span><a href="">New Release </a> / <a href="">Toys</a></span>
                         <h3>New Toys (<p style="display: inline; color: palevioletred;">${requestScope.productList.size()}</p>)</h3>
 
-                    </div>
-                    <div class="col-md-6 header-bodyWeb-component_2">
-                        <h3>Hello ${sessionScope.user.fullName} 😻</h3>
+                </div>
+                <div class="col-md-6 header-bodyWeb-component_2">
+                    <h3>Hello ${sessionScope.user.fullName} 😻</h3>
                 </div>
             </nav>
 
 
             <div class="row body-web cover-page">
                 <div class="col-md-2 left-menu custom-scroll">
-                    <form class="filter-group" action="">
+                    <form class="filter-group" action="filter" method="get">
                         <div>
                             <h4>Age Range</h4>
-                            <select class="age-range" name="" id="">
-                                <option value="">From 1 to 3 year olds</option>
-                                <option value="">From 0 to 1 year olds</option>
-                                <option value="">From 3 years olds</option>
+                            <select class="age-range" name="age">
+                                <option value="1-3" ${selectedAge == '1-3' ? 'selected' : ''}>From 1 to 3 year olds</option>
+                                <option value="0-1" ${selectedAge == '0-1' ? 'selected' : ''}>From 0 to 1 year olds</option>
+                                <option value="3" ${selectedAge == '3' ? 'selected' : ''}>From 3 years olds</option>
                             </select>
-
                         </div>
 
                         <div class="filter-group-1">
                             <h4>Category</h4>
                             <c:forEach var="cate" items="${requestScope.categoryList}">
                                 <div>
-                                    <input name="categoryFilter" type="checkbox" value="${cate.categoryID}">
-                                    <label for="">${cate.categoryName}</label>
+                                    <input type="checkbox" name="category" value="${cate.categoryID}" 
+                                           ${selectedCategories.contains(cate.categoryID) ? 'checked' : ''}>
+                                    <label for="category">${cate.categoryName}</label>
                                 </div>
-                            </c:forEach>     
+                            </c:forEach>
                         </div>
 
                         <div class="filter-group-2">
-                            <h4>Origin</h4>
-
+                            <h4>Price</h4>
                             <div>
-                                <input name="country" type="checkbox">
-                                <label for="">VietNam</label>
+                                <input type="checkbox" name="price" value="1" 
+                                       ${selectedPrices.contains(1) ? 'checked' : ''}>
+                                <label>From 0$ to 50$</label>
                             </div>
-
                             <div>
-                                <input name="country" type="checkbox">
-                                <label for="">America</label>
+                                <input type="checkbox" name="price" value="2" 
+                                       ${selectedPrices.contains(2) ? 'checked' : ''}>
+                                <label>From 50$ to 100$</label>
                             </div>
-
                             <div>
-                                <input name="country" type="checkbox">
-                                <label for="">France</label>
-                            </div>
-                        </div>
-
-
-                        <div class="filter-group-2">
-                            <h4>Origin</h4>
-
-                            <div>
-                                <input name="price" type="checkbox">
-                                <label for="">From 10$ to 50$</label>
-                            </div>
-
-                            <div>
-                                <input name="country" type="checkbox">
-                                <label for="">From 50$ to 100$</label>
-                            </div>
-
-                            <div>
-                                <input name="country" type="checkbox">
-                                <label for="">More than 100$</label>
+                                <input type="checkbox" name="price" value="3" 
+                                       ${selectedPrices.contains(3) ? 'checked' : ''}>
+                                <label>More than 100$</label>
                             </div>
                         </div>
+
                         <button type="submit">Apply</button>
                     </form>
                 </div>

@@ -118,6 +118,10 @@
         <servlet-name>StaffManagerOrders</servlet-name>
         <servlet-class>Controller.StaffManagerOrders</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FilterProductController</servlet-name>
+        <servlet-class>Controller.FilterProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -235,6 +239,10 @@
     <servlet-mapping>
         <servlet-name>StaffManagerOrders</servlet-name>
         <url-pattern>/StaffManagerOrders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterProductController</servlet-name>
+        <url-pattern>/FilterProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

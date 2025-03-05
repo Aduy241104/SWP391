@@ -312,13 +312,131 @@ public class ProductDAO {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int count = resultSet.getInt(1); 
-                return count > 0; 
+                int count = resultSet.getInt(1);
+                return count > 0;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false; 
+        return false;
+    }
+
+    public List<Product> getProductListBestSeller() {
+        List<Product> productList = new ArrayList<>();
+        String query = "SELECT TOP 5 P.*\n"
+                + "FROM Products P\n"
+                + "JOIN (\n"
+                + "    SELECT productID, SUM(quantity) AS Total\n"
+                + "    FROM OrderDetails\n"
+                + "    GROUP BY productID\n"
+                + ") O ON P.productID = O.productID\n"
+                + "WHERE P.isActive = 1\n"
+                + "ORDER BY O.Total DESC;";
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                productList.add(product);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productList;
+    }
+    
+    
+    public List<Product> getFilteredProducts(String age, List<Integer> categories, List<Integer> prices) {
+        List<Product> productList = new ArrayList<>();
+        String query = "SELECT * FROM Products WHERE isActive = 1";
+
+        // Lọc theo độ tuổi
+        if (age != null && !age.isEmpty()) {
+            query += " AND ageRange = ?";
+        }
+
+        // Lọc theo danh mục
+        if (categories != null && !categories.isEmpty()) {
+            query += " AND categoryID IN (";
+            for (int i = 0; i < categories.size(); i++) {
+                query += "?";
+                if (i < categories.size() - 1) {
+                    query += ", ";
+                }
+            }
+            query += ")";
+        }
+
+        // Lọc theo giá
+        if (prices != null && !prices.isEmpty()) {
+            query += " AND (";
+            List<String> priceConditions = new ArrayList<>();
+            for (int price : prices) {
+                if (price == 1) {
+                    priceConditions.add("price BETWEEN 0 AND 50");
+                } else if (price == 2) {
+                    priceConditions.add("price BETWEEN 50 AND 100");
+                } else if (price == 3) {
+                    priceConditions.add("price > 100");
+                }
+            }
+            query += String.join(" OR ", priceConditions) + ")";
+        }
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            int paramIndex = 1;
+
+            if (age != null && !age.isEmpty()) {
+                preparedStatement.setString(paramIndex++, age);
+            }
+
+            if (categories != null) {
+                for (int category : categories) {
+                    preparedStatement.setInt(paramIndex++, category);
+                }
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("productID"),
+                        resultSet.getString("productName"),
+                        resultSet.getString("description"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("imageUrl"),
+                        resultSet.getInt("categoryID"),
+                        resultSet.getDate("createdAt"),
+                        resultSet.getBoolean("isActive"),
+                        resultSet.getString("size"),
+                        resultSet.getString("ageRange"),
+                        resultSet.getString("origin"),
+                        resultSet.getDouble("weight")
+                );
+                productList.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productList;
     }
 
     public static void main(String[] args) {

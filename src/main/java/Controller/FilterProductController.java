@@ -8,19 +8,21 @@ import DAO.CategoryDAO;
 import DAO.ProductDAO;
 import Model.Category;
 import Model.Product;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * @author NHATHCE181222
+ * @author DUY
  */
-public class ViewProductListController extends HttpServlet {
+public class FilterProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,19 +35,38 @@ public class ViewProductListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewProductListController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewProductListController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String age = request.getParameter("age");
+        String[] categoryParams = request.getParameterValues("category");
+        String[] priceParams = request.getParameterValues("price");
+
+        // Chuyển danh mục và giá thành danh sách số
+        List<Integer> categories = new ArrayList<>();
+        if (categoryParams != null) {
+            for (String c : categoryParams) {
+                categories.add(Integer.parseInt(c));
+            }
         }
+
+        List<Integer> prices = new ArrayList<>();
+        if (priceParams != null) {
+            for (String p : priceParams) {
+                prices.add(Integer.parseInt(p));
+            }
+        }
+        ProductDAO prd = new ProductDAO();
+        CategoryDAO ctd = new CategoryDAO();
+        
+        List<Category> categoryList = ctd.getAllCategory();
+        List<Product> products = prd.getFilteredProducts(age, categories, prices);
+        
+        request.setAttribute("productList", products);
+        request.setAttribute("categoryList", categoryList);
+        request.setAttribute("selectedAge", age);
+        request.setAttribute("selectedCategories", categories);
+        request.setAttribute("selectedPrices", prices);
+        
+        RequestDispatcher rd = request.getServletContext().getRequestDispatcher("/SearchProduct.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -60,17 +81,7 @@ public class ViewProductListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        CategoryDAO ctd = new CategoryDAO();
-        
-        List<Category> categoryList = ctd.getAllCategory();
-        List<Product> productList = productDAO.getProductList();
-        List<Product> bestSellerList = productDAO.getProductListBestSeller();
-        
-        request.setAttribute("bestSeller", bestSellerList);
-        request.setAttribute("categoryList", categoryList);
-        request.setAttribute("productList", productList);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
