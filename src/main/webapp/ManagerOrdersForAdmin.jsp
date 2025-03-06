@@ -56,7 +56,7 @@
                         <td>${order.orderId}</td>
                         <td>${order.userId}</td>
                         <td>
-                            <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
+                            <fmt:formatNumber value="${order.totalAmount}" type="number"/> 
                         </td>
                         <td>${order.createdAt}</td>
                         <td>${order.address}</td>

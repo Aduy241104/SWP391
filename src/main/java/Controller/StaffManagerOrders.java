@@ -35,7 +35,7 @@ public class StaffManagerOrders extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -79,7 +79,7 @@ public class StaffManagerOrders extends HttpServlet {
             Double totalAmount = ordersDao.getTotalAmountOfDeliveredOrders();
             int countOrders = ordersList.size();
             int count = productList.size();
-           DecimalFormat df = new DecimalFormat("#,###");
+            DecimalFormat df = new DecimalFormat("#,###");
             String formattedRevenue = df.format(totalAmount);
             request.getSession().setAttribute("totalAmount", formattedRevenue);
             request.getSession().setAttribute("countOrders", countOrders);
@@ -90,7 +90,7 @@ public class StaffManagerOrders extends HttpServlet {
             List<Orders> OrdersList = ordersDao.getAllOrders();
             request.setAttribute("OrdersList", OrdersList);
             request.getRequestDispatcher("staffFDashboard.jsp?view=orderTable").forward(request, response);
-        } else if(action.equals("productForDashBoard")){
+        } else if (action.equals("productForDashBoard")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
             request.setAttribute("productList", productList);
