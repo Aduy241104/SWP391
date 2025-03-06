@@ -10,6 +10,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Page</title>
+        <style>
+            .button-search{
+                margin-left: 10px;
+                border: solid;
+                border-radius: 10px ;
+                background-color: #EA83AA;
+                color: white;
+                padding: 7px;
+            }
+        </style>
     </head>
     <body>
         <div class="navbar">
@@ -19,8 +29,10 @@
                     <i class="fas fa-search"></i>
                     <input type="hidden" name="page" value="<%= request.getParameter("page")%>">
                     <input type="text" name="query" placeholder="Search here">
+                    <button class="button-search" type="submit">Search</button> 
                 </div>
             </form>
+
 
         </div>
     </body>

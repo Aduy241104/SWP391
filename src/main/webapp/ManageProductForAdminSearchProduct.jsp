@@ -103,16 +103,18 @@
                 padding: 5px 10px;
                 font-size: 12px;
             }
+
             .action-buttons-add {
-                position: absolute;
-                bottom: 20px;
-                right: 20px;
+                clear: both; /* Giúp nút không bị chồng lên phần khác */
+                width: 100%;
+                text-align: center;
             }
+
 
         </style>
     </head>
     <body>
-       <%
+        <%
             String role = (String) session.getAttribute("role");
         %>
 
@@ -121,9 +123,9 @@
             <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerProducts?action=product"class="active" ><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" class="active"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% } else { %>
