@@ -8,6 +8,7 @@ import DAO.ProductDAO;
 import DAO.commentDAO;
 import Model.Product;
 import Model.Review;
+import Model.User;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -65,9 +67,18 @@ public class ViewFeedbackController extends HttpServlet {
             int productID = Integer.parseInt(request.getParameter("productID"));
             commentDAO cmt = new commentDAO();
             ProductDAO productDAO = new ProductDAO();
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            
+            if(user != null) {
+                boolean checkBuy = cmt.checkIsBuy(productID, user.getUserId());
+                 if(checkBuy) {
+                      request.setAttribute("isBuy", "buy");
+                 }
+            }
+            
             Product product = productDAO.getProductByID(productID);
-           
-
+            
             List<Review> listReview = cmt.getReviewByProductIDss(productID);
             double avgRating = cmt.getAvergeRating(productID);
 

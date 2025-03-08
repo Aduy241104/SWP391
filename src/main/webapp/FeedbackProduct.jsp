@@ -206,6 +206,10 @@
                 display: flex;
                 justify-content: space-between;
             }
+            
+            .actives{
+                background-color: pink;
+            }
         </style>
     </head>
     <body>
@@ -291,7 +295,7 @@
             <h2 class="mb-4">Reviews Of Product #${requestScope.productID}</h2>
 
             <!-- Comment Form -->
-            <c:if test="${not empty sessionScope.user}">
+            <c:if test="${not empty sessionScope.user and not empty requestScope.isBuy}">
                 <form action="AddReview" method="POST" class="card layout-4 p-3 mb-4">
                     <h4>Write Your Comment</h4>
                     <input type="hidden" name="productID" class="form-control"value="${requestScope.productID}">

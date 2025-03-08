@@ -115,8 +115,8 @@ public class commentDAO {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, reviewID);
             int rowEffect = preparedStatement.executeUpdate();
-            
-            if(rowEffect > 0) {
+
+            if (rowEffect > 0) {
                 return true;
             }
 
@@ -125,12 +125,11 @@ public class commentDAO {
         }
         return false;
     }
-    
-    
+
     public boolean addReview(Review review) {
         String query = "Insert Into ProductReviews (productID, userID, rating, reviewText)"
-                      + "values (?,?,?,?)";
-        
+                + "values (?,?,?,?)";
+
         try {
             connection = new DBContext().getConnect();
             preparedStatement = connection.prepareStatement(query);
@@ -138,14 +137,34 @@ public class commentDAO {
             preparedStatement.setInt(2, review.getUserID());
             preparedStatement.setInt(3, review.getRating());
             preparedStatement.setString(4, review.getReviewText());
-            
+
             int rowEffect = preparedStatement.executeUpdate();
-            if(rowEffect > 0) {
+            if (rowEffect > 0) {
                 return true;
             }
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean checkIsBuy(int productID, int userID) {
+        String query = "select orderDetailID \n"
+                + "from OrderDetails\n"
+                + "where orderID IN (select orderID from Orders where userID = ? and orderStatus = 'delivered') and productID = ?";
+        
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, productID);
+            resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+                return true;
+            }
+        } catch (Exception e) {
         }
         return false;
     }

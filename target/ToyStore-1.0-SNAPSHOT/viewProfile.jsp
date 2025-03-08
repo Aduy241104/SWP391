@@ -28,20 +28,24 @@
     </head>
 
     <body>
-        <div class="container light-style flex-grow-1 container-p-y">
-            <h4 class="font-weight-bold py-3 mb-4">
-                Manage Profile
-            </h4>
-            <div class="card overflow-hidden" style="border: 2px solid rgb(45, 1, 1);">
-                <div class="row no-gutters row-bordered row-border-light">
-                    <div class="col-md-3 pt-0">
+
+        <header class="" id="header">
+            <jsp:include page="Component/Header.jsp"></jsp:include>
+            </header>
+            <div class="container light-style flex-grow-1 container-p-y">
+                <h4 class="font-weight-bold py-3 mb-4">
+                    Manage Profile
+                </h4>
+                <div class="card overflow-hidden" style="border: 2px solid rgb(45, 1, 1);">
+                    <div class="row no-gutters row-bordered row-border-light">
+                        <div class="col-md-3 pt-0">
 
 
-                        <div class="list-group list-group-flush account-settings-links">
-                            <div style="width: 140px; height: 140px; background-color: rgb(251, 15, 176); margin-left: 60px; margin-top: 50px; margin-bottom: 30px ;border-radius: 120px; text-align: center; line-height: 140px;font-size: 45px; font-weight: 700; color: white;">
-                                D
-                            </div>
-                            <a class="list-group-item list-group-item-action <%= (request.getAttribute("error") == null && request.getAttribute("errorOldPassword") == null) ? "active show" : ""%>" data-toggle="list"
+                            <div class="list-group list-group-flush account-settings-links">
+                                <div style="width: 140px; height: 140px; background-color: rgb(251, 15, 176); margin-left: 60px; margin-top: 50px; margin-bottom: 30px ;border-radius: 120px; text-align: center; line-height: 140px;font-size: 45px; font-weight: 700; color: white;">
+                                    D
+                                </div>
+                                <a class="list-group-item list-group-item-action <%= (request.getAttribute("error") == null && request.getAttribute("errorOldPassword") == null) ? "active show" : ""%>" data-toggle="list"
                                href="#account-general">General</a>
                             <a class="list-group-item list-group-item-action  <%= (request.getAttribute("error") != null || request.getAttribute("errorOldPassword") != null) ? "active show" : ""%>" data-toggle="list"
                                href="#account-change-password">Change password</a>
@@ -130,6 +134,13 @@
                             </script>
                         </div>
                     </div>
+                </div>
+              </div>
+                </div>
+
+                    <footer style="margin-top: 80px;" class="container-fluid" id="footer">
+                        <jsp:include page="Component/Footer.jsp"></jsp:include>
+                    </footer>
 
                     <!-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
                     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

@@ -49,7 +49,7 @@
 
             <div class="row body-web cover-page">
                 <div class="col-md-2 left-menu custom-scroll">
-                    <form class="filter-group" action="filter" method="get">
+                    <form class="filter-group" action="FilterProduct" method="get">
                         <div>
                             <h4>Age Range</h4>
                             <select class="age-range" name="age">
