@@ -206,7 +206,11 @@
                         </div>
                         <p class="mt-3"> ${order.address}</p>
                     </div>
-                    <button class="btn btn-danger mt-3" id="openModal">Cancel Order</button>
+
+           
+                    <c:if test="${order.orderStatus == 'pending'}">
+                        <button class="btn btn-danger mt-3" id="openModal">Cancel Order</button>         
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -231,8 +235,8 @@
             const openModalBtn = document.getElementById("openModal");
             const cancelBtn = document.getElementById("cancelBtn");
             const confirmBtn = document.getElementById("confirmDelete");
-            
-             modal.style.display = "none";
+
+            modal.style.display = "none";
 
             // Mở modal
             openModalBtn.addEventListener("click", () => {

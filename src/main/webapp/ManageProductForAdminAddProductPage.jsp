@@ -145,7 +145,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Price ($):</label>
-                        <input type="number" class="form-control" name="price" step="0.01" value="${product.price}" required>
+                        <input min="0" type="number" class="form-control" name="price" step="0.01" value="${product.price}" required>
                     </div>
                 </div>
 
@@ -157,7 +157,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Stock:</label>
-                        <input type="number" class="form-control" name="stock" value="${product.stock}" required>
+                        <input min="0" type="number" class="form-control" name="stock" value="${product.stock}" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Category:</label>
@@ -189,7 +189,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Weight (kg):</label>
-                        <input type="number" class="form-control" name="weight" step="0.01" value="${product.weight}" required>
+                        <input min="0" type="number" class="form-control" name="weight" step="0.01" value="${product.weight}" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Active:</label>
