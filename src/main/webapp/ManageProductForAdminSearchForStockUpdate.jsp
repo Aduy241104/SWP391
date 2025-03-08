@@ -23,76 +23,8 @@
         <link rel="stylesheet" href="css/AdminDashboardStyle.css"/>
         <link rel="stylesheet" href="css/ManageProductForAdminStyles.css"/>
         <style>
-            td.description {
-                max-width: 250px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                position: relative;
-            }
 
-            td.description.expanded {
-                white-space: normal;
-                overflow: visible;
-                max-width: 400px;
-                background: #fff;
-                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-                padding: 5px;
-                position: relative; /* Giữ nguyên vị trí */
-            }
 
-            .toggle-btn {
-                display: block;
-                margin-top: 5px;
-                background-color: #EA83AA;
-                border: none;
-                color: white;
-                cursor: pointer;
-                text-decoration: none;
-            }
-            .toggle-btn:hover {
-                color: black;
-                background-color: #FCEBF2;
-                transform: scale(1.05);
-                text-decoration: none;
-            }
-            .stock-input-form {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .stock-input-form input[type="number"] {
-                width: 80px;
-                padding: 5px;
-                font-size: 14px;
-            }
-
-            .stock-input-form button {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
-            .action-buttons-add{
-                position: absolute;
-                right: 20px;
-                bottom: 20px;
-            }
-            .center-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 60vh;
-                text-align: center;
-                margin-left: 700px;
-                margin-bottom: 100px;
-            }
-
-            .mess {
-                color: red;
-                font-size: 32px;
-                margin-bottom: 20px;
-            }
         </style>
     </head>
     <body>
@@ -162,12 +94,14 @@
                             </tr>
                         </c:forEach>
                     </table>
-                    <div style="margin-bottom: 20px;" class="action-buttons-add">
+                    <div class="action-buttons-add">
                         <a href="AdminManagerProducts?action=managerStock" class="btn btn-custom btn-lg shadow">
                             <i class="fas fa-arrow-left"></i> Back to Stock Page
                         </a>
                     </div>
                 </div>
+
+
             </c:when>
 
 

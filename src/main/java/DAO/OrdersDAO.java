@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,20 +35,31 @@ public class OrdersDAO {
     public List<Orders> getAllOrders() {
         List<Orders> orders = new ArrayList<>();
         String query = "SELECT * FROM Orders";
+
         try {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
-                Orders order = new Orders(
-                        resultSet.getInt("orderID"),
-                        resultSet.getInt("userID"),
-                        resultSet.getDouble("totalAmount"),
-                        resultSet.getDate("createdAt"),
-                        resultSet.getString("address"),
-                        resultSet.getString("phoneNumber"),
-                        resultSet.getString("orderStatus")
-                );
-                orders.add(order);
+                double totalAmount = resultSet.getDouble("totalAmount");
+
+                DecimalFormat df = new DecimalFormat("#,###");
+                String formattedRevenue = df.format(totalAmount);
+                try {
+                    double Total = Double.parseDouble(formattedRevenue);
+                    Orders order = new Orders(
+                            resultSet.getInt("orderID"),
+                            resultSet.getInt("userID"),
+                            Total,
+                            resultSet.getDate("createdAt"),
+                            resultSet.getString("address"),
+                            resultSet.getString("phoneNumber"),
+                            resultSet.getString("orderStatus")
+                    );
+                    orders.add(order);
+                } catch (Exception e) {
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

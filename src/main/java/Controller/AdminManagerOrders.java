@@ -212,7 +212,7 @@ public class AdminManagerOrders extends HttpServlet {
                     orderDetail = orderList.get(0);
                     orderStatus = orderDetailsDao.getOrderDetailById(OrderID).get(0).getOrderStatus();
                 }
-                List<OrderDetail> mergedOrderList = new ArrayList<>();  // List mới để chứa các sản phẩm đã hợp nhất
+                List<OrderDetail> mergedOrderList = new ArrayList<>();  
 
                 for (int i = 0; i < orderList.size(); i++) {
                     OrderDetail currentOrder = orderList.get(i);

@@ -45,7 +45,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background-color: #c9302c;
 }
 
-/* CSS cho hai nút ở cuối trang */
 .action-buttons-add {
     display: flex;
     justify-content: flex-end;

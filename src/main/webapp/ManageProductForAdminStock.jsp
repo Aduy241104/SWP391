@@ -108,7 +108,7 @@
         </jsp:include>
 
             <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
+                <h2 class="text-center"><i class="fas fa-box"></i> Manage Stock</h2>
                 <table class="table table-bordered table-hover mt-4">
                     <tr class="table-dark">
                         <th>ID</th>
