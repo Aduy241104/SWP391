@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -318,7 +319,7 @@ public class userDAO {
                 return rs.getInt(1) > 0; // Trả về true nếu username đã tồn tại
             }
         }
-         return false;
+        return false;
     }
 
     // thaiv
@@ -377,8 +378,6 @@ public class userDAO {
         }
         return false;
     }
-
-
 
     public boolean unBanUser(int userId) {
         String query = "UPDATE Users SET isActive = 1 WHERE userID = ?";
@@ -546,6 +545,46 @@ public class userDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        String sql = "SELECT userID, fullName, email, createdAt FROM Users WHERE email = ?";
+        try ( PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            try ( ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(
+                            rs.getInt("userID"),
+                            null, // Username không có trong truy vấn này
+                            null, // Password không có trong truy vấn này
+                            rs.getString("email"),
+                            rs.getString("fullName"),
+                            rs.getDate("createdAt"),
+                            "Customer" // Mặc định là Customer
+                    );
+
+                    System.out.println("📌 Found user: " + user.getFullName() + " (ID: " + user.getUserId() + ")");
+
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public boolean updateUserPassword(int userId, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE userID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newPassword); // Mật khẩu chưa mã hóa (mã hóa sau)
+            ps.setInt(2, userId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {
