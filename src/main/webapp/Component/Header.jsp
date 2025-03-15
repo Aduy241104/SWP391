@@ -46,20 +46,14 @@
 
 <div class="row component-2 cover-page">
     <div class="col-md-3 header-logo-2">
-        <img src="https://images-workbench.99static.com/Opn6spq7G19YeEPjeRF3Nakmb_A=/99designs-contests-attachments/23/23600/attachment_23600424" alt="" style="width: 35%; height: 64px;" >
+         <img src="https://toystory.vn/wp-content/uploads/2022/08/Logo-Header.png" alt="" style="width: 40%; height: 64px;" >
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6 text-center">
         <ul class="category_List">
-            <li class="category"><a href="ViewProductListController">Home Page</a></li>
+            <li class="category"><a href="ViewProductListController"><i style="font-size: 14px" class="fa-solid fa-house fa-beat"></i> Home Page</a></li>
             <li class="category"> <a href="">Top Toy</a></li>
-            <li class="category"><a href="">Women</a></li>
-            <li class="category"><a href="">Kids</a></li>
-            <li class="category"><a href="">Sale</a></li>
-            <li class="category"><a href="">Customise</a></li>
-            <li class="category"><a href="">SNKRS</a></li>
         </ul>
-
     </div>
 
     <form action="SearchProduct" class="col-md-3 search_header" id="searchForm" method="GET">

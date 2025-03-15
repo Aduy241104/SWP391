@@ -20,7 +20,7 @@ public class DBContext {
     public Connection getConnect() throws ClassNotFoundException, SQLException{
          String url = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=ToyStore;"
-                    + "user=quynp;"
+                    + "user=sa;"
                     + "password=12345;"
                     + "encrypt=true;"
                     + "trustServerCertificate=true;";

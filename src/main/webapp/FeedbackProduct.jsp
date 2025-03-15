@@ -208,7 +208,7 @@
             }
             
             .actives{
-                background-color: pink;
+                background-color: pink !important;
             }
         </style>
     </head>
@@ -340,6 +340,11 @@
             <!-- Comment List -->
             <div class="card layout-3">
                 <h3 class="mb-3">Comments (${requestScope.listReview.size()})</h3>
+                  <c:if test="${empty requestScope.listReview}">
+                    <div class="text-center">
+                        <img src="https://waka.vn/images/comment-empty.png" alt="alt"/>
+                    </div>
+                </c:if>
                 <c:forEach var="r" items="${requestScope.listReview}">
                     <div class="border-bottom mb-2">
                         <div class="menu-comment">

@@ -146,6 +146,14 @@
         <servlet-name>UpdateCustomerDetails</servlet-name>
         <servlet-class>Controller.UpdateCustomerDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConfirmBuyNow</servlet-name>
+        <servlet-class>Controller.ConfirmBuyNow</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateOrderBuyNowController</servlet-name>
+        <servlet-class>Controller.CreateOrderBuyNowController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -291,6 +299,14 @@
     <servlet-mapping>
         <servlet-name>UpdateCustomerDetails</servlet-name>
         <url-pattern>/UpdateCustomerDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmBuyNow</servlet-name>
+        <url-pattern>/ConfirmBuyNow</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateOrderBuyNowController</servlet-name>
+        <url-pattern>/CreateOrderBuyNow</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

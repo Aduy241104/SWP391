@@ -5,8 +5,10 @@
 
 package Controller;
 
-import DAO.commentDAO;
-import Model.Review;
+import DAO.OrderDetailDAO;
+import DAO.OrdersDAO;
+import DAO.ProductDAO;
+import Model.Orders;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author DUY
  */
-public class AddReviewController extends HttpServlet {
+public class ConfirmBuyNow extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,28 +33,33 @@ public class AddReviewController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-          try {
-            HttpSession session = request.getSession();
-            int rating = Integer.parseInt(request.getParameter("rating"));
+       String phoneNumber = request.getParameter("phoneNumber");
+        String city = request.getParameter("city");
+        String district = request.getParameter("district");
+        String phuong = request.getParameter("phuong");
+        String addressDetail = request.getParameter("Address");
+
+        try {
             int productID = Integer.parseInt(request.getParameter("productID"));
-            String reviewText = request.getParameter("reviewText");
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
+
+            HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
-            Review review = new Review(productID, user.getUserId(), rating, reviewText);
 
-            commentDAO cmt = new commentDAO();
+            OrdersDAO ord = new OrdersDAO();
+            OrderDetailDAO ordt = new OrderDetailDAO();
+            ProductDAO prd = new ProductDAO();
 
-            boolean checkBuy = cmt.checkIsBuy(productID, user.getUserId());
-            if (checkBuy) {
-                boolean check = cmt.addReview(review);
-                if (check) {
-                    response.sendRedirect("ViewFeedback?productID=" + productID);
-                } else {
-                    throw new Exception("");
-                }
-            }else {
-                 response.sendRedirect("ViewFeedback?productID=" + productID);
-            }
+            //chuan bi dia chi
+            addressDetail += phuong + ", " + district + ", " + city;
+            Orders order = new Orders(user.getUserId(), totalAmount, addressDetail, phoneNumber);
+            int orderIDGenerate = ord.addOrder(order);
+
+            ordt.addOrderDetail(orderIDGenerate, productID, quantity, totalAmount);
+            response.sendRedirect("OrderSuccessPage.jsp");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             response.sendRedirect("error.jsp");
         }
     } 

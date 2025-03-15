@@ -8,26 +8,25 @@ document.addEventListener("DOMContentLoaded", function () {
     let decreaseBtn = document.getElementById("decrease");
     let increaseBtn = document.getElementById("increase");
     let addToCartBtn = document.getElementById("addToCartBtn");
-    let productID = 123; // ID sản phẩm
+    let buyNowBtn = document.getElementById("buyNowBtn");
 
     function updateHref() {
         let quantity = quantityInput.value;
-        let currentHref = addToCartBtn.href;
 
-        // Tạo URL object để dễ dàng xử lý
-        let url = new URL(currentHref, window.location.origin);
+        // Cập nhật href cho Add To Cart
+        let addToCartUrl = new URL(addToCartBtn.href, window.location.origin);
+        addToCartUrl.searchParams.set("quantity", quantity);
+        addToCartBtn.href = addToCartUrl.toString();
 
-        // Cập nhật giá trị quantity, giữ nguyên các tham số khác
-        url.searchParams.set("quantity", quantity);
-
-        // Gán lại href mới
-        addToCartBtn.href = url.toString();
+        // Cập nhật href cho Buy Now
+        let buyNowUrl = new URL(buyNowBtn.href, window.location.origin);
+        buyNowUrl.searchParams.set("quantity", quantity);
+        buyNowBtn.href = buyNowUrl.toString();
     }
-
 
     increaseBtn.addEventListener("click", function () {
         let quantity = parseInt(quantityInput.value);
-        let maxQuantity = parseInt(quantityInput.getAttribute("max")); // Lấy giá trị max
+        let maxQuantity = parseInt(quantityInput.getAttribute("max"));
         if (quantity < maxQuantity) {
             quantityInput.value = quantity + 1;
             updateHref();
@@ -36,10 +35,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     decreaseBtn.addEventListener("click", function () {
         let quantity = parseInt(quantityInput.value);
-        let minQuantity = parseInt(quantityInput.getAttribute("min")) || 1; // Lấy giá trị min (mặc định là 1)
+        let minQuantity = parseInt(quantityInput.getAttribute("min")) || 1;
         if (quantity > minQuantity) {
             quantityInput.value = quantity - 1;
             updateHref();
         }
     });
+
+    // Cập nhật href ngay khi tải trang
+    updateHref();
 });

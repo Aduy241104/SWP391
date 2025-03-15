@@ -5,22 +5,21 @@
 
 package Controller;
 
-import DAO.commentDAO;
-import Model.Review;
-import Model.User;
+import DAO.ProductDAO;
+import Model.Product;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author DUY
  */
-public class AddReviewController extends HttpServlet {
+public class CreateOrderBuyNowController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,28 +30,27 @@ public class AddReviewController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-          try {
-            HttpSession session = request.getSession();
-            int rating = Integer.parseInt(request.getParameter("rating"));
+        try {
             int productID = Integer.parseInt(request.getParameter("productID"));
-            String reviewText = request.getParameter("reviewText");
-            User user = (User) session.getAttribute("user");
-            Review review = new Review(productID, user.getUserId(), rating, reviewText);
-
-            commentDAO cmt = new commentDAO();
-
-            boolean checkBuy = cmt.checkIsBuy(productID, user.getUserId());
-            if (checkBuy) {
-                boolean check = cmt.addReview(review);
-                if (check) {
-                    response.sendRedirect("ViewFeedback?productID=" + productID);
-                } else {
-                    throw new Exception("");
-                }
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            ProductDAO prd = new ProductDAO();
+            Product product = prd.getProductByID(productID);
+            
+            if(quantity  < 1 || product == null || product.getStock() < quantity) {
+                System.out.println("heloo");
+                response.sendRedirect("error.jsp");
             }else {
-                 response.sendRedirect("ViewFeedback?productID=" + productID);
-            }
+                request.setAttribute("product",product);
+                request.setAttribute("quantity", quantity);
+                request.setAttribute("totalAmount", product.getPrice() * quantity);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrderBuyNowForm.jsp");
+                rd.forward(request, response);
+                        
+            } 
+            
         } catch (Exception e) {
+            System.out.println("gadsggwyydg");
+            System.out.println(e.getMessage());
             response.sendRedirect("error.jsp");
         }
     } 

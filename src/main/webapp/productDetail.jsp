@@ -117,7 +117,7 @@
                     <div class="product-buttons">
 
                         <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                        <a class="btn customize" href="AddToCart?productID=4&quantity=3">Buy Now</a>
+                        <a id="buyNowBtn" class="btn customize" href="CreateOrderBuyNow?productID=${product.productID}&quantity=1">Buy Now</a>
                     </div>
                     <div class="">
                         <h4>Product Information</h4>

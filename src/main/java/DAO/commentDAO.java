@@ -28,7 +28,7 @@ public class commentDAO {
                 + "ProductReviews AS prv\n"
                 + "INNER JOIN Users AS usr\n"
                 + "ON usr.userID = prv.userID\n"
-                + "where productID = ?";
+                + "where productID = ? ORDER BY reviewID DESC";
 
         List<Review> listResult = new ArrayList<>();
         try {

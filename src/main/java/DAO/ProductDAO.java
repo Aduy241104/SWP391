@@ -98,13 +98,17 @@ public class ProductDAO {
     }
 
     public List<Product> searchProduct(String keySearch) {
-        String query = "SELECT * FROM Products WHERE productName LIKE ? AND isActive = 1";
+        String query = "SELECT p.* FROM Products p "
+                + "JOIN Categories c ON p.categoryId = c.categoryId "
+                + "WHERE (p.productName LIKE ? OR c.categoryName LIKE ?) "
+                + "AND p.isActive = 1";
 
         List<Product> listResult = new ArrayList<>();
         try {
             connection = new DBContext().getConnect();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, "%" + keySearch + "%");
+             preparedStatement.setString(2, "%" + keySearch + "%");
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
