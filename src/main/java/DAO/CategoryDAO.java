@@ -45,5 +45,89 @@ public class CategoryDAO {
         }
         return listCate;
     }
+    
+     public Category getCategoryById(int categoryID) {
+
+        String query = "SELECT * FROM Categories WHERE categoryID = ?";
+        Category category = null;
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, categoryID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String categoryName = resultSet.getString("categoryName");
+                String description = resultSet.getString("description");
+
+                category = new Category(categoryID, categoryName, description);
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving category: " + e.getMessage());
+        }
+        return category;
+    }
+
+    public void deleteCategoryById(int categoryID) {
+        String query = "DELETE FROM Categories WHERE categoryID = ?";
+
+        try {
+            connection = new DBContext().getConnect(); // Kết nối DB
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, categoryID);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Category deleted successfully!");
+            } else {
+                System.out.println("No category found with ID: " + categoryID);
+            }
+        } catch (Exception e) {
+            System.out.println("Error deleting category: " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+
+    public void editCategoryById(int categoryId, String categoryName, String description) {
+        String query = "UPDATE Categories SET categoryName = ?, description = ? WHERE categoryID = ?";
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, categoryName);
+            preparedStatement.setString(2, description);
+            preparedStatement.setInt(3, categoryId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Category updated successfully!");
+            } else {
+                System.out.println("No category found with ID: " + categoryId);
+            }
+        } catch (Exception e) {
+            System.out.println("Error updating category: " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error closing resources: " + ex.getMessage());
+            }
+        }
+    }
 
 }

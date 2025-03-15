@@ -143,4 +143,23 @@ public class orderDAO {
         }
         return false; // Nếu có lỗi, trả về false
     }
+    
+    public boolean updateCustomerDetailsById(int orderID, String phoneNumber, String address) {
+        String query = "UPDATE Orders SET phoneNumber = ?, address = ? WHERE orderID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, phoneNumber);
+            preparedStatement.setString(2, address);
+            preparedStatement.setInt(3, orderID);
+
+            int rowsUpdated = preparedStatement.executeUpdate(); // Trả về số dòng bị ảnh hưởng
+            System.out.println("Cập nhật order ID: " + orderID + " | rowUpdated: " + rowsUpdated);
+            return rowsUpdated > 0; // Trả về true nếu cập nhật thành công
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Nếu có lỗi, trả về false
+    }
 }

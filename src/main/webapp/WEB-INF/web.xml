@@ -130,6 +130,22 @@
         <servlet-name>ResetPasswordServlet</servlet-name>
         <servlet-class>Controller.ResetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminManageCategory</servlet-name>
+        <servlet-class>Controller.AdminManageCategory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminManageCategoryDelete</servlet-name>
+        <servlet-class>Controller.AdminManageCategoryDelete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminManageCategoryEdit</servlet-name>
+        <servlet-class>Controller.AdminManageCategoryEdit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCustomerDetails</servlet-name>
+        <servlet-class>Controller.UpdateCustomerDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -259,6 +275,22 @@
     <servlet-mapping>
         <servlet-name>ResetPasswordServlet</servlet-name>
         <url-pattern>/ResetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageCategory</servlet-name>
+        <url-pattern>/AdminManageCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageCategoryDelete</servlet-name>
+        <url-pattern>/AdminManageCategoryDelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageCategoryEdit</servlet-name>
+        <url-pattern>/AdminManageCategoryEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCustomerDetails</servlet-name>
+        <url-pattern>/UpdateCustomerDetails</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

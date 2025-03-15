@@ -190,24 +190,24 @@
                     <div class="card card-custom mb-3">
                         <div class="d-flex justify-content-between">
                             <h5>Customer Details</h5>
-                            <a style="color: palevioletred; font-weight: 600;" href="#">Edit</a>
+                            <button class="btn btn-sm btn-outline-danger" id="editCustomerBtn">Edit</button>
                         </div>
                         <p class="mt-3 mb-1">${user.fullName}</p>
                         <p>Customer ID: #${user.userId}</p>
-                        <p><i class="bi bi-cart"></i></p>
                         <p>Contact Info:</p>
                         <p>Email: ${user.email}</p>
-                        <p>Mobile: ${order.phoneNumber}</p>
+                        <p>Mobile: <span id="displayPhone">${order.phoneNumber}</span></p>
                     </div>
+
                     <div class="card card-custom">
                         <div class="d-flex justify-content-between">
                             <h5>Shipping Address</h5>
-                            <a style="color: palevioletred; font-weight: 600;" href="#">Edit</a>
+                            <button class="btn btn-sm btn-outline-danger" id="editAddressBtn">Edit</button>
                         </div>
-                        <p class="mt-3"> ${order.address}</p>
+                        <p class="mt-3"><span id="displayAddress">${order.address}</span></p>
                     </div>
 
-           
+
                     <c:if test="${order.orderStatus == 'pending'}">
                         <button class="btn btn-danger mt-3" id="openModal">Cancel Order</button>         
                     </c:if>
@@ -228,44 +228,93 @@
             </div>
         </div>
 
+        <!-- Modal chỉnh sửa thông tin -->
+
+        <form action="UpdateCustomerDetails" method="POST" id="editCustomerForm">
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">Edit Order Details</div>
+                    <div class="modal-body">
+                        <label for="editPhone">Mobile:</label>
+                        <input type="text" id="editPhone" name="phoneNumber" class="form-control" value="${order.phoneNumber}" required>
+
+                        <label for="editAddress" class="mt-2">Shipping Address:</label>
+                        <textarea id="editAddress" name="address" class="form-control" required>${order.address}</textarea>
+
+                        <input type="hidden" name="orderId" value="${order.orderId}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeEditModal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
 
         <script>
-            const modal = document.getElementById("confirmModal");
-            const openModalBtn = document.getElementById("openModal");
+            // Modal hủy đơn hàng
+            const cancelModal = document.getElementById("confirmModal");
+            const openCancelModalBtn = document.getElementById("openModal");
             const cancelBtn = document.getElementById("cancelBtn");
             const confirmBtn = document.getElementById("confirmDelete");
 
-            modal.style.display = "none";
+            cancelModal.style.display = "none";
 
-            // Mở modal
-            openModalBtn.addEventListener("click", () => {
-                modal.style.display = "flex";
+            // Mở modal hủy đơn hàng
+            openCancelModalBtn.addEventListener("click", () => {
+                cancelModal.style.display = "flex";
             });
 
             // Đóng modal khi nhấn Hủy
             cancelBtn.addEventListener("click", () => {
-                modal.style.display = "none";
+                cancelModal.style.display = "none";
             });
 
             // Xử lý xác nhận
             confirmBtn.addEventListener("click", () => {
-                modal.style.display = "none";
+                cancelModal.style.display = "none";
             });
 
             // Đóng modal nếu nhấn ra ngoài
             window.addEventListener("click", (event) => {
-                if (event.target === modal) {
-                    modal.style.display = "none";
+                if (event.target === cancelModal) {
+                    cancelModal.style.display = "none";
                 }
             });
 
+// Modal chỉnh sửa
+            const editModal = document.getElementById("editModal");
+            const openEditCustomerBtn = document.getElementById("editCustomerBtn");
+            const openEditAddressBtn = document.getElementById("editAddressBtn");
+            const closeEditModalBtn = document.getElementById("closeEditModal");
+
+// Ẩn modal ban đầu
+            editModal.style.display = "none";
+
+            // Gán sự kiện click cho nút "Edit" trong phần Shipping Address
+            openEditAddressBtn.addEventListener("click", () => {
+                editModal.style.display = "flex";
+            });
+
+// Mở modal khi nhấn Edit
+            openEditCustomerBtn.addEventListener("click", () => {
+                editModal.style.display = "flex";
+            });
+
+// Đóng modal khi nhấn Cancel
+            closeEditModalBtn.addEventListener("click", () => {
+                editModal.style.display = "none";
+            });
+
+// Đóng modal nếu nhấn ra ngoài
+            window.addEventListener("click", (event) => {
+                if (event.target === editModal) {
+                    editModal.style.display = "none";
+                }
+            });
+
+
         </script>
-
-
-
-
-
-
     </body>
 </html>
