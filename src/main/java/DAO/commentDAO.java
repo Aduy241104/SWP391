@@ -153,18 +153,38 @@ public class commentDAO {
         String query = "select orderDetailID \n"
                 + "from OrderDetails\n"
                 + "where orderID IN (select orderID from Orders where userID = ? and orderStatus = 'delivered') and productID = ?";
-        
+
         try {
             connection = new DBContext().getConnect();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userID);
             preparedStatement.setInt(2, productID);
             resultSet = preparedStatement.executeQuery();
-            
-            if(resultSet.next()) {
+
+            if (resultSet.next()) {
                 return true;
             }
         } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public boolean updateReview(int reviewID, int userID, int rating, String reviewText) {
+        String query = "UPDATE ProductReviews SET rating = ?, reviewText = ? WHERE reviewID = ? AND userID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, rating);
+            preparedStatement.setString(2, reviewText);
+            preparedStatement.setInt(3, reviewID);
+            preparedStatement.setInt(4, userID);
+
+            int rowEffect = preparedStatement.executeUpdate();
+            return rowEffect > 0;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return false;
     }

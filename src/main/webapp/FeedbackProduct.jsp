@@ -14,6 +14,7 @@
         <title>Comment & Review</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/PrDt.css">
+        <link rel="stylesheet" href="css/SS2.css">
         <link rel="stylesheet" href="font/fontawesome-free-6.5.2-web/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,129 +29,7 @@
                 overflow-x: hidden;
             }
 
-            strong{
-                color: rgb(46, 145, 245);
-                margin-bottom: 10px;
-            }
 
-            .border-bottom{
-                padding: 20px 15px;
-                margin-bottom: 8px;
-                background-color: rgb(255, 255, 255);
-                border-bottom: 1px solid grey;
-                /* box-shadow: 2px 4px 10px #9a9a9a; */
-            }
-
-            .layout-3{
-                background-color: rgb(245, 244, 245);
-                padding: 4px 15px;
-                margin-top: 10px;
-            }
-
-
-            .border-bottom:hover{
-                /* background-color: rgba(243, 109, 154, 0.3); */
-                cursor: pointer;
-            }
-            .custome{
-                background-color: green;
-                margin-top: 24px;
-                border-radius: 17px;
-                font-weight: 600;
-            }
-
-            .filter-rating{
-                background-color: rgba(246, 205, 218, 0.3);
-                border: 1px solid rgb(244, 161, 189);
-                margin-top: 50px;
-                padding: 30px;
-            }
-
-            .option-filter a{
-                padding: 5px 25px;
-                background-color: rgb(255, 255, 255);
-                display: inline-block;
-                margin-top: 18px;
-                margin-left: 10px;
-                border-radius: 5px;
-                color: rgb(0, 0, 0);
-                border: 1px solid black;
-            }
-
-            .option-filter a:hover{
-                background-color: pink;
-                color: rgb(0, 0, 0);
-                text-decoration: none;
-            }
-
-            .avt {
-                padding: 5px 10px;
-                border: 1px solid rgb(51, 123, 248);
-                background-color: rgb(217, 216, 216);
-                border-radius: 140px;
-                display: inline-block;
-            }
-
-            .layout-4 {
-                background-color: rgb(245, 243, 243);
-                padding: 30px;
-                border-radius: 9px;
-                width: 50%;
-                border: 1px solid salmon;
-            }
-
-            .fa-star{
-                color: rgb(214, 197, 6);
-            }
-
-            .layout-5{
-                background-color: rgba(252, 163, 191, 0.3);
-                border-radius: 7px;
-            }
-
-            .menu-comment{
-                position: relative;
-
-            }
-            .fa-ellipsis{
-                position: absolute;
-                right: 7px;
-            }
-
-            .menu-place{
-                width: 120px;
-                height: 70px;
-                background-color: pink;
-                position: absolute;
-                right: 0;
-                display: flex;
-                flex-direction: column;
-                padding-left: 10px;
-                padding-top: 5px;
-                top: 19px;
-                display: none;
-            }
-
-            .menu-place i {
-                font-size: 10px;
-            }
-
-            .menu-place::before{
-                width: 10px;
-                height: 40px;
-                content: "";
-                top: -32px;
-                right: 0;
-                position: absolute;
-                border: 15px solid;
-                border-color: transparent transparent pink transparent;
-
-
-            }
-
-            .mnx:hover .menu-place{
-                display: block;
-            }
 
             .modal {
                 display: none;
@@ -206,7 +85,7 @@
                 display: flex;
                 justify-content: space-between;
             }
-            
+
             .actives{
                 background-color: pink !important;
             }
@@ -340,7 +219,7 @@
             <!-- Comment List -->
             <div class="card layout-3">
                 <h3 class="mb-3">Comments (${requestScope.listReview.size()})</h3>
-                  <c:if test="${empty requestScope.listReview}">
+                <c:if test="${empty requestScope.listReview}">
                     <div class="text-center">
                         <img src="https://waka.vn/images/comment-empty.png" alt="alt"/>
                     </div>
@@ -369,9 +248,46 @@
                                             <i class="fa-solid fa-trash-can"></i>
                                         </section>
                                         <section>
-                                            <button style="border: none; background-color: pink;">Edit</button>
+                                            <button class="openModalBtn-2"  style="border: none; background-color: pink;">Edit</button>
                                             <i class="fa-solid fa-pen"></i>
                                         </section> 
+                                    </div>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="editReviewModal-2 modal-2">
+                                    <div style="width:30%" class="modal-content-2">
+                                        <div class="modal-header-2">
+                                            <h5 class="modal-title-2">Edit Your Comment</h5>
+                                            <span class="close-2">&times;</span>
+                                        </div>
+                                        <div class="modal-body-2">
+                                            <form action="EditReview" method="POST" class="card-2 layout-4-2 p-3-2">
+                                                <input type="hidden" name="reviewID" value="${r.reviewID}">
+                                                <input type="hidden" name="productID" class="form-control"value="${requestScope.productID}">
+                                               
+                                                <div class="mb-3-2">
+                                                    <label class="form-label-2">Rating</label>
+                                                    <select name="rating" class="form-select-2">
+                                                        <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                                                        <option value="4">⭐⭐⭐⭐ - Good</option>
+                                                        <option value="3">⭐⭐⭐ - Average</option>
+                                                        <option value="2">⭐⭐ - Poor</option>
+                                                        <option value="1">⭐ - Very Bad</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3-2">
+                                                    <label class="form-label-2">Comment</label>
+                                                    <textarea style="width: 100%" name="reviewText" class="form-control-2" rows="3">${r.reviewText}</textarea>
+                                                </div>
+
+                                                <div class="modal-footer-2">
+                                                    <button type="button" class="cancelBtn-2 btn btn-secondary">Cancel</button>
+                                                    <button type="submit" class="btn-2 btn-primary">Update Comment</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </c:if>
@@ -398,7 +314,7 @@
                 <form action="DeleteReview" method="POST"  class="modal-footer">
                     <input type="hidden" id="id" name="productID" value="${requestScope.productID}">
                     <input type="hidden" id="inputHidden" name="reviewID">
-                    <button class="btn btn-secondary" id="cancelBtn">No</button>
+                    <button type="reset" class="btn btn-secondary" id="cancelBtn">No</button>
                     <button type="submit" class="btn btn-danger" id="confirmDelete">Yes, Delete</button>
                 </form>
             </div>
@@ -428,7 +344,7 @@
                     });
                 });
 
-// Sau khi trang tải xong, xóa vị trí cuộn đã lưu
+                // Sau khi trang tải xong, xóa vị trí cuộn đã lưu
                 window.addEventListener("load", function () {
                     localStorage.removeItem("scrollPosition");
                 });
@@ -481,6 +397,32 @@
                 }
             });
 
+        </script>
+
+        <script>
+            document.querySelectorAll(".openModalBtn-2").forEach(button => {
+                button.addEventListener("click", function () {
+                    document.querySelector(".editReviewModal-2").style.display = "block";
+                });
+            });
+
+            document.querySelectorAll(".close-2").forEach(button => {
+                button.addEventListener("click", function () {
+                    document.querySelector(".editReviewModal-2").style.display = "none";
+                });
+            });
+
+            document.querySelectorAll(".cancelBtn-2").forEach(button => {
+                button.addEventListener("click", function () {
+                    document.querySelector(".editReviewModal-2").style.display = "none";
+                });
+            });
+
+            window.onclick = function (event) {
+                if (event.target.classList.contains("editReviewModal-2")) {
+                    document.querySelector(".editReviewModal-2").style.display = "none";
+                }
+            }
         </script>
     </body>
 </html>

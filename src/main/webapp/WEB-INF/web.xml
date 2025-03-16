@@ -154,6 +154,10 @@
         <servlet-name>CreateOrderBuyNowController</servlet-name>
         <servlet-class>Controller.CreateOrderBuyNowController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditReviewController</servlet-name>
+        <servlet-class>Controller.EditReviewController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -307,6 +311,10 @@
     <servlet-mapping>
         <servlet-name>CreateOrderBuyNowController</servlet-name>
         <url-pattern>/CreateOrderBuyNow</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditReviewController</servlet-name>
+        <url-pattern>/EditReview</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
