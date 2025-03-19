@@ -72,7 +72,11 @@ public class ViewFeedbackController extends HttpServlet {
             
             if(user != null) {
                 boolean checkBuy = cmt.checkIsBuy(productID, user.getUserId());
-                 if(checkBuy) {
+                boolean isComment = cmt.isComment(user.getUserId(), productID);
+                System.out.println(isComment);
+                
+                 if(checkBuy && !isComment) {
+                     System.out.println("hahhaha");
                       request.setAttribute("isBuy", "buy");
                  }
             }

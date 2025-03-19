@@ -160,7 +160,7 @@
                             <c:forEach var="category" items="${categoryList}">
                                 <option value="${category.categoryID}" ${category.categoryID == product.categoryID ? 'selected' : ''}>${category.categoryName}</option>
                             </c:forEach>
-                        </select>
+                        </select> 
                     </div>
                 </div>
 

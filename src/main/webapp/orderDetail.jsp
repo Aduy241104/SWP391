@@ -230,7 +230,8 @@
 
         <!-- Modal chỉnh sửa thông tin -->
 
-        <form action="UpdateCustomerDetails" method="POST" id="editCustomerForm">
+        <c:if test="${order.orderStatus == 'pending'}">
+             <form action="UpdateCustomerDetails" method="POST" id="editCustomerForm">
             <div id="editModal" class="modal">
                 <div class="modal-content">
                     <div class="modal-header">Edit Order Details</div>
@@ -250,6 +251,7 @@
                 </div>
             </div>
         </form>
+        </c:if>
 
 
         <script>

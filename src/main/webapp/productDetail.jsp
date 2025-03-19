@@ -107,18 +107,20 @@
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
                     <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
-                    <p><strong>Stock:</strong> ${product.stock}</p>
+                    <p><strong>Stock:</strong>${(product.stock > 0) ? product.stock: "Out Of Stock"}</p>
 
-                    <div class="quantity-place">
-                        <button id="decrease"><i class="fa-solid fa-minus"></i></button>
-                        <input type="text" id="quantity" readonly value="1" min="1" max="${product.stock}">
-                        <button id="increase"><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                    <div class="product-buttons">
+                    <c:if test="${product.stock > 0}">
+                        <div class="quantity-place">
+                            <button id="decrease"><i class="fa-solid fa-minus"></i></button>
+                            <input type="text" id="quantity" readonly value="1" min="1" max="${product.stock}">
+                            <button id="increase"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="product-buttons">
 
-                        <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                        <a id="buyNowBtn" class="btn customize" href="CreateOrderBuyNow?productID=${product.productID}&quantity=1">Buy Now</a>
-                    </div>
+                            <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
+                            <a id="buyNowBtn" class="btn customize" href="CreateOrderBuyNow?productID=${product.productID}&quantity=1">Buy Now</a>
+                        </div>
+                    </c:if>
                     <div class="">
                         <h4>Product Information</h4>
                         <table class="table product-info-table">
@@ -143,21 +145,22 @@
 
                         </table>
                     </div>
+
+                    <div class="col-md" style="height: 375px;">
+                        <h3>Product information</h3>
+                        <p style="line-height: 22px;">
+                            ${product.description}
+                        </p>
+
+                    </div>
                 </div>
 
-                <div class="col-md-6" style="height: 375px;">
+                <div class="col-md-6" style="height: 200px">
                     <h2>Rating 4.5⭐</h2>
                     <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
-
                 </div>
 
-                <div class="col-md-6" style="height: 375px;">
-                    <h3>Product information</h3>
-                    <p style="line-height: 22px;">
-                        ${product.description}
-                    </p>
 
-                </div>
             </div>
 
             <div class="row">

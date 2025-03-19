@@ -188,5 +188,26 @@ public class commentDAO {
         }
         return false;
     }
+    
+    public boolean isComment(int userID, int productID) {
+        String query = "SELECT * FROM ProductReviews\n"
+                + "WHERE userID = ? AND productID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, productID);
+             resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 
 }

@@ -83,7 +83,7 @@ public class ConfirmOrderController extends HttpServlet {
                 prd.updateStock(productID, cart.getProduct().getStock() - quantity );
                 
             }
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("OrderSuccessPage.jsp");
            
         }
            

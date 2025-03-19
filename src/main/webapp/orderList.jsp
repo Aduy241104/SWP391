@@ -103,7 +103,7 @@
                                 <div class="row">
                                     <div class="col-md-3"><strong>ID:</strong> ${order.orderId}</div>
                                     <div class="col-md-3"><strong>Date:</strong> ${order.createdAt}</div>
-                                    <div class="col-md-3"><strong>Total:</strong> ${order.totalAmount} VND</div>
+                                    <div class="col-md-3"><strong>Total:</strong>$ ${order.totalAmount}</div>
                                     <div class="col-md-3 text-end status text-warning">${order.orderStatus}</div>
                                 </div>
                             </a>
