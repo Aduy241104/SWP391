@@ -1,11 +1,12 @@
 <%-- 
-    Document   : adminDashboard
-    Created on : Feb 15, 2025, 2:02:16 PM
-    Author     : lanoc
+    Document   : ManageReviewForAdmin
+    Created on : Mar 23, 2025, 4:07:50 PM
+    Author     : Nguyen Phu Quy CE180789
 --%>
 
 <%@page import="java.util.List"%>
 <%@page import="Model.Product"%>
+<%@page import="Model.Review" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -14,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Manage Products - Admin</title>
+        <title>Manage Rating List - Admin</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/styleToy.css">
         <link rel="stylesheet" href="font/fontawesome-free-6.5.2-web/css/all.min.css">
@@ -75,91 +76,72 @@
                 padding: 5px 10px;
                 font-size: 12px;
             }
-
         </style>
     </head>
     <body>
-                <%
+        <%
             String role = (String) session.getAttribute("role");
         %>
 
-        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
-            <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
+            <h2><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManageCategory" ><i class="fas fa-box"></i> Manage Category</a>
-            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
-            <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=managerStock" class="active"><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
-        </div>
-        <% } else { %>
-        <div class="sidebar">
-            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock" class="active"><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+            <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="ViewRatingListForAdmin?action=reviews" class="active"><i class="fas fa-comments"></i> Manage Reviews</a>
+            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
-        <% }%>
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp">
-             <jsp:param name="page" value="stock"/>
-        </jsp:include>
-
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-box"></i> Manage Stock</h2>
-                <table class="table table-bordered table-hover mt-4">
-                    <tr class="table-dark">
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Stock</th>
-                        <th>Action</th>
-                    </tr>
-                    <h2 style="text-align: center; color: red;">${requestScope.error}</h2>
-                <c:forEach var="product" items="${productList}">
+        <div class="main-content">
+            <h2 class="text-center"><i class="fas fa-comments"></i> Manage Product Reviews</h2>
+            <table class="table table-bordered table-hover mt-4">
+                <tr class="table-dark">
+                    <th>Review ID</th>
+                    <th>Product ID</th>
+                    <th>Username</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                </tr>
+                <c:forEach var="review" items="${reviewList}">
                     <tr>
-                        <td>${product.productID}</td>
-                        <td>${product.productName}</td>
-                        <td>${product.stock}</td>
+                        <td>${review.reviewID}</td>
+                        <td>${review.productID}</td>
+                        <td>${review.username}</td>
+                        <td>${review.rating}</td>
+                        <td class="review-text">
+                            <c:choose>
+                                <c:when test="${fn:length(review.reviewText) > 100}">
+                                    <span class="short-text">${fn:substring(review.reviewText, 0, 100)}...</span>
+                                    <span class="full-text" style="display: none;">${review.reviewText}</span>
+                                </c:when>
+                                <c:otherwise>
+                                    ${review.reviewText}
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>${review.createdAt}</td>
                         <td>
-                            <form action="AdminManagerProducts?action=Import" method="POST"  class="stock-input-form">
-                                <input type="hidden" name="id" value="${product.productID}">
-                                <input type="hidden" name="stock" value="${product.stock}">
-                                <input type="number" name="newStock"  min="0" style="width: 80px; padding: 5px;" required>
-                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                                    Import
-                                </button>
-                            </form>
-                            <form action="AdminManagerProducts?action=Export" method="POST"  class="stock-input-form">
-                                <input type="hidden" name="id" value="${product.productID}">
-                                <input type="hidden" name="stock" value="${product.stock}">
-                                <input type="number" name="newStock"  min="0" style="width: 80px; padding: 5px;" required>
-                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                                    Export 
-                                </button>
-                            </form>
+                            <a href="ViewRatingDetailListForAdminDelete?action=delete&reviewID=${review.reviewID}&productID=${review.productID}"
+                               onclick="return confirm('Are you sure you want to delete this review?')"
+                               class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
-           
-                  <% if ("admin".equals(role)) {%>
-           <div style="margin-bottom: 20px;" class="action-buttons-add">
-                <a href="AdminManagerProducts?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-arrow-left"></i> Back to Admin Page
+            <div class="text-center mt-4">
+                <a href="ViewProductAdmin.jsp" class="btn btn-primary btn-lg">
+                    <i class="fas fa-arrow-left"></i> Back to Review
                 </a>
             </div>
-            <% } else { %>
-            <div style="margin-bottom: 20px;" class="action-buttons-add">
-                <a href="StaffManagerOrders?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-arrow-left"></i> Back to Admin Page
-                </a>
-            </div>
-            <% }%>
         </div>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll(".toggle-btn").forEach(button => {
@@ -182,7 +164,6 @@
                     });
                 });
             });
-
         </script>
     </body>
 </html>

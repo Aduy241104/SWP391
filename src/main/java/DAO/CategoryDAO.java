@@ -130,4 +130,33 @@ public class CategoryDAO {
         }
     }
 
+    public void addCategory(String categoryName, String description) {
+        String query = "INSERT INTO Categories (categoryName, description) VALUES (?, ?)";
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, categoryName);
+            preparedStatement.setString(2, description);
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Category added successfully!");
+            } else {
+                System.out.println("Failed to add category.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error adding category: " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error closing resources: " + ex.getMessage());
+            }
+        }
+    }
 }

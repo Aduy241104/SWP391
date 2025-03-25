@@ -87,6 +87,7 @@
             <a href="AdminManageCategory" class="active"><i class="fas fa-box"></i> Manage Category</a>
             <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
             <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
@@ -139,6 +140,11 @@
                     </tr>
                 </c:forEach>
             </table>
+            <div class="text-center mt-4">
+                <a href="ViewCategoryForAdminAdd.jsp" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus-circle"></i> Add New Category
+                </a>
+            </div>
             <!--            <div style="margin-bottom: 20px;" class="action-buttons-add">
                             <a href="AdminManagerProducts?action=addProduct" class="btn btn-custom btn-lg shadow">
                                 <i class="fas fa-plus-circle"></i> Add New Product

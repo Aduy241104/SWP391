@@ -158,6 +158,22 @@
         <servlet-name>EditReviewController</servlet-name>
         <servlet-class>Controller.EditReviewController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminManageCategoryAdd</servlet-name>
+        <servlet-class>Controller.AdminManageCategoryAdd</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewRatingDetailListForAdminDelete</servlet-name>
+        <servlet-class>Controller.ViewRatingDetailListForAdminDelete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewRatingDetailListForAdmin</servlet-name>
+        <servlet-class>Controller.ViewRatingDetailListForAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewRatingListForAdmin</servlet-name>
+        <servlet-class>Controller.ViewRatingListForAdmin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminManager_Search</servlet-name>
         <url-pattern>/AdminManager_Search</url-pattern>
@@ -315,6 +331,22 @@
     <servlet-mapping>
         <servlet-name>EditReviewController</servlet-name>
         <url-pattern>/EditReview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageCategoryAdd</servlet-name>
+        <url-pattern>/AdminManageCategoryAdd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewRatingDetailListForAdminDelete</servlet-name>
+        <url-pattern>/ViewRatingDetailListForAdminDelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewRatingDetailListForAdmin</servlet-name>
+        <url-pattern>/ViewRatingDetailListForAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewRatingListForAdmin</servlet-name>
+        <url-pattern>/ViewRatingListForAdmin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

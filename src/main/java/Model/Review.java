@@ -19,6 +19,10 @@ public class Review {
     private String reviewText;
     private Date createdAt;
 
+    private String productName;
+    private int totalComments;
+    private double averageRating;
+    
     public Review() {
     }
 
@@ -31,12 +35,28 @@ public class Review {
         this.reviewText = reviewText;
         this.createdAt = createdAt;
     }
-
+    
+    public Review(int reviewID, int productID, int userID, int rating, String reviewText, Date createdAt) {
+        this.reviewID = reviewID;
+        this.productID = productID;
+        this.userID = userID;
+        this.rating = rating;
+        this.reviewText = reviewText;
+        this.createdAt = createdAt;
+    }
+    
     public Review(int productID, int userID, int rating, String reviewText) {
         this.productID = productID;
         this.userID = userID;
         this.rating = rating;
         this.reviewText = reviewText;
+    }
+    
+    public Review(int productID, String productName, int totalComments, double averageRating) {
+        this.productID = productID;
+        this.productName = productName;
+        this.totalComments = totalComments;
+        this.averageRating = averageRating;
     }
     
     
@@ -95,6 +115,29 @@ public class Review {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(int totalComments) {
+        this.totalComments = totalComments;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     @Override
