@@ -57,7 +57,7 @@
             }
 
             .toast {
-                display: none; /* Mặc định ẩn */
+                display: none;
                 background-color: #d4edda;
                 border: 1px solid #c3e6cb;
                 border-radius: 4px;
@@ -71,8 +71,6 @@
             .toast.show {
                 display: block;
             }
-
-            /* Hiệu ứng mờ dần */
             @keyframes fadeInOut {
                 0% {
                     opacity: 0;
@@ -87,9 +85,37 @@
                     transform: translateY(-10px);
                 }
             }
-
-
-
+            .modal-3 {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+            .modal-content-3 {
+                background-color: white;
+                margin: 15% auto;
+                padding: 20px;
+                border-radius: 8px;
+                width: 300px;
+                text-align: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            .close-btn-3 {
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 4px;
+                margin-top: 10px;
+            }
+            .show-3 {
+                display: block;
+            }
         </style>
     </head>
     <body>
@@ -142,7 +168,6 @@
                                     <td>${product.weight}g</td>
                                 </tr>
                             </tbody>
-
                         </table>
                     </div>
 
@@ -151,7 +176,6 @@
                         <p style="line-height: 22px;">
                             ${product.description}
                         </p>
-
                     </div>
                 </div>
 
@@ -159,10 +183,7 @@
                     <h2>Rating 4.5⭐</h2>
                     <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
                 </div>
-
-
             </div>
-
             <div class="row">
                 <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
                 <c:forEach var="ctl" items="${requestScope.listRelatedProduct}">
@@ -179,15 +200,10 @@
                         </a>
                     </div>          
                 </c:forEach>
-
-
-
-
             </div>
         </div>
 
-
-        <c:if test="${not empty isAdded}">
+        <c:if test="${isAdded == 'added'}">
             <div class="toast-container">
                 <div class="toast" id="success-toast">
                     Added Product to Cart
@@ -195,6 +211,14 @@
             </div>
         </c:if>
 
+        <c:if test="${isAdded == 'notAdded'}">
+            <div id="cartModal" class="modal-3" style="display: none;">
+                <div class="modal-content-3">
+                    <p>The number of products in the cart has exceeded the limit!</p>
+                    <button class="close-btn-3" onclick="closeModal()">Đóng</button>
+                </div>
+            </div>
+        </c:if>
 
         <footer class="container-fluid">
             <jsp:include page="Component/Footer.jsp"></jsp:include>
@@ -203,6 +227,21 @@
 
         <script src="Js/Prdt.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                    function showModal() {
+                        document.getElementById("cartModal").classList.add("show-3");
+                        document.getElementById("cartModal").style.display = "block";
+                    }
+                    function closeModal() {
+                        document.getElementById("cartModal").classList.remove("show-3");
+                        document.getElementById("cartModal").style.display = "none";
+                    }
+
+                    // Tự động hiển thị modal khi trang tải xong
+                    window.onload = function () {
+                        showModal();
+                    };
+        </script>
         <script>
             // Hàm hiển thị Toast
             function showToast() {

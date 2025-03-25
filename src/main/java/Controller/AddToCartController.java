@@ -80,6 +80,8 @@ public class AddToCartController extends HttpServlet {
                 if (product.getStock() >= currentQuantity + quantity) {
                     crd.updateQuantity(cartItemID, currentQuantity + quantity);
                     url += "&isAdded=added";
+                }else  {
+                     url += "&isAdded=notAdded";
                 }
                 // neu san pham chua co trong gio hang thi thuc hien tao san pham moi trong gio
             } else {
