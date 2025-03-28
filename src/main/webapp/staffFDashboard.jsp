@@ -76,7 +76,7 @@
                     <p><i class="fas fa-shopping-bag"></i> Orders</p>
                 </div>
                 <div class="stat-box stat-box_revenue" style="background-color: #ED1164">
-                    <h3>${totalAmount}Ð</h3>
+                    <h3>${totalAmount}$</h3>
                     <p><i class="fas fa-shopping-bag"></i> Revenue</p>
                 </div>
             </div>

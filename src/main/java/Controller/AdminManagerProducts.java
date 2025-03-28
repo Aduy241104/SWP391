@@ -8,6 +8,7 @@ import DAO.CategoryDAO;
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
 import DAO.StaffDAO;
+import DAO.StockDAO;
 import DAO.userDAO;
 import Model.Category;
 import Model.Orders;
@@ -77,6 +78,7 @@ public class AdminManagerProducts extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = (String) request.getParameter("action");
+        try{
         if (action.equals("product")) {
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
@@ -174,6 +176,13 @@ public class AdminManagerProducts extends HttpServlet {
             } catch (Exception e) {
             }
         } else if (action.equals("managerStock")) {
+            StockDAO stockDao = new StockDAO();
+            double totalIm = stockDao.calculateTotalImportValue();
+            double totalEx = stockDao.calculateTotalExportValue();
+            double totalStock = stockDao.calculateStockDifference();
+            request.setAttribute("totalIm", totalIm);
+            request.setAttribute("totalEx", totalEx);
+            request.setAttribute("totalStock", totalStock);
             ProductDAO pDao = new ProductDAO();
             List<Product> productList = pDao.getProductList();
             request.setAttribute("productList", productList);
@@ -192,6 +201,8 @@ public class AdminManagerProducts extends HttpServlet {
             request.setAttribute("query", query);
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("AdminManager_Search?page=stock&query=" + query).forward(request, response);
+        }
+        }catch (Exception e){
         }
 
     }
@@ -292,108 +303,9 @@ public class AdminManagerProducts extends HttpServlet {
                 productDao.updateProduct(product);
 
                 response.sendRedirect("AdminManagerProducts?action=product");
-            } else if (action.equals("Import")) {
-                int productId = Integer.parseInt(request.getParameter("id"));
-                int newStock = Integer.parseInt(request.getParameter("newStock"));
-                int stock = Integer.parseInt(request.getParameter("stock"));
-
-                ProductDAO productDAO = new ProductDAO();
-                newStock += stock;
-
-                boolean isUpdated = productDAO.updateStock(productId, newStock);
-
-                if (isUpdated) {
-                    response.sendRedirect("AdminManagerProducts?action=managerStock");
-                } else {
-                    request.setAttribute("error", "Failed to update stock. Please try again.");
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                }
-            } else if (action.equals("Export")) {
-                try {
-                    int productId = Integer.parseInt(request.getParameter("id"));
-                    int newStock = Integer.parseInt(request.getParameter("newStock"));
-                    int stock = Integer.parseInt(request.getParameter("stock"));
-
-                    // Kiểm tra số lượng tồn kho có đủ để xuất không
-                    if (newStock > stock) {
-                        response.sendRedirect("AdminManagerProducts?action=managerStockError");
-                        return; // Thêm return để dừng chương trình
-                    }
-
-                    stock -= newStock;
-
-                    ProductDAO productDAO = new ProductDAO();
-                    boolean isUpdated = productDAO.updateStock(productId, stock);
-                    if (stock == 0) {
-                        productDAO.deleteProduct(productId);
-                    }
-                    if (isUpdated) {
-                        response.sendRedirect("AdminManagerProducts?action=managerStock");
-                    } else {
-                        request.setAttribute("error", "Failed to update stock. Please try again.");
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
-                    }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("error", "Invalid input format. Please check your data.");
-                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-                } catch (Exception e) {
-                    request.setAttribute("error", "An error occurred: " + e.getMessage());
-                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-                }
-            } else if (action.equals("ImportStock")) {
-                String query = request.getParameter("query");
-                int productId = Integer.parseInt(request.getParameter("id"));
-                int newStock = Integer.parseInt(request.getParameter("newStock"));
-                int stock = Integer.parseInt(request.getParameter("stock"));
-
-                ProductDAO productDAO = new ProductDAO();
-                newStock += stock;
-
-                boolean isUpdated = productDAO.updateStock(productId, newStock);
-                request.setAttribute("query", query);
-                if (isUpdated) {
-                    response.sendRedirect("AdminManagerProducts?action=managerStockSearch");
-                } else {
-                    request.setAttribute("error", "Failed to update stock. Please try again.");
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                }
-            } else if (action.equals("ExportStock")) {
-                String query = request.getParameter("query");
-                try {
-                    int productId = Integer.parseInt(request.getParameter("id"));
-                    int newStock = Integer.parseInt(request.getParameter("newStock"));
-                    int stock = Integer.parseInt(request.getParameter("stock"));
-
-                    // Kiểm tra số lượng tồn kho có đủ để xuất không
-                    if (newStock > stock) {
-                        response.sendRedirect("AdminManagerProducts?action=managerStockSearch");
-                        return; // Thêm return để dừng chương trình
-                    }
-
-                    stock -= newStock;
-
-                    ProductDAO productDAO = new ProductDAO();
-                    boolean isUpdated = productDAO.updateStock(productId, stock);
-                    if (stock == 0) {
-                        productDAO.deleteProduct(productId);
-                    }
-                    request.setAttribute("query", query);
-                    if (isUpdated) {
-                        response.sendRedirect("AdminManagerProducts?action=managerStockSearch");
-                    } else {
-                        request.setAttribute("error", "Failed to update stock. Please try again.");
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
-                    }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("error", "Invalid input format. Please check your data.");
-                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-                } catch (Exception e) {
-                    request.setAttribute("error", "An error occurred: " + e.getMessage());
-                    request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-                }
             }
-        } catch (Exception e) {
-
+        }catch (Exception e) {
+ 
         }
     }
 

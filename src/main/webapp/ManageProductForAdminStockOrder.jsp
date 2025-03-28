@@ -73,11 +73,10 @@
 
             .stock-input-form button {
                 padding: 5px 10px;
+
                 font-size: 12px;
             }
             .total-amount {
-                display: flex;
-                justify-content: space-evenly;
                 text-align: right;
                 font-size: 18px;
                 font-weight: bold;
@@ -85,8 +84,9 @@
 
             }
             .total-h2{
-                padding: 10px;
+                padding-top: 2px;
                 text-align: center;
+                margin-left: 1050px;
                 display: block;
                 border: 2px solid;
                 border-radius: 10px;
@@ -125,70 +125,46 @@
             <jsp:param name="page" value="stock"/>
         </jsp:include>
 
+
+
         <div class="main-content">
-             <div class="total-amount">
-                 <h4 class="total-h2">Total Import: <span style="color: #ED1164; margin-top: 5px;">${totalIm}$</span></h4>
-                 <h4 class="total-h2">Total Export: <span style="color: #ED1164; margin-top: 5px;">${totalEx}$</span></h4>
-                <h4 class="total-h2">Total Amount: <span style="color: #ED1164; margin-top: 5px;">${totalStock}$</span></h4>
+            <div class="total-amount">
+                <h4 class="total-h2">Total Amount: <span style="color: #ED1164; margin-top: 5px;">${total}$</span></h4>
             </div>
-            <h2 class="text-center"><i class="fas fa-box"></i> Manage Stock</h2>
+            <h2 class="text-center"><i class="fas fa-box"></i> Stock List</h2>
             <table class="table table-bordered table-hover mt-4">
-                <tr class="table-dark">
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Stock</th>
+                <tr class="table-dark"> 
+                    <th>Stock ID</th>
+                    <th>User ID</th>
+                    <th>Product ID</th>
+                    <th>Quantity</th>
+                    <th>Type</th>
+                    <th>Timestamp</th>
+                    <th>Total Price</th>
                     <th>Action</th>
                 </tr>
-                <h2 style="text-align: center; color: red;">${requestScope.error}</h2>
-                <c:forEach var="product" items="${productList}">
+                <c:forEach var="stock" items="${list}">
                     <tr>
-                        <td>${product.productID}</td>
-                        <td>${product.productName}</td>
-                        <td>${product.stock}</td>
+                        <td>${stock.stockID}</td>
+                        <td>${stock.userID}</td>
+                        <td>${stock.productID}</td>
+                        <td>${stock.quantity}</td>
+                        <td>${stock.type}</td>
+                        <td>${stock.timestamp}</td>
+                        <td>${stock.totalPrice}</td>
                         <td>
-                            <form action="AdminManageStock?action=ImportStock" method="POST"  class="stock-input-form">
-                                <input type="hidden" name="id" value="${product.productID}">
-                                <input type="hidden" name="stock" value="${product.stock}">
-                                <input type="number" name="newStock"  min="0" style="width: 80px; padding: 5px;" required>
-                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                                    Import
-                                </button>
-                            </form>
-                            <form action="AdminManageStock?action=ExportStock" method="POST"  class="stock-input-form">
-                                <input type="hidden" name="id" value="${product.productID}">
-                                <input type="hidden" name="stock" value="${product.stock}">
-                                <input type="number" name="newStock"  min="0" style="width: 80px; padding: 5px;" required>
-                                <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 5px; padding: 5px 10px;">
-                                    Export 
-                                </button>
-                            </form>
+                            <a href="AdminManageStock?action=ViewDetail&id=${stock.stockID}" class="btn btn-primary btn-sm">
+                                View Detail
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
-                <div class="action-buttons-add" style="margin-top: 20px">
-                    <a href="AdminManageStock?action=Import&id=${product.productID}" style="margin-bottom: 20px;" class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-hourglass-half"></i> View Import Orders
+            <div style="margin-left: 500; margin-bottom: 20px;" class="">
+                <a href="AdminManagerProducts?action=managerStock" class="btn btn-custom btn-lg shadow">
+                    <i class="fas fa-arrow-left"></i> Back to Admin Page
                 </a>
-                <a  href="AdminManageStock?action=Export&id=${product.productID}" style="margin-bottom: 20px;"  class="btn btn-custom btn-lg shadow">
-                    <i class="fas fa-truck"></i> View Export Orders
-                </a>
-                <% if ("admin".equals(role)) {%>
-                <div style="margin-bottom: 20px;" class="">
-                    <a href="AdminManagerProducts?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Admin Page
-                    </a>
-                </div>
-                <% } else { %>
-                <div style="margin-bottom: 20px;" class="">
-                    <a href="StaffManagerOrders?action=productForDashBoard" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Admin Page
-                    </a>
-                </div>
-                <% }%>
             </div>
-
-
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {

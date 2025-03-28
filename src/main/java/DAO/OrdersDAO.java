@@ -153,6 +153,8 @@ public class OrdersDAO {
     public double getTotalAmountOfDeliveredOrders() {
         String query = "SELECT SUM(totalAmount) FROM Orders WHERE orderStatus = 'delivered'";
         double totalAmount = 0;
+        StockDAO stockDAO = new StockDAO();
+        double totalStock = stockDAO.calculateStockDifference();
         try {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
@@ -162,7 +164,7 @@ public class OrdersDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return totalAmount;
+        return totalStock < 0 ? totalAmount + totalStock : totalAmount + Math.abs(totalStock);
     }
 
     // restore ne
