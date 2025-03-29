@@ -6,6 +6,7 @@ package DAO;
 
 import Model.Cart;
 import Model.OrderDetail;
+import Model.UserAction;
 import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -80,10 +81,10 @@ public class OrderDetailDAO {
             preparedStatement.setInt(2, productID);
             preparedStatement.setInt(3, quantity);
             preparedStatement.setDouble(4, price);
-            
+
             int rowEffect = preparedStatement.executeUpdate();
-            
-            if(rowEffect > 0) {
+
+            if (rowEffect > 0) {
                 return true;
             }
 
@@ -93,5 +94,28 @@ public class OrderDetailDAO {
         return false;
 
     }
+
+    public List<UserAction> getUserActionsByOrderID(int orderID) {
+    String query = "SELECT userName, action " +
+                   "FROM OrderRecords " +
+                   "WHERE orderID = ?";
+    List<UserAction> userActions = new ArrayList<>();
+
+    try (PreparedStatement ps = connection.prepareStatement(query)) {
+        ps.setInt(1, orderID);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String userName = rs.getString("userName");
+                String action = rs.getString("action");
+                userActions.add(new UserAction(userName, action));
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return userActions;
+}
+    
+    
 
 }

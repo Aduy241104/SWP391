@@ -9,17 +9,14 @@ package Model;
  * @author thaiv
  */
 public class OrderRecords {
+
     private int orderID;
     private int staffID;
     private String action;
+    private int adminID;
+    private String userName;
 
     public OrderRecords() {
-    }
-
-    public OrderRecords(int orderID, int staffID, String action) {
-        this.orderID = orderID;
-        this.staffID = staffID;
-        this.action = action;
     }
 
     public int getOrderID() {
@@ -45,7 +42,29 @@ public class OrderRecords {
     public void setAction(String action) {
         this.action = action;
     }
-    
-    
-    
+
+    public int getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(int adminID) {
+        this.adminID = adminID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public OrderRecords(int orderID, int staffID, String action, int adminID, String userName) {
+        this.orderID = orderID;
+        this.staffID = staffID;
+        this.action = action;
+        this.adminID = adminID;
+        this.userName = userName;
+    }
+
 }

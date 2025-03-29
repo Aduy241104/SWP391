@@ -173,13 +173,19 @@
                 </c:if>
 
                 <c:if test="${not empty orderDetails}">
+                    <div>Name of the confirmer: <Strong><ul>
+                                <c:forEach var="userName" items="${userNamesChangeStatus}">
+                                    <li>${userName}</li>
+                                    </c:forEach>
+                            </ul>
+                        </Strong></div>
                     <div class="customer-info">
                         <p><strong>Username:</strong> ${orderDetail.username}</p>
                         <p><strong>Address:</strong> ${orderDetail.address}</p>
                         <p><strong>Phone:</strong> ${orderDetail.phoneNumber}</p>
                         <p><strong>Email:</strong> ${orderDetail.email}</p>
                         <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
-                         <p>
+                        <p>
                             <strong>Total Amount:</strong><fmt:formatNumber value="${total}" type="number"/> ₫
                         </p>
                     </div>

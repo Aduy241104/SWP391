@@ -11,6 +11,7 @@ import Model.OrderDetail;
 import Model.OrderRecords;
 import Model.Orders;
 import Model.User;
+import Model.UserAction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -98,6 +99,7 @@ public class AdminManagerOrders extends HttpServlet {
                     request.getRequestDispatcher("ManagerOrdersForAdminCancelView.jsp").forward(request, response);
                     break;
                 case "viewDetails":
+
                     request.setAttribute("ordersList", ordersList);
                     request.getRequestDispatcher("ManagerOrdersForAdminViewOrderDetails.jsp").forward(request, response);
                     break;
@@ -108,11 +110,18 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
-                if ("staff".equals(role)) {
+                if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
-                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
-                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
-                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                    int userID = user.getUserId();
+                    String adminName = orderRecordsDao.getNameByAdminID(userID);
+                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    OrderRecords orderRecord = null;
+                    if (!adminName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
+                    } else if (!staffName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, staffName);
+                    }
+                    orderRecordsDao.AddUserAction(orderRecord, userID);
                 }
                 ordersDao.updateOrderStatusToShipping(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Pending").forward(request, response);
@@ -123,11 +132,18 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
-                if ("staff".equals(role)) {
+                if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
-                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
-                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
-                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                    int userID = user.getUserId();
+                    String adminName = orderRecordsDao.getNameByAdminID(userID);
+                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    OrderRecords orderRecord = null;
+                    if (!adminName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
+                    } else if (!staffName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, staffName);
+                    }
+                    orderRecordsDao.AddUserAction(orderRecord, userID);
                 }
                 ordersDao.cancelPendingOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Pending").forward(request, response);
@@ -136,14 +152,19 @@ public class AdminManagerOrders extends HttpServlet {
             }
         } else if (action.equals("cancel")) {
             OrdersDAO ordersDao = new OrdersDAO();
+            int OrderID = Integer.parseInt(orderID);
             try {
-                int OrderID = Integer.parseInt(orderID);
-                if ("staff".equals(role)) {
-                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
-                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
-                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
-                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                int userID = user.getUserId();
+                String adminName = orderRecordsDao.getNameByAdminID(userID);
+                String staffName = orderRecordsDao.getNameByStaffID(userID);
+                OrderRecords orderRecord = null;
+                if (!adminName.equals(null)) {
+                    orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
+                } else if (!staffName.equals(null)) {
+                    orderRecord = new OrderRecords(OrderID, userID, action, userID, staffName);
                 }
+                orderRecordsDao.AddUserAction(orderRecord, userID);
                 ordersDao.cancelShippingOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Shipping").forward(request, response);
             } catch (NumberFormatException e) {
@@ -153,11 +174,18 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
-                if ("staff".equals(role)) {
+                if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
-                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
-                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
-                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                    int userID = user.getUserId();
+                    String adminName = orderRecordsDao.getNameByAdminID(userID);
+                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    OrderRecords orderRecord = null;
+                    if (!adminName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
+                    } else if (!staffName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, staffName);
+                    }
+                    orderRecordsDao.AddUserAction(orderRecord, userID);
                 }
                 ordersDao.updateOrderStatusToDelivered(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Shipping").forward(request, response);
@@ -168,11 +196,18 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
-                if ("staff".equals(role)) {
+                if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
-                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
-                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
-                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                    int userID = user.getUserId();
+                    String adminName = orderRecordsDao.getNameByAdminID(userID);
+                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    OrderRecords orderRecord = null;
+                    if (!adminName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
+                    } else if (!staffName.equals(null)) {
+                        orderRecord = new OrderRecords(OrderID, userID, action, userID, staffName);
+                    }
+                    orderRecordsDao.AddUserAction(orderRecord, userID);
                 }
                 ordersDao.restoreCancelledOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled").forward(request, response);
@@ -183,11 +218,16 @@ public class AdminManagerOrders extends HttpServlet {
             OrdersDAO ordersDao = new OrdersDAO();
             try {
                 int OrderID = Integer.parseInt(orderID);
-                if ("staff".equals(role)) {
-                    OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
-                    int staffID = orderRecordsDao.getStaffIDByUserID(user.getUserId());
-                    OrderRecords orderRecord = new OrderRecords(OrderID, staffID, action);
-                    boolean isStaff = orderRecordsDao.AddStaffAction(orderRecord);
+                OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
+                int userID = user.getUserId();
+                String adminName = orderRecordsDao.getNameByAdminID(userID);
+                String staffName = orderRecordsDao.getNameByStaffID(userID);
+                OrderRecords orderRecord = null;
+                if (!adminName.equals(null)) {
+                    orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
+                } else if (!staffName.equals(null)) {
+                    orderRecord = new OrderRecords(OrderID, userID, action, userID, staffName);
+
                 }
                 ordersDao.deleteCancelledOrder(OrderID);
                 request.getRequestDispatcher("AdminManagerOrders?action=FunctionsOfOrderManagement&func=Cancelled").forward(request, response);
@@ -197,22 +237,24 @@ public class AdminManagerOrders extends HttpServlet {
         } else if (action.equals("viewDetails")) {
             OrderDetailDAO orderDetailsDao = new OrderDetailDAO();
             String orderId = request.getParameter("id");
+            DecimalFormat df = new DecimalFormat("#,###");
+
             double total = 0;
             OrderDetail orderDetail = null;
             String formattedRevenue = null;
+
             try {
                 int OrderID = Integer.parseInt(orderId);
                 List<OrderDetail> orderList = orderDetailsDao.getOrderDetailById(OrderID);
                 String orderStatus = "0";
                 if (orderList.size() != 0) {
-                    DecimalFormat df = new DecimalFormat("#,###");
-                    
+
                     total = orderList.get(0).getTotalAmount();
-                    formattedRevenue = df.format(total);
+
                     orderDetail = orderList.get(0);
                     orderStatus = orderDetailsDao.getOrderDetailById(OrderID).get(0).getOrderStatus();
                 }
-                List<OrderDetail> mergedOrderList = new ArrayList<>();  
+                List<OrderDetail> mergedOrderList = new ArrayList<>();
 
                 for (int i = 0; i < orderList.size(); i++) {
                     OrderDetail currentOrder = orderList.get(i);
@@ -223,14 +265,19 @@ public class AdminManagerOrders extends HttpServlet {
                         if (mergedOrder.getProductName().equals(currentOrder.getProductName())) {
                             mergedOrder.setQuantity(mergedOrder.getQuantity() + currentOrder.getQuantity());
                             foundDuplicate = true;
+
                             break;
                         }
+                        total += mergedOrder.getPrice();
                     }
 
                     if (!foundDuplicate) {
                         mergedOrderList.add(currentOrder);
                     }
                 }
+                formattedRevenue = df.format(total);
+                List<UserAction> userNamesChangeStatus = orderDetailsDao.getUserActionsByOrderID(OrderID);
+                request.setAttribute("userNamesChangeStatus", userNamesChangeStatus);
 
                 request.setAttribute("orderDetail", orderDetail);
                 request.setAttribute("total", formattedRevenue);
@@ -251,6 +298,7 @@ public class AdminManagerOrders extends HttpServlet {
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("ManagerOrdersForAdmin.jsp").forward(request, response);
         }
+
     }
 
     /**

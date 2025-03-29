@@ -1,25 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import Model.OrderRecords;
-import Model.Staff;
 import Utils.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-/**
- *
- * @author thaiv
- */
 public class OrderRecordsDAO {
 
     private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
 
     public OrderRecordsDAO() {
         try {
@@ -29,38 +18,136 @@ public class OrderRecordsDAO {
         }
     }
 
-    public boolean AddStaffAction(OrderRecords orderRecords) {
-        String query = "INSERT INTO [dbo].[OrderRecords] ([orderID], [staffID], [action]) VALUES (?, ?, ?)";
+    public boolean AddUserAction(OrderRecords orderRecords, int userID) {
+        String query = "INSERT INTO [dbo].[OrderRecords] ([orderID], [staffID], [adminID], [action], [userName]) VALUES (?, ?, ?, ?, ?)";
 
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, orderRecords.getOrderID());
-            preparedStatement.setInt(2, orderRecords.getStaffID());
-            preparedStatement.setString(3, orderRecords.getAction());
+        int staffID = getStaffIDByUserID(userID);
+        int adminID = getAdminIDByUserID(userID);
+        String userName = getUserNameByUserID(userID); // Lấy userName từ userID
 
-            int rowsInserted = preparedStatement.executeUpdate();
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, orderRecords.getOrderID());
+
+            if (staffID != 0) {
+                ps.setInt(2, staffID);
+                ps.setNull(3, java.sql.Types.INTEGER);
+            } else if (adminID != 0) {
+                ps.setNull(2, java.sql.Types.INTEGER);
+                ps.setInt(3, adminID);
+            } else {
+                return false;
+            }
+
+            ps.setString(4, orderRecords.getAction());
+            ps.setString(5, userName); // Lưu userName vào cột mới
+
+            int rowsInserted = ps.executeUpdate();
             return rowsInserted > 0;
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-public int getStaffIDByUserID(int userID) {
-    String query = "SELECT staffID FROM Staffs WHERE userID = ?";
-    int staffID = 0; 
-    
-    try (PreparedStatement ps = connection.prepareStatement(query)) {
-        ps.setInt(1, userID); 
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                staffID = rs.getInt("staffID");
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return staffID;
-}
 
+    public int getStaffIDByUserID(int userID) {
+        String query = "SELECT staffID FROM Staffs WHERE userID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userID);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("staffID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getAdminIDByUserID(int userID) {
+        String query = "SELECT adminID FROM Admins WHERE userID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userID);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("adminID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public String getUserNameByUserID(int userID) {
+        String query = "SELECT username FROM Users WHERE userID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userID);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getNameByAdminID(int adminID) {
+        String query = "SELECT Users.username FROM Admins "
+                + "INNER JOIN Users ON Admins.userID = Users.userID "
+                + "WHERE adminID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, adminID);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getNameByStaffID(int staffID) {
+        String query = "SELECT Users.username FROM Staffs "
+                + "INNER JOIN Users ON Staffs.userID = Users.userID "
+                + "WHERE staffID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, staffID);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        try {
+            OrderRecordsDAO orderRecordsDAO = new OrderRecordsDAO();
+            int userID = 3; // Thay đổi userID để kiểm thử
+
+            // Kiểm tra staffID và adminID của user
+            int staffID = orderRecordsDAO.getStaffIDByUserID(userID);
+            int adminID = orderRecordsDAO.getAdminIDByUserID(userID);
+            String userName = orderRecordsDAO.getUserNameByUserID(userID);
+
+            System.out.println("User ID: " + userID + " -> Staff ID: " + staffID + ", Admin ID: " + adminID + ", Username: " + userName);
+
+            
+            // Tạo đơn hàng giả lập để kiểm thử
+            OrderRecords orderRecords = new OrderRecords(5, userID, "Created", userID, userName);
+
+            // Gọi phương thức để thêm hành động vào OrderRecords
+            boolean insertResult = orderRecordsDAO.AddUserAction(orderRecords, userID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
