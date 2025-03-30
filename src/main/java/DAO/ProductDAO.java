@@ -442,6 +442,25 @@ public class ProductDAO {
         }
         return productList;
     }
+    
+    
+    public int getStock (int productID) {
+         String query = "SELECT Stock FROM Products WHERE productID = ?";
+         try {
+             preparedStatement = connection.prepareStatement(query);
+             preparedStatement.setInt(1, productID);
+             resultSet = preparedStatement.executeQuery();
+             
+             while (resultSet.next()) {  
+                 int result = resultSet.getInt(1);
+                 return result;
+             }
+            
+        } catch (Exception e) {
+             System.out.println(e.getMessage());
+        }
+         return -1;
+    }
 
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();

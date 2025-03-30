@@ -60,11 +60,25 @@ public class ConfirmOrderController extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
             }
-
+            
             CartDAO crd = new CartDAO();
             OrdersDAO ord = new OrdersDAO();
             OrderDetailDAO ordt = new OrderDetailDAO();
             ProductDAO prd = new ProductDAO();
+            
+            List<Cart> listItem = new ArrayList<>();
+            for (int item : selectedItemIDs) {
+                Cart cart = crd.getCartItemByID(item);
+                listItem.add(cart);
+            }
+            
+            for (Cart cart : listItem) {
+                int stock = prd.getStock(cart.getProduct().getProductID());
+                if(stock < cart.getQuantity()){
+                    response.sendRedirect("OrderFrom.jsp?status=error");
+                    return;
+                }
+            }
             
             //chuan bi dia chi
             addressDetail += phuong + ", " + district + ", " + city;
@@ -72,19 +86,19 @@ public class ConfirmOrderController extends HttpServlet {
             int orderIDGenerate = ord.addOrder(order);
             
             //Tao order detail
-            for (int selectedItemID : selectedItemIDs) {
+            for (Cart cart : listItem) {
                 
-                Cart cart = crd.getCartItemByID(selectedItemID);
                 int productID = cart.getProduct().getProductID();
                 int quantity = cart.getQuantity();
                 double price = cart.getProduct().getPrice() * quantity;
                 ordt.addOrderDetail(orderIDGenerate, productID, quantity, price);      
-                crd.deleteCartItem(selectedItemID);
-                prd.updateStock(productID, cart.getProduct().getStock() - quantity );
-                
+                crd.deleteCartItem(cart.getCartItemID());
+                prd.updateStock(productID, cart.getProduct().getStock() - quantity ); 
             }
             response.sendRedirect("OrderSuccessPage.jsp");
            
+        }else {
+            response.sendRedirect("OrderSuccessPage.jsp");
         }
            
     } 
