@@ -84,7 +84,7 @@ public class SignUpController extends HttpServlet {
 
         try {
             if (userDAO.isUsernameExists(username)) {
-                request.setAttribute("errorUsername", "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+                request.setAttribute("errorUsername", "Username already exists. Please choose another one.");
                 request.getRequestDispatcher("signUp.jsp").forward(request, response);
                 return;
             }
@@ -92,13 +92,6 @@ public class SignUpController extends HttpServlet {
             Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Kiểm tra email đã tồn tại chưa
-        if (userDAO.isEmailExists(email)) {
-            request.setAttribute("errorEmail", "Email đã được sử dụng. Vui lòng nhập email khác.");
-            request.getRequestDispatcher("signUp.jsp").forward(request, response);
-            return;
-        }
-        
         // Kiểm tra mật khẩu mới có hợp lệ không
         if (!isValidPassword(password)) {
             request.setAttribute("errorNewPassword",
@@ -109,18 +102,25 @@ public class SignUpController extends HttpServlet {
 
         // Kiểm tra confirm password
         if (!password.equals(confirmPassword)) {
-            request.setAttribute("errorConfirmPassword", "Mật khẩu nhập lại không khớp. Vui lòng thử lại.");
+            request.setAttribute("errorConfirmPassword", "The passwords entered do not match. Please try again.");
             request.getRequestDispatcher("signUp.jsp").forward(request, response);
             return;
         }
-
+        
+        // Kiểm tra email đã tồn tại chưa
+        if (userDAO.isEmailExists(email)) {
+            request.setAttribute("errorEmail", "Email is already in use. Please enter another email.");
+            request.getRequestDispatcher("signUp.jsp").forward(request, response);
+            return;
+        }
+        
         try {
             // Nếu tất cả hợp lệ, tiến hành đăng ký
             if (userDAO.signUpUser(username, password, confirmPassword, email, fullName)) {
-                request.setAttribute("message", "Đăng ký thành công!");
+                request.setAttribute("message", "Registration successful!");
                 request.getRequestDispatcher("signIn.jsp").forward(request, response);
             } else {
-                request.setAttribute("error", "Đăng ký thất bại! Kiểm tra lại thông tin.");
+                request.setAttribute("error", "Registration failed! Check information again.");
                 request.getRequestDispatcher("signUp.jsp").forward(request, response);
             }
         } catch (SQLException ex) {

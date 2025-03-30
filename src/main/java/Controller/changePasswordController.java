@@ -142,12 +142,13 @@ public class changePasswordController extends HttpServlet {
         // Cập nhật mật khẩu
         boolean isChanged = dao.changePassword(userId, oldPassword, newPassword);
         if (isChanged) {
-            request.setAttribute("message", "Password changed successfully!");
+            session.setAttribute("successMessage", "Password changed successfully!");
+            response.sendRedirect("viewProfile.jsp"); // Redirect và thoát
+            return; // Thoát ngay sau redirect
         } else {
             request.setAttribute("error", "Password change failed. Please try again.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
     }
 
 // Kiểm tra mật khẩu có ít nhất 8 ký tự, chứa ít nhất 1 số và 1 chữ cái viết hoa

@@ -71,10 +71,9 @@ public class editProfileController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = (HttpSession) request.getSession();
+        HttpSession session = request.getSession();
         String userId_raw = request.getParameter("userId");
-        
-        
+
         if (userId_raw == null) {
             System.out.println("null");
             response.sendRedirect("error.jsp");
@@ -87,16 +86,30 @@ public class editProfileController extends HttpServlet {
         try {
             userId = Integer.parseInt(userId_raw);
         } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid user ID.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
         }
+
         userDAO userDAO = new userDAO();
         boolean success = userDAO.updateUser(userId, fullName, email);
 
         if (success) {
-            request.setAttribute("message", "Profile updated successfully!");
+            // Cập nhật lại thông tin user trong session
+            User updatedUser = userDAO.getUserById(userId);
+            if (updatedUser != null) {
+                session.setAttribute("user", updatedUser); // Cập nhật user trong session
+            }
+            session.setAttribute("successMessageGeneral", "Profile updated successfully!");
+            response.sendRedirect("viewProfile"); // Redirect đến viewProfileController
+            return;
         } else {
+            // Nếu thất bại, cần tải lại thông tin user để hiển thị
+            User user = userDAO.getUserById(userId);
+            request.setAttribute("user", user);
             request.setAttribute("error", "Failed to update profile. Please try again.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
         }
-        response.sendRedirect("viewProfile");
     }
 
     /**
