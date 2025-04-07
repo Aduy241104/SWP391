@@ -28,9 +28,6 @@
                 font-family: "Montserrat", sans-serif;
                 overflow-x: hidden;
             }
-
-
-
             .modal {
                 display: none;
                 position: fixed;
@@ -41,19 +38,16 @@
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.5);
             }
-
             .modal-header {
                 font-size: 18px;
                 font-weight: bold;
             }
-
             /* Footer modal */
             .modal-footer {
                 margin-top: 15px;
                 display: flex;
                 justify-content: space-between;
             }
-
             .modals-content {
                 background-color: white;
                 margin: 15% auto;
@@ -63,8 +57,7 @@
                 text-align: center;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
-
-            .modal {
+           .modal {
                 display: none;
                 position: fixed;
                 z-index: 1;
@@ -74,12 +67,10 @@
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.5);
             }
-
             .modal-header {
                 font-size: 18px;
                 font-weight: bold;
             }
-
             .modal-footer {
                 margin-top: 15px;
                 display: flex;
@@ -104,12 +95,15 @@
                 <div class="col-md-6">
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
-                    <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
                     <p><strong>Stock:</strong> ${product.stock}</p>
                     <div class="product-buttons">
-
-                        <a class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                        <a class="btn customize" href="ViewFeedback?productID=${product.productID}">FeedBack</a>
+                        <c:if test="${product.stock <= 0}">
+                            <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1" style="display: none">Add To Cart</a>
+                        </c:if>
+                        <c:if test="${product.stock > 0}">
+                            <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
+                        </c:if>
+                        <a id="buyNowBtn" class="btn customize" href="ViewFeedback?productID=${product.productID}">FeedBack</a>
                     </div>
                     <div class="">
                         <h4>Product Information</h4>
@@ -135,43 +129,19 @@
                         </table>
                     </div>
                 </div>
-
-                <div class="col-md-6" style="height: 375px;">
-<!--                    <h2>Rating 4.5⭐</h2>
-                    <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>-->
-
-                </div>
-
-                <div class="col-md-6" style="height: 375px;">
-                    <h3>Product description</h3>
-                    <p style="line-height: 22px;">
-                        ${product.description}
-                    </p>
-
-                </div>
             </div>
-<!--            <div class="row">
-                <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
-                <c:forEach var="ctl" items="${requestScope.listRelatedProduct}">
-                    <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
-                        <a href="ViewProductDetailController?productID=${ctl.productID}">
-                            <div class="rxs" href="">
-                                <img src="${ctl.imageUrl}" alt="">
-                                <div class="suggest-product_infor">
-                                    <h5>${ctl.productName}</h5>
-                                    <p>${ctl.price}</p>
-                                    <a href="" class="hxe">Add To Cart</a>
-                                </div>
-                            </div>
-                        </a>
-                    </div>          
-                </c:forEach>
-            </div>-->
+            <div class="col-md-6">
+               .
+            </div>     
+            <div class="col-md-6">
+                <h3>Product description</h3>
+                <p style="line-height: 22px;">
+                    ${product.description}
+                </p>
+            </div>      
         </div>
-
         <div style="margin-top: 40px;" class="container" id="reviews">
             <h2 class="mb-4">Reviews Of Product #${requestScope.productID}</h2>
-
             <!-- Comment Form -->
             <c:if test="${not empty sessionScope.user and not empty requestScope.isBuy}">
                 <form action="AddReview" method="POST" class="card layout-4 p-3 mb-4">
@@ -194,13 +164,11 @@
                     <button type="submit" class="btn btn-primary custome">Submit Comment</button>
                 </form>
             </c:if>
-
             <!-- Filter Rating Section -->
             <div class="row filter-rating">
                 <div class="col-lg-3">
                     <h3>Rating: ${requestScope.avgRating} <i class="fa-solid fa-star"></i></h3>
                 </div>
-
                 <c:set var="rating" value="${requestScope.rating}" />
                 <c:if test="${empty rating}">
                     <c:set var="rating" value="all" />
@@ -214,7 +182,6 @@
                     <a href="FilterRating?productID=${requestScope.productID}&rating=1" class="filter-link ${rating == '1' ? 'actives' : ''}" data-rating="1">1 star</a>
                 </div>
             </div>
-
             <!-- Comment List -->
             <div class="card layout-3">
                 <h3 class="mb-3">Comments (${requestScope.listReview.size()})</h3>
@@ -226,7 +193,7 @@
                 <c:forEach var="r" items="${requestScope.listReview}">
                     <div class="border-bottom mb-2">
                         <div class="menu-comment">
-                            <strong><i style="margin-right: 9px;" class="avt">D</i> 
+                            <strong><i class="fa-solid fa-user avt" style="margin-right: 9px;"></i>
 
                                 <c:if test="${sessionScope.user.userId == r.userID}">
                                     You
@@ -252,7 +219,6 @@
                                         </section> 
                                     </div>
                                 </div>
-
                                 <!-- Modal -->
                                 <div class="editReviewModal-2 modal-2">
                                     <div style="width:30%" class="modal-content-2">
@@ -264,7 +230,7 @@
                                             <form action="EditReview" method="POST" class="card-2 layout-4-2 p-3-2">
                                                 <input type="hidden" name="reviewID" value="${r.reviewID}">
                                                 <input type="hidden" name="productID" class="form-control"value="${requestScope.productID}">
-                                               
+
                                                 <div class="mb-3-2">
                                                     <label class="form-label-2">Rating</label>
                                                     <select name="rating" class="form-select-2">
@@ -275,12 +241,10 @@
                                                         <option value="1">⭐ - Very Bad</option>
                                                     </select>
                                                 </div>
-
                                                 <div class="mb-3-2">
                                                     <label class="form-label-2">Comment</label>
                                                     <textarea style="width: 100%" name="reviewText" class="form-control-2" rows="3">${r.reviewText}</textarea>
                                                 </div>
-
                                                 <div class="modal-footer-2">
                                                     <button type="button" class="cancelBtn-2 btn btn-secondary">Cancel</button>
                                                     <button type="submit" class="btn-2 btn-primary">Update Comment</button>
@@ -290,7 +254,6 @@
                                     </div>
                                 </div>
                             </c:if>
-
                         </div>
                         <div style="display: flex; flex-direction: column; margin-left: 43px;">
                             <span style="font-size: 11px;">${r.createdAt}</span>
@@ -305,7 +268,6 @@
                 </c:forEach>
             </div>
         </div>
-
         <div id="confirmModal" class="modal">
             <div class="modals-content">
                 <div class="modal-header">Confirm Action</div>
@@ -318,18 +280,15 @@
                 </form>
             </div>
         </div>
-
         <footer class="container-fluid">
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Khôi phục vị trí cuộn từ localStorage (nếu có)
                 if (localStorage.getItem("scrollPosition")) {
                     window.scrollTo(0, localStorage.getItem("scrollPosition"));
                 }
-
                 // Bắt sự kiện click vào các link filter
                 document.querySelectorAll(".filter-link").forEach(link => {
                     link.addEventListener("click", function (e) {
@@ -348,7 +307,6 @@
                     localStorage.removeItem("scrollPosition");
                 });
             });
-
             document.addEventListener("DOMContentLoaded", function () {
                 let element = document.getElementById("reviews"); // Thay "reviews" bằng ID của phần tử bạn muốn cuộn đến
                 if (element) {
@@ -357,16 +315,12 @@
             });
 
         </script>
-
         <script>
-
-
             const modal = document.getElementById("confirmModal");
             const cancelBtn = document.getElementById("cancelBtn");
             const confirmBtn = document.getElementById("confirmDelete");
             const kj = document.getElementById("ulck");
             const inputHid = document.getElementById("inputHidden");
-
 // Lấy tất cả các nút "Delete"
             const openModalBtns = document.querySelectorAll("#openModal");
 
@@ -397,7 +351,6 @@
             });
 
         </script>
-
         <script>
             document.querySelectorAll(".openModalBtn-2").forEach(button => {
                 button.addEventListener("click", function () {

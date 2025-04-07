@@ -140,6 +140,7 @@ public class OrderRecordsDAO {
 
             System.out.println("User ID: " + userID + " -> Staff ID: " + staffID + ", Admin ID: " + adminID + ", Username: " + userName);
 
+            System.out.println(orderRecordsDAO.getNameByAdminID(1));
             
             // Tạo đơn hàng giả lập để kiểm thử
             OrderRecords orderRecords = new OrderRecords(5, userID, "Created", userID, userName);
