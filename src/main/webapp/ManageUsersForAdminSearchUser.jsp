@@ -114,7 +114,7 @@
     <body>
         <div class="sidebar">
             <h2><i class="fas fa-cogs"></i> Admin</h2>
-            <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
+            <a href="AdminManagerUser?action=user" class="active"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManageCategory" ><i class="fas fa-box"></i> Manage Category</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
