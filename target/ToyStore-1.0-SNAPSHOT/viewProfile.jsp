@@ -24,17 +24,26 @@
                 font-family: "Montserrat", sans-serif;
                 overflow-x: hidden;
             }
+            .logo img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border: 5px solid #fff;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            }
         </style>
     </head>
 
     <body>
-        <header class="" id="header">
-            <jsp:include page="Component/Header.jsp"></jsp:include>
-            </header>
             <div class="container light-style flex-grow-1 container-p-y">
-                <h2 class="font-weight-bold py-3 mb-4 text-center">
+                <div class="text-center mt-3">
+                <div class="logo mb-2">
+                    <img class="rounded-circle" src="img/logo_shop.jpg" alt="Logo">
+                </div>
+                <h2 class="font-weight-bold py-3 mb-3 text-center">
                     Manage Profile
                 </h2>
+            </div>
                 <div class="card overflow-hidden" style="border: 2px solid rgb(45, 1, 1);">
                     <div class="row no-gutters row-bordered row-border-light">
                         <div class="col-md-3 pt-0">
@@ -100,7 +109,7 @@
                                 </div>
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn" style="border-radius: 17px; margin-bottom: 20px; background-color: rgb(251, 59, 59); color: white;">Save changes</button> 
-                                    <a href="index.jsp" type="button" class="btn btn-default" style="margin-bottom: 20px;">Back to HomePage</a>
+                                    <a href="ViewProductListController" type="button" class="btn btn-default" style="margin-bottom: 20px;">Back to HomePage</a>
                                 </div>
                             </form>
                             <form class="tab-pane fade <%= (request.getAttribute("error") != null || request.getAttribute("errorOldPassword") != null || session.getAttribute("successMessage") != null) ? "active show" : ""%>" 
@@ -151,7 +160,7 @@
                                 </div>
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn" style="border-radius: 17px; margin-bottom: 20px; background-color: rgb(251, 59, 59); color: white;">Save changes</button> 
-                                    <a href="index.jsp" type="button" class="btn btn-default" style="margin-bottom: 20px;">Back to HomePage</a>
+                                    <a href="ViewProductListController" type="button" class="btn btn-default" style="margin-bottom: 20px;">Back to HomePage</a>
                                 </div>
                             </form>
 
@@ -200,9 +209,6 @@
             </div>
         </div>
 
-        <footer style="margin-top: 80px;" class="container-fluid" id="footer">
-            <jsp:include page="Component/Footer.jsp"></jsp:include>
-        </footer>
 
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>

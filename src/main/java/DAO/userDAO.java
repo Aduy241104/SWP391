@@ -82,7 +82,7 @@ public class userDAO {
     }
 
     public boolean checkExistAccount(String identifier) {
-        String query = "SELECT COUNT(*) FROM Users WHERE (username = ? OR email = ?) AND isActive = 1";
+        String query = "SELECT COUNT(*) FROM Users WHERE (username = ? OR email = ?)";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, identifier);
             ps.setString(2, identifier);
