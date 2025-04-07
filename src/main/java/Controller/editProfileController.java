@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package Controller;
 
 import DAO.userDAO;
@@ -13,6 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 /**
  *
@@ -32,12 +37,12 @@ public class editProfileController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet editProfileController</title>");
+            out.println("<title>Servlet editProfileController</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet editProfileController at " + request.getContextPath() + "</h1>");
@@ -83,6 +88,7 @@ public class editProfileController extends HttpServlet {
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         int userId = 0;
+        
         try {
             userId = Integer.parseInt(userId_raw);
         } catch (NumberFormatException e) {
@@ -92,6 +98,28 @@ public class editProfileController extends HttpServlet {
         }
 
         userDAO userDAO = new userDAO();
+        
+        // Lấy thông tin user hiện tại để so sánh email
+        User currentUser = userDAO.getUserById(userId);
+        if (currentUser == null) {
+            request.setAttribute("error", "User not found.");
+            request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra email đã tồn tại nhưng không phải của user hiện tại
+        if (!email.equals(currentUser.getEmail())) { // Chỉ kiểm tra nếu email mới khác email cũ
+            Optional<User> existingUser = userDAO.getUserByEmail(email);
+            if (existingUser.isPresent()) {
+                // Email đã tồn tại trong hệ thống
+                request.setAttribute("user", currentUser);
+                request.setAttribute("errorEmail", "This email is already in use by another account.");
+                request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
+                return;
+            }
+        }
+
+        // Nếu email hợp lệ, tiến hành cập nhật
         boolean success = userDAO.updateUser(userId, fullName, email);
 
         if (success) {
@@ -121,5 +149,4 @@ public class editProfileController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

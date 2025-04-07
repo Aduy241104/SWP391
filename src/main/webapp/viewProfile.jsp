@@ -51,33 +51,35 @@
                     <div class="col-md-9">
                         <div class="tab-content">
                             <form class="tab-pane fade <%= (session.getAttribute("successMessageGeneral") != null || (request.getAttribute("error") == null && request.getAttribute("errorOldPassword") == null && session.getAttribute("successMessage") == null)) ? "active show" : ""%>" 
-                                  id="account-general" action="editProfile" method="post">
+                                  id="account-general" action="editProfile" method="post" onsubmit="return validateEmail()">
+
                                 <hr class="border-light m-0">
                                 <div class="card-body">
-                                    <% 
+                                    <%
                                         String successMessageGeneral = (String) session.getAttribute("successMessageGeneral");
-                                        if (successMessageGeneral != null) {
+                                        String errorEmail = (String) request.getAttribute("errorEmail");
+                                        if (successMessageGeneral != null && errorEmail == null) {
                                     %>
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <%= successMessageGeneral %>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                    <% 
-                                        session.removeAttribute("successMessageGeneral"); // Xóa sau khi hiển thị
-                                        } 
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <%= successMessageGeneral%>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <%
+                                            session.removeAttribute("successMessageGeneral"); // Xóa sau khi hiển thị
+                                        }
                                     %>
-                                    <% 
-                                        if (request.getAttribute("error") != null) {
+                                    <%
+                                        if (request.getAttribute("errorEmail") != null) {
                                     %>
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <%= request.getAttribute("error") %>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                    <% } %>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <%= request.getAttribute("errorEmail")%>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <% }%>
                                     <div class="form-group">
                                         <label class="form-label">UserID</label>
                                         <input name="userId" readonly type="text" class="form-control" value="${user.userId}">
@@ -92,7 +94,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">E-mail</label>
-                                        <input required name="email" type="email" class="form-control mb-1" value="${user.email} " required>
+                                        <input required name="email" type="email" class="form-control mb-1" value="${user.email}">
+                                        <small id="emailError" class="text-danger"></small> 
                                     </div>
                                 </div>
                                 <div class="text-right mt-3">
@@ -175,6 +178,21 @@
 
                                     return true;
                                 }
+                                function validateEmail() {
+                                        const email = document.querySelector('input[name="email"]').value.trim();
+                                        const emailError = document.getElementById("emailError"); // Lấy thẻ nhỏ để hiển thị lỗi
+                                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                        emailError.textContent = ""; // Xóa lỗi cũ mỗi khi kiểm tra lại
+
+                                        if (!emailRegex.test(email)) {
+                                emailError.textContent = "Please enter a valid email address."; // Hiển thị thông báo lỗi
+                                        return false;
+                                }
+                                return true;
+                                }
+                                
+                            </script>
+
                             </script>
                         </div>
                     </div>

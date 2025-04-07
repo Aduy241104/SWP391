@@ -85,7 +85,12 @@ public class LoginController extends HttpServlet {
             if (user == null) {
                 request.setAttribute("errorMessage", "Wrong password!!!!");
                 request.getRequestDispatcher("signIn.jsp").forward(request, response);
-            } else {
+            } 
+            else if (!user.isIsActive()) { 
+                request.setAttribute("errorMessage", "Your account has been banned!");
+                request.getRequestDispatcher("signIn.jsp").forward(request, response);
+            } 
+            else {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 String role = user.getRole().toLowerCase();

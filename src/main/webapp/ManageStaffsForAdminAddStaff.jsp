@@ -98,8 +98,8 @@
             <a href="AdminManageStaff?action=staff" class="active"><i class="fas fa-users"></i> Manage Staff</a>
             <a href="AdminManageCategory" ><i class="fas fa-box"></i> Manage Category</a>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-           <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-           <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
+            <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
             <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
@@ -108,16 +108,16 @@
             <jsp:param name="page" value="staff"/>
         </jsp:include>
 
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Staff</h2>
+        <div class="main-content">
+            <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Staff</h2>
 
-                <form action="AdminManageStaff?action=addStaff" method="POST" class="form-container" 
-                      onsubmit="return validatePassword()">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Username:</label>
-                            <input type="text" class="form-control" name="username" required>
-                            <span class="text-danger">${requestScope.nameError}</span>
+            <form action="AdminManageStaff?action=addStaff" method="POST" class="form-container" 
+                  onsubmit="return validateForm()">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Username:</label>
+                        <input type="text" class="form-control" name="username" required>
+                        <span class="text-danger">${requestScope.nameError}</span>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Password:</label>
@@ -130,8 +130,8 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" required>
-                        <span class="text-danger">${requestScope.emailError}</span>
+                        <input type="email" class="form-control" name="email" id="email" required>
+                        <span id="emailError" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Full Name:</label>
@@ -178,6 +178,25 @@
                     return true;
                 }
 
+                function validateEmail() {
+                    let email = document.getElementById("email").value;
+                    let emailError = document.getElementById("emailError");
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    emailError.textContent = "";
+
+                    if (!emailRegex.test(email)) {
+                        emailError.textContent = "Please enter a valid email address.";
+                        return false;
+                    }
+                    return true;
+                }
+
+                function validateForm() {
+                    let validPassword = validatePassword();
+                    let validEmail = validateEmail();
+                    return validPassword && validEmail;
+                }
             </script>
         </div>
     </body>

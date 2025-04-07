@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -107,6 +108,12 @@ public class SignUpController extends HttpServlet {
             return;
         }
         
+        if (!isValidEmail(email)) {
+            request.setAttribute("errorEmail", "Invalid email format. Please enter a valid email address.");
+            request.getRequestDispatcher("signUp.jsp").forward(request, response);
+            return;
+        }
+        
         // Kiểm tra email đã tồn tại chưa
         if (userDAO.isEmailExists(email)) {
             request.setAttribute("errorEmail", "Email is already in use. Please enter another email.");
@@ -132,6 +139,15 @@ public class SignUpController extends HttpServlet {
         String regex = "^(?=.*[0-9])(?=.*[A-Z]).{8,}$";
         return Pattern.matches(regex, password);
     }
+    
+    private boolean isValidEmail(String email) {
+        String regex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    
+    
 
     /**
      * Returns a short description of the servlet.

@@ -71,7 +71,8 @@ public class userDAO {
                         resultSet.getString("email"),
                         resultSet.getString("fullName"),
                         resultSet.getDate("createdAt"),
-                        role
+                        role,
+                        resultSet.getBoolean("isActive") // 
                 );
             }
         } catch (Exception e) {
@@ -576,7 +577,7 @@ public class userDAO {
 
     public boolean updateUserPassword(int userId, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE userID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newPassword); // Mật khẩu chưa mã hóa (mã hóa sau)
             ps.setInt(2, userId);
             int rowsAffected = ps.executeUpdate();

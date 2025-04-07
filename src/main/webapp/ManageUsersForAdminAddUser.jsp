@@ -113,7 +113,7 @@
                 <input type="hidden" value="user" name="userSearch">
 
                 <form action="AdminManagerUser?action=addUser" method="Post" class="form-container" 
-                      onsubmit="return validatePassword()">
+                      onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Username:</label>
@@ -131,8 +131,8 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" required>
-                        <span class="text-danger">${requestScope.emailError}</span>
+                        <input type="email" class="form-control" name="email" id="email" required>
+                        <span id="emailError" class="text-danger">${requestScope.emailError}</span>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Full Name:</label>
@@ -181,6 +181,25 @@
                     return true;
                 }
 
+                function validateEmail() {
+                    let email = document.getElementById("email").value;
+                    let emailError = document.getElementById("emailError");
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    emailError.textContent = "";
+
+                    if (!emailRegex.test(email)) {
+                        emailError.textContent = "Please enter a valid email address.";
+                        return false;
+                    }
+                    return true;
+                }
+
+                function validateForm() {
+                    let validPassword = validatePassword();
+                    let validEmail = validateEmail();
+                    return validPassword && validEmail;
+                }
             </script>
         </div>
     </body>
