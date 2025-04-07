@@ -13,12 +13,12 @@
             <p>Over 100 famous brands</p>
         </div>
         <div class="col-lg-4 descript">
-            <h4>100% Genuine Products</h4>
-            <p>Over 100 famous brands</p>
+            <h4>1 for 1 exchange within 1 month <br>(Depending on the product)</h4>
+            <p>At 62 stores nationwide</p>
         </div>
         <div class="col-lg-4 descript">
-            <h4>100% Genuine Products</h4>
-            <p>Over 100 famous brands</p>
+            <h4>Free shipping</h4>
+            <p>For every Order</p>
         </div>
     </div>
 
@@ -51,12 +51,12 @@
             </ul>
         </div>
         <div class="col-lg-3">
-            <h4>ABOUT AVAKIDS</h4>
+            <h4>ABOUT ToyStore</h4>
             <ul class="urt" style="list-style: none; padding: 0;">
                 <li>Company introduction</li>
                 <li>Comment posting regulations</li>
                 <li>Personal data processing policy</li>
-                <li>AVAKids Smile Fund</li>
+                <li>TSKids Smile Fund</li>
                 <li>SIM cards & top-up vouchers</li>
                 <li>Installment payment</li>
                 <li>View mobile version</li>

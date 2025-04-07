@@ -91,7 +91,6 @@
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% } else { %>
@@ -99,7 +98,6 @@
             <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% }%>

@@ -136,7 +136,7 @@
         </style>
     </head>
     <body>
-        <%
+       <%
             String role = (String) session.getAttribute("role");
         %>
 
@@ -145,17 +145,17 @@
             <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManageCategory" ><i class="fas fa-box"></i> Manage Category</a>
+            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order" class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% } else { %>
         <div class="sidebar">
-            <h2  style="color: white; margin-bottom: 10px;text-align: start;" ><i class="fas fa-cogs"></i> Staff</h2>
+            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
-            <a href="StaffManagerOrders?action=orders" class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
+            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% }%>
@@ -186,7 +186,7 @@
                         <p><strong>Email:</strong> ${orderDetail.email}</p>
                         <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
                         <p>
-                            <strong>Total Amount:</strong><fmt:formatNumber value="${total}" type="number"/> ₫
+                            <strong>Total Amount: </strong>$<fmt:formatNumber value="${total}" type="number"/> 
                         </p>
                     </div>
 

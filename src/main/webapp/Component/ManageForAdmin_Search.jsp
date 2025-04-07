@@ -3,7 +3,6 @@
     Created on : Feb 20, 2025, 3:26:46 PM
     Author     : thaiv
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,6 +19,17 @@
                 padding: 7px;
             }
         </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelector("form").addEventListener("submit", function(e) {
+                    const queryInput = document.querySelector("input[name='query']");
+
+                    if (queryInput.value.trim() === "") {
+                        e.preventDefault(); // Ngừng gửi form
+                    }
+                });
+            });
+        </script>
     </head>
     <body>
         <div class="navbar">
@@ -32,8 +42,6 @@
                     <button class="button-search" type="submit">Search</button> 
                 </div>
             </form>
-
-
         </div>
     </body>
 </html>

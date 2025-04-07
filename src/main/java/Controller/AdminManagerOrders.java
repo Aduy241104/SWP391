@@ -113,8 +113,8 @@ public class AdminManagerOrders extends HttpServlet {
                 if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
                     int userID = user.getUserId();
-                    String adminName = orderRecordsDao.getNameByAdminID(userID);
-                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    String adminName = orderRecordsDao.getUserNameByUserID(userID);
+                    String staffName = orderRecordsDao.getUserNameByUserID(userID);
                     OrderRecords orderRecord = null;
                     if (!adminName.equals(null)) {
                         orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
@@ -135,8 +135,8 @@ public class AdminManagerOrders extends HttpServlet {
                 if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
                     int userID = user.getUserId();
-                    String adminName = orderRecordsDao.getNameByAdminID(userID);
-                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    String adminName = orderRecordsDao.getUserNameByUserID(userID);
+                    String staffName = orderRecordsDao.getUserNameByUserID(userID);
                     OrderRecords orderRecord = null;
                     if (!adminName.equals(null)) {
                         orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
@@ -156,8 +156,8 @@ public class AdminManagerOrders extends HttpServlet {
             try {
                 OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
                 int userID = user.getUserId();
-                String adminName = orderRecordsDao.getNameByAdminID(userID);
-                String staffName = orderRecordsDao.getNameByStaffID(userID);
+                String adminName = orderRecordsDao.getUserNameByUserID(userID);
+                String staffName = orderRecordsDao.getUserNameByUserID(userID);
                 OrderRecords orderRecord = null;
                 if (!adminName.equals(null)) {
                     orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
@@ -177,8 +177,8 @@ public class AdminManagerOrders extends HttpServlet {
                 if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
                     int userID = user.getUserId();
-                    String adminName = orderRecordsDao.getNameByAdminID(userID);
-                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    String adminName = orderRecordsDao.getUserNameByUserID(userID);
+                    String staffName = orderRecordsDao.getUserNameByUserID(userID);
                     OrderRecords orderRecord = null;
                     if (!adminName.equals(null)) {
                         orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
@@ -199,8 +199,8 @@ public class AdminManagerOrders extends HttpServlet {
                 if ("staff".equals(role) || "admin".equals(role)) {
                     OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
                     int userID = user.getUserId();
-                    String adminName = orderRecordsDao.getNameByAdminID(userID);
-                    String staffName = orderRecordsDao.getNameByStaffID(userID);
+                    String adminName = orderRecordsDao.getUserNameByUserID(userID);
+                    String staffName = orderRecordsDao.getUserNameByUserID(userID);
                     OrderRecords orderRecord = null;
                     if (!adminName.equals(null)) {
                         orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
@@ -220,8 +220,8 @@ public class AdminManagerOrders extends HttpServlet {
                 int OrderID = Integer.parseInt(orderID);
                 OrderRecordsDAO orderRecordsDao = new OrderRecordsDAO();
                 int userID = user.getUserId();
-                String adminName = orderRecordsDao.getNameByAdminID(userID);
-                String staffName = orderRecordsDao.getNameByStaffID(userID);
+                String adminName = orderRecordsDao.getUserNameByUserID(userID);
+                String staffName = orderRecordsDao.getUserNameByUserID(userID);
                 OrderRecords orderRecord = null;
                 if (!adminName.equals(null)) {
                     orderRecord = new OrderRecords(OrderID, userID, action, userID, adminName);
@@ -242,7 +242,10 @@ public class AdminManagerOrders extends HttpServlet {
             double total = 0;
             OrderDetail orderDetail = null;
             String formattedRevenue = null;
-
+            OrdersDAO orderDao = new OrdersDAO();
+            Orders order = orderDao.getOrderById(Integer.parseInt(orderID));
+            
+            
             try {
                 int OrderID = Integer.parseInt(orderId);
                 List<OrderDetail> orderList = orderDetailsDao.getOrderDetailById(OrderID);
@@ -275,7 +278,7 @@ public class AdminManagerOrders extends HttpServlet {
                         mergedOrderList.add(currentOrder);
                     }
                 }
-                formattedRevenue = df.format(total);
+                formattedRevenue = df.format(order.getTotalAmount());
                 List<UserAction> userNamesChangeStatus = orderDetailsDao.getUserActionsByOrderID(OrderID);
                 request.setAttribute("userNamesChangeStatus", userNamesChangeStatus);
 

@@ -1,0 +1,42 @@
+bỏ buy now- duy
+
+ban user - lỗi sau khi ban có thể đăng nhập được _ done 
+
+manage staff-  view detail staff không có hireDate khi thêm staff vào _ done
+
+Chưa sửa phần search staff _ done
+
+bỏ stock _ done
+
+edit product giữ lại hình cũ ko bắt buộc thay hình mới _ done
+
+
+manage order total amount đơn vị đ  _ done
+
+
+admin,  staff thiếu order record _ done
+
+
+lỗi link manage prodcut staff edit,  add _ done
+
+the resoure did not correctly manage order _ done 
+
+lỗi link manage category view detail 
+
+adminid, userName nulll Order Record _ done 
+
+order detail ko lấy giá gốc mà lấy giá đã mua của nhiều sản phẩm _ done 
+
+chặn hành động khi nhấn search mà không nhập dữ liệu bấm search nó vẫn qua product _done 
+
+
+
+
+
+
+
+
+
+
+
+

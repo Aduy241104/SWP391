@@ -14,7 +14,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Add New Product</title>
+        <title>Update Product</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/styleToy.css">
         <link rel="stylesheet" href="font/fontawesome-free-6.5.2-web/css/all.min.css">
@@ -97,7 +97,7 @@
         </style>
     </head>
     <body>
-                <%
+        <%
             String role = (String) session.getAttribute("role");
         %>
 
@@ -110,15 +110,13 @@
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% } else { %>
         <div class="sidebar">
             <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
-            <a href="StaffManagerOrders?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
             <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% }%>
@@ -127,12 +125,11 @@
             <jsp:param name="page" value="product"/>
         </jsp:include>
 
+        <div class="main-content">
+            <h2 class="text-center"><i class="fas fa-plus-circle"></i> Update Product</h2>
 
-            <div class="main-content">
-                <h2 class="text-center"><i class="fas fa-plus-circle"></i> Update Product</h2>
-
-                <form action="AdminManagerProducts?action=editProduct" method="POST" class="form-container" enctype="multipart/form-data">
-                    <input type="hidden" name="productID" value="${product.productID}">
+            <form action="AdminManagerProducts?action=editProduct" method="POST" class="form-container" enctype="multipart/form-data">
+                <input type="hidden" name="productID" value="${product.productID}">
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -141,7 +138,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Price ($):</label>
-                        <input type="number" class="form-control" name="price" step="0.01" value="${product.price}" required>
+                        <input type="number" class="form-control" id="price" name="price" value="${product.price}" min="0" step="0.01" required>
                     </div>
                 </div>
 
@@ -153,7 +150,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Stock:</label>
-                        <input type="number" class="form-control" name="stock" value="${product.stock}" required>
+                        <input type="number" class="form-control" name="stock" value="${product.stock}" min="0" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Category:</label>
@@ -171,8 +168,13 @@
                         <input type="text" class="form-control" name="size" value="${product.size}" required>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Age Range:</label>
-                        <input type="text" class="form-control" name="ageRange" value="${product.ageRange}" required>
+                        <label for="ageRange">Age Range:</label>
+                        <select class="form-control" id="ageRange" name="ageRange" required>
+                            <option value="">-- Select Age Range --</option>
+                            <option value="0-1" ${product.ageRange == '0-1' ? 'selected' : ''}>0-1</option>
+                            <option value="1-3" ${product.ageRange == '1-3' ? 'selected' : ''}>1-3</option>
+                            <option value="3+" ${product.ageRange == '3+' ? 'selected' : ''}>3+</option>
+                        </select>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Origin:</label>
@@ -183,20 +185,18 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Weight (kg):</label>
-                        <input type="number" class="form-control" name="weight" step="0.01" value="${product.weight}" required>
+                        <input type="number" class="form-control" name="weight" value="${product.weight}" step="0.01" min="0" required>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Active:</label>
-                        <select class="form-control" name="isActive">
-                            <option value="true" ${product.isActive ? 'selected' : ''}>Yes</option>
-                            <option value="false" ${!product.isActive ? 'selected' : ''}>No</option>
-                        </select>
-                    </div>
+               
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Product Image URL:</label>
-                    <input type="file" class="form-control" name="image" value="${product.imageUrl}" required>
+                    <input type="file" class="form-control" name="image">
+                    <input type="hidden" name="oldImageUrl" value="${product.imageUrl}">
+                    <c:if test="${not empty product.imageUrl}">
+                        <img src="${product.imageUrl}" alt="Product Image" style="max-height: 150px; margin-top: 10px;">
+                    </c:if>
                 </div>
 
                 <div class="text-center">
@@ -204,7 +204,36 @@
                     <a href="AdminManagerProducts?action=product" class="btn btn-lg btn-custom btn-cancel"><i class="fas fa-times"></i> Cancel</a>
                 </div>
             </form>
-
         </div>
+
+        <script>
+            document.querySelector("form").addEventListener("submit", function (e) {
+                const numberInputs = document.querySelectorAll("input[type='number']");
+                const ageRange = document.getElementById("ageRange");
+
+                let isValid = true;
+                let messages = [];
+
+                numberInputs.forEach(function (input) {
+                    const value = parseFloat(input.value);
+                    if (isNaN(value) || value < 0) {
+                        isValid = false;
+                        const label = input.closest(".mb-3")?.querySelector(".form-label")?.textContent || input.name;
+                                messages.push(`${label} must be a non-negative number.`);
+                    }
+                });
+
+                if (ageRange && ageRange.value === "") {
+                    isValid = false;
+                    messages.push("Please select an age range.");
+                }
+
+                if (!isValid) {
+                    e.preventDefault(); // Chặn submit form
+                    alert(messages.join("\n"));
+                }
+            });
+        </script>
+
     </body>
 </html>

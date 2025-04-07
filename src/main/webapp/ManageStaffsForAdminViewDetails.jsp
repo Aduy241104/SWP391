@@ -31,23 +31,25 @@
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerProducts?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <jsp:include page="Component/ManageForAdmin_Search.jsp"></jsp:include>
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="staff"/>
+        </jsp:include>
 
-            <div class="main-content container">
-                <h2 class="text-center"><i class="fas fa-user"></i> Staff Details</h2>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4>Personal Information</h4>
-                        <table class="table table-bordered">
+        <div class="main-content container">
+            <h2 class="text-center"><i class="fas fa-user"></i> Staff Details</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Personal Information</h4>
+                    <table class="table table-bordered">
                         <tr><th>Staff ID</th><td>${staff.staffID}</td></tr>
                         <tr><th>Username</th><td>${staff.username}</td></tr>
                         <tr><th>Email</th><td>${staff.email}</td></tr>
                         <tr><th>Full Name</th><td>${staff.fullName}</td></tr>
                         <tr><th>Role</th><td>${staff.role}</td></tr>
+                        <tr><th>HireDate</th><td>${staff.createdAt}</td></tr>
                         <tr><th>Active</th><td>${staff.isActive}</td></tr>
                     </table>
                 </div>

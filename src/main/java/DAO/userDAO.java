@@ -82,13 +82,13 @@ public class userDAO {
     }
 
     public boolean checkExistAccount(String identifier) {
-        String query = "SELECT COUNT(*) FROM Users WHERE username = ? OR email = ?";
+        String query = "SELECT COUNT(*) FROM Users WHERE (username = ? OR email = ?) AND isActive = 1";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, identifier);
             ps.setString(2, identifier);
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // Trả về true nếu tài khoản tồn tại
+                    return rs.getInt(1) > 0; // Trả về true nếu tài khoản tồn tại và đang hoạt động
                 }
             }
         } catch (Exception e) {

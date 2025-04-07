@@ -1,0 +1,108 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Apr 7, 2025, 2:26:12 PM
+    Author     : DUY
+*/
+ body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff0f5;
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #d63384;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: #d63384;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .intro {
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            background: #ffe6f0;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.1);
+            line-height: 1.8;
+            color: #444;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .intro h2 {
+            color: #c2185b;
+            text-align: left;
+            font-size: 24px;
+        }
+
+        .category-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .category {
+            background: #ffffff;
+            border: 2px solid #ffc0cb;
+            border-radius: 15px;
+            box-shadow: 0 6px 16px rgba(255, 192, 203, 0.3);
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+        }
+
+        .category h3 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        .category p {
+            margin: 0;
+            color: #555;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background-color: #ff85a2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #e65c8c;
+        }
+
+        .back-container {
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
+            text-align: left;
+        }
+

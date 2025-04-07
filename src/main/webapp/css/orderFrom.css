@@ -1,0 +1,38 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Apr 7, 2025, 10:26:56 AM
+    Author     : DUY
+*/
+
+  .custome-input{
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border: 1px solid rgb(237, 17, 100);
+                border-radius: 9px;
+            }
+
+            .custome-btn {
+                background-color: rgb(237, 17, 100);
+                color: white;
+                border: 2px solid salmon;
+            }
+
+            .custome-btn:hover{
+                background-color: rgb(24, 111, 0);
+                color: white;
+            }
+
+            .hus{
+                background-color: white;
+            }
+
+            h4{
+                margin: 20px 0px;
+            }
+
+            .layout{
+                box-shadow: 10px 10px black;
+            }

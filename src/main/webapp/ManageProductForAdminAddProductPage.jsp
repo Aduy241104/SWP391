@@ -115,15 +115,13 @@
             <a href="AdminManagerProducts?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% } else { %>
         <div class="sidebar">
             <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
-            <a href="StaffManagerOrders?action=product" class="active"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
             <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
-            <a href="AdminManagerProducts?action=managerStock"><i class="fas fa-warehouse"></i> Manage Stock</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
         <% }%>
@@ -147,7 +145,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Price ($):</label>
-                        <input min="0" type="number" class="form-control" name="price" step="0.01" value="${product.price}" required>
+                        <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required>
                     </div>
                 </div>
 
@@ -176,11 +174,16 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Size:</label>
-                        <input type="text" class="form-control" name="size" value="${product.size}" required>
+                        <input type="text" class="form-control" id="size" name="size" min="0" value="${product.size}" required>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Age Range:</label>
-                        <input type="text" class="form-control" name="ageRange" value="${product.ageRange}" required>
+                        <label for="ageRange">Age Range:</label>
+                        <select class="form-control" id="ageRange" name="ageRange" required>
+                            <option value="">-- Select Age Range --</option>
+                            <option value="0-1" ${product.ageRange == '0-1' ? 'selected' : ''}>0-1</option>
+                            <option value="1-3" ${product.ageRange == '1-3' ? 'selected' : ''}>1-3</option>
+                            <option value="3+" ${product.ageRange == '3+' ? 'selected' : ''}>3+</option>
+                        </select>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Origin:</label>
@@ -193,13 +196,7 @@
                         <label class="form-label">Weight (kg):</label>
                         <input min="0" type="number" class="form-control" name="weight" step="0.01" value="${product.weight}" required>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Active:</label>
-                        <select class="form-control" name="isActive">
-                            <option value="true" ${product.isActive ? 'selected' : ''}>Yes</option>
-                            <option value="false" ${!product.isActive ? 'selected' : ''}>No</option>
-                        </select>
-                    </div>
+                   
                 </div>
 
                 <div class="mb-3">
@@ -216,5 +213,36 @@
                 </div>
             </form>
         </div>
+        <script>
+            document.querySelector("form").addEventListener("submit", function (e) {
+                const priceInput = document.getElementById("price");
+                const ageRange = document.getElementById("ageRange");
+                const sizeInput = document.getElementById("size");
+
+                let isValid = true;
+                let messages = [];
+
+                if (priceInput && parseFloat(priceInput.value) < 0) {
+                    isValid = false;
+                    messages.push("Price cannot be negative.");
+                } 
+
+                if (ageRange && ageRange.value === "") {
+                    isValid = false;
+                    messages.push("Please select an age range.");
+                }
+                 if (sizeInput && sizeInput.value === "") {
+                    isValid = false;
+                    messages.push("Please select an age range.");
+                }
+
+
+                if (!isValid) {
+                    e.preventDefault(); // chặn gửi form
+                    alert(messages.join("\n"));
+                }
+            });
+        </script>
+
     </body>
 </html>

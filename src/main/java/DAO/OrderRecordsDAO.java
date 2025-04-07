@@ -94,60 +94,8 @@ public class OrderRecordsDAO {
         return null;
     }
 
-    public String getNameByAdminID(int adminID) {
-        String query = "SELECT Users.username FROM Admins "
-                + "INNER JOIN Users ON Admins.userID = Users.userID "
-                + "WHERE adminID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, adminID);
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("username");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+  
 
-    public String getNameByStaffID(int staffID) {
-        String query = "SELECT Users.username FROM Staffs "
-                + "INNER JOIN Users ON Staffs.userID = Users.userID "
-                + "WHERE staffID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, staffID);
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("username");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void main(String[] args) {
-        try {
-            OrderRecordsDAO orderRecordsDAO = new OrderRecordsDAO();
-            int userID = 3; // Thay đổi userID để kiểm thử
-
-            // Kiểm tra staffID và adminID của user
-            int staffID = orderRecordsDAO.getStaffIDByUserID(userID);
-            int adminID = orderRecordsDAO.getAdminIDByUserID(userID);
-            String userName = orderRecordsDAO.getUserNameByUserID(userID);
-
-            System.out.println("User ID: " + userID + " -> Staff ID: " + staffID + ", Admin ID: " + adminID + ", Username: " + userName);
-
-            
-            // Tạo đơn hàng giả lập để kiểm thử
-            OrderRecords orderRecords = new OrderRecords(5, userID, "Created", userID, userName);
-
-            // Gọi phương thức để thêm hành động vào OrderRecords
-            boolean insertResult = orderRecordsDAO.AddUserAction(orderRecords, userID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  
+    
 }

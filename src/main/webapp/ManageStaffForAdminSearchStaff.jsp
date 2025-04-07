@@ -120,8 +120,7 @@
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=managerStock" ><i class="fas fa-warehouse"></i> Manage Stock</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
@@ -167,7 +166,7 @@
                                                 </a>
                                             </c:otherwise>
                                         </c:choose>
-                                        <a href="AdminManagerStaff?action=viewUserDetails&id=${user.userId}" class="btn btn-info btn-sm">
+                                        <a href="AdminManageStaff?action=viewStaffDetails&id=${staff.staffID}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> View Detail
                                         </a>
                                     </div>
@@ -189,8 +188,8 @@
                     <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
                 </div>
                 <div style="margin-bottom: 20px;" class="action-buttons-add">
-                    <a href="AdminManagerUser?action=user" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to User Page
+                    <a href="AdminManageStaff?action=staff" class="btn btn-custom btn-lg shadow">
+                        <i class="fas fa-arrow-left"></i> Back to Staff Page
                     </a>
                 </div>
             </c:otherwise>
