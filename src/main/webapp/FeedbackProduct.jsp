@@ -109,7 +109,7 @@
                     <div class="product-buttons">
 
                         <a class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                        <a class="btn customize" href="AddToCart?productID=4&quantity=3">Buy Now</a>
+                        <a class="btn customize" href="ViewFeedback?productID=${product.productID}">FeedBack</a>
                     </div>
                     <div class="">
                         <h4>Product Information</h4>
@@ -124,8 +124,8 @@
                                     <td>${product.size}</td>
                                 </tr>
                                 <tr>
-                                    <th>Product expiry date</th>
-                                    <td>${product.ageRange} years</td>
+                                    <th>Age of use</th>
+                                    <td>From ${product.ageRange} years old</td>
                                 </tr>
                                 <tr>
                                     <th>Weight</th>
@@ -137,21 +137,20 @@
                 </div>
 
                 <div class="col-md-6" style="height: 375px;">
-                    <h2>Rating 4.5⭐</h2>
-                    <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
+<!--                    <h2>Rating 4.5⭐</h2>
+                    <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>-->
 
                 </div>
 
                 <div class="col-md-6" style="height: 375px;">
-                    <h3>Product information</h3>
+                    <h3>Product description</h3>
                     <p style="line-height: 22px;">
                         ${product.description}
                     </p>
 
                 </div>
             </div>
-
-            <div class="row">
+<!--            <div class="row">
                 <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
                 <c:forEach var="ctl" items="${requestScope.listRelatedProduct}">
                     <div class="col-lg-3 col-md-4 col-xs-6 suggest-product">
@@ -167,7 +166,7 @@
                         </a>
                     </div>          
                 </c:forEach>
-            </div>
+            </div>-->
         </div>
 
         <div style="margin-top: 40px;" class="container" id="reviews">

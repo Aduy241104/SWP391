@@ -132,8 +132,8 @@
                 <div class="col-md-6">
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
-                    <p><strong>Promotion:</strong> Enter code <span class="text-danger">VNPAYAVA1</span> for discounts from $0.50 to $1.00</p>
-                    <p><strong>Stock:</strong>${(product.stock > 0) ? product.stock: "Out Of Stock"}</p>
+                    
+                    <p><strong>Stock: </strong> <strong class="text-primary">${(product.stock > 0) ? product.stock: "Out Of Stock"} </strong> </p>
 
                     <c:if test="${product.stock > 0}">
                         <div class="quantity-place">
@@ -144,10 +144,10 @@
                         <div class="product-buttons">
 
                             <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                            <a id="buyNowBtn" class="btn customize" href="CreateOrderBuyNow?productID=${product.productID}&quantity=1">Buy Now</a>
+                            <a id="buyNowBtn" class="btn customize" href="ViewFeedback?productID=${product.productID}">FeedBack</a>
                         </div>
                     </c:if>
-                    <div class="">
+                    <div class="" style="margin-top: 120px">
                         <h4>Product Information</h4>
                         <table class="table product-info-table">
                             <tbody>
@@ -160,8 +160,8 @@
                                     <td>${product.size}</td>
                                 </tr>
                                 <tr>
-                                    <th>Product expiry date</th>
-                                    <td>${product.ageRange} years</td>
+                                    <th>Age of use</th>
+                                    <td>From ${product.ageRange} years old</td>
                                 </tr>
                                 <tr>
                                     <th>Weight</th>
@@ -172,17 +172,16 @@
                     </div>
 
                     <div class="col-md" style="height: 375px;">
-                        <h3>Product information</h3>
+                        <h3>Product description</h3>
                         <p style="line-height: 22px;">
                             ${product.description}
                         </p>
                     </div>
                 </div>
-
-                <div class="col-md-6" style="height: 200px">
+<!--                <div class="col-md-6" style="height: 200px">
                     <h2>Rating 4.5⭐</h2>
                     <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
-                </div>
+                </div>-->
             </div>
             <div class="row">
                 <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
@@ -215,7 +214,7 @@
             <div id="cartModal" class="modal-3" style="display: none;">
                 <div class="modal-content-3">
                     <p>The number of products in the cart has exceeded the limit!</p>
-                    <button class="close-btn-3" onclick="closeModal()">Đóng</button>
+                    <button class="close-btn-3" onclick="closeModal()">Confirm</button>
                 </div>
             </div>
         </c:if>

@@ -110,6 +110,7 @@
                         <div>
                             <h4>Age Range</h4>
                             <select class="age-range" name="age" id="">
+                                <option value="all" ${selectedAge == 'all' ? 'selected' : ''}>All</option>
                                 <option value="1-3">From 1 to 3 year olds</option>
                                 <option value="0-1">From 0 to 1 year olds</option>
                                 <option value="3">From 3 years olds</option>
@@ -131,7 +132,7 @@
 
                             <div>
                                 <input name="price" type="checkbox" value="1">
-                                <label for="">From 0$ to 50$</label>
+                                <label for="">From 1$ to 50$</label>
                             </div>
                             <div>
                                 <input name="price" type="checkbox" value="2">

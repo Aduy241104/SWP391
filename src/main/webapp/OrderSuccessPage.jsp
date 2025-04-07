@@ -38,12 +38,10 @@
                     <div class="f2">
                         <p>Your order has been successfully placed and will be delivered within 4 days.</p>
 
-                        <a class="btn btn-danger" style="border-radius: 15px;" href="">View your Order</a>
+                        <a class="btn btn-danger" style="border-radius: 15px;" href="ViewProductListController">Go Shopping</a>
                     </div>
                 </div>
             </div>
-
-
             <footer class="container-fluid">
             <jsp:include page="Component/Footer.jsp"></jsp:include>
         </footer>

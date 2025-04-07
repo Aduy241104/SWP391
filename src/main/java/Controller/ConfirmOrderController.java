@@ -75,7 +75,7 @@ public class ConfirmOrderController extends HttpServlet {
             for (Cart cart : listItem) {
                 int stock = prd.getStock(cart.getProduct().getProductID());
                 if(stock < cart.getQuantity()){
-                    response.sendRedirect("OrderFrom.jsp?status=error");
+                    response.sendRedirect("OrderForm.jsp?status=error");
                     return;
                 }
             }

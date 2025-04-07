@@ -9,6 +9,7 @@
 <%@page import="Model.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -38,7 +39,7 @@
                     <div class="col-md-6 header-bodyWeb-component_1">
 
                         <span><a href="">New Release </a> / <a href="">Toys</a></span>
-                        <h3>New Toys (<p style="display: inline; color: palevioletred;">${requestScope.productList.size()}</p>)</h3>
+                        <h3>All Toys (<p style="display: inline; color: palevioletred;">${requestScope.productList.size()}</p>)</h3>
 
                 </div>
                 <div class="col-md-6 header-bodyWeb-component_2">
@@ -53,6 +54,7 @@
                         <div>
                             <h4>Age Range</h4>
                             <select class="age-range" name="age">
+                                <option value="all" ${selectedAge == 'all' ? 'selected' : ''}>All</option>
                                 <option value="1-3" ${selectedAge == '1-3' ? 'selected' : ''}>From 1 to 3 year olds</option>
                                 <option value="0-1" ${selectedAge == '0-1' ? 'selected' : ''}>From 0 to 1 year olds</option>
                                 <option value="3" ${selectedAge == '3' ? 'selected' : ''}>From 3 years olds</option>
@@ -72,28 +74,32 @@
 
                         <div class="filter-group-2">
                             <h4>Price</h4>
-                            <div>
-                                <input type="checkbox" name="price" value="1" 
-                                       ${selectedPrices.contains(1) ? 'checked' : ''}>
-                                <label>From 0$ to 50$</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="price" value="2" 
-                                       ${selectedPrices.contains(2) ? 'checked' : ''}>
-                                <label>From 50$ to 100$</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="price" value="3" 
-                                       ${selectedPrices.contains(3) ? 'checked' : ''}>
-                                <label>More than 100$</label>
-                            </div>
-                        </div>
+                           
 
-                        <button type="submit">Apply</button>
-                    </form>
-                </div>
+                            <div>
+                                <input type="checkbox" name="price" value="1"
+                                       <c:if test="${fn:contains(selectedPrices, '1')}">checked</c:if>>
+                                       <label>From 1$ to 50$</label>
+                                </div>
 
-                <div class="col-lg-10 right-menu">
+                                <div>
+                                    <input type="checkbox" name="price" value="2"
+                                    <c:if test="${fn:contains(selectedPrices, '2')}">checked</c:if>>
+                                    <label>From 50$ to 100$</label>
+                                </div>
+
+                                <div>
+                                    <input type="checkbox" name="price" value="3"
+                                    <c:if test="${fn:contains(selectedPrices, '3')}">checked</c:if>>
+                                    <label>More than 100$</label>
+                                </div>
+                            </div>
+
+                            <button type="submit">Apply</button>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-10 right-menu">
                     <c:choose>
                         <c:when test="${not empty productList}">
                             <c:forEach var="product" items="${productList}">

@@ -108,7 +108,7 @@ public class ProductDAO {
             connection = new DBContext().getConnect();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, "%" + keySearch + "%");
-             preparedStatement.setString(2, "%" + keySearch + "%");
+            preparedStatement.setString(2, "%" + keySearch + "%");
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -365,14 +365,15 @@ public class ProductDAO {
         }
         return productList;
     }
-    
-    
+
     public List<Product> getFilteredProducts(String age, List<Integer> categories, List<Integer> prices) {
         List<Product> productList = new ArrayList<>();
         String query = "SELECT * FROM Products WHERE isActive = 1";
 
+        boolean filterByAge = age != null && !age.isEmpty() && !age.equals("all");
+
         // Lọc theo độ tuổi
-        if (age != null && !age.isEmpty()) {
+        if (filterByAge) {
             query += " AND ageRange = ?";
         }
 
@@ -408,11 +409,13 @@ public class ProductDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             int paramIndex = 1;
 
-            if (age != null && !age.isEmpty()) {
+            // Chỉ set age nếu có lọc
+            if (filterByAge) {
                 preparedStatement.setString(paramIndex++, age);
             }
 
-            if (categories != null) {
+            // Set các giá trị category
+            if (categories != null && !categories.isEmpty()) {
                 for (int category : categories) {
                     preparedStatement.setInt(paramIndex++, category);
                 }
@@ -440,26 +443,26 @@ public class ProductDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return productList;
     }
-    
-    
-    public int getStock (int productID) {
-         String query = "SELECT Stock FROM Products WHERE productID = ?";
-         try {
-             preparedStatement = connection.prepareStatement(query);
-             preparedStatement.setInt(1, productID);
-             resultSet = preparedStatement.executeQuery();
-             
-             while (resultSet.next()) {  
-                 int result = resultSet.getInt(1);
-                 return result;
-             }
-            
+
+    public int getStock(int productID) {
+        String query = "SELECT Stock FROM Products WHERE productID = ?";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, productID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int result = resultSet.getInt(1);
+                return result;
+            }
+
         } catch (Exception e) {
-             System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
-         return -1;
+        return -1;
     }
 
     public static void main(String[] args) {
