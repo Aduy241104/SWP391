@@ -94,6 +94,7 @@
         <%-- <jsp:include page="Component/ManageForAdmin_Search.jsp">
             <jsp:param name="page" value="product"/>
         </jsp:include> --%>
+        
 
         <div class="main-content">
             <h2 class="text-center"><i class="fas fa-box"></i> Manage Category</h2>
@@ -111,9 +112,8 @@
                         <td class="description">
                             <c:choose>
                                 <c:when test="${fn:length(category.description) > 20}">
-                                    <span class="short-text">${fn:substring(category.description, 0, 100)}...</span>
+                                    <span class="short-text">${fn:substring(category.description, 0, 100)}</span>
                                     <span class="full-text" style="display: none;">${category.description}</span>
-                                    <button class="toggle-btn btn btn-sm btn-link">See more...</button>
                                 </c:when>
                                 <c:otherwise>
                                     ${category.description}

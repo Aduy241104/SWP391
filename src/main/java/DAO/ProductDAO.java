@@ -475,4 +475,26 @@ public class ProductDAO {
             System.out.println("Product does not exist. You can add it.");
         }
     }
+
+    public boolean increaseProductStock(int productID, int quantity) {
+        String query = "UPDATE Products SET stock = stock + ? WHERE productID = ?";
+        try {
+            // Kết nối tới database
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+
+            // Thiết lập các tham số trong câu lệnh SQL
+            preparedStatement.setInt(1, quantity); // Số lượng cần tăng
+            preparedStatement.setInt(2, productID); // ID của sản phẩm cần cập nhật
+
+            // Thực thi câu lệnh SQL
+            int rowEffect = preparedStatement.executeUpdate();
+
+            // Kiểm tra nếu có bản ghi nào bị ảnh hưởng, nghĩa là cập nhật thành công
+            return rowEffect > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

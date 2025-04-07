@@ -83,6 +83,7 @@
             String role = (String) session.getAttribute("role");
         %>
 
+        <% if ("admin".equals(role)) { %>
         <div class="sidebar">
             <h2><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
@@ -91,8 +92,18 @@
             <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews" class="active"><i class="fas fa-comments"></i> Manage Reviews</a>
-            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
+
+        <% } else { %>
+        <div class="sidebar">
+            <h2  style="color: white; margin-bottom: 10px; " ><i class="fas fa-cogs"></i> Staff</h2>
+            <a href="AdminManagerProducts?action=product"><i class="fas fa-box"></i> Manage Products</a>
+            <a href="StaffManagerOrders?action=orders" ><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+            <a href="ViewRatingListForAdmin?action=reviews" class="active"><i class="fas fa-comments"></i> Manage Reviews</a>
+            <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
+        </div>
+        <% }%>
 
         <div class="main-content">
             <h2 class="text-center"><i class="fas fa-comments"></i> Manage Product Reviews</h2>
@@ -135,7 +146,7 @@
                 </c:forEach>
             </table>
             <div class="text-center mt-4">
-                <a href="ViewProductAdmin.jsp" class="btn btn-primary btn-lg">
+                <a href="ViewRatingListForAdmin?action=reviews" class="btn btn-primary btn-lg">
                     <i class="fas fa-arrow-left"></i> Back to Review
                 </a>
             </div>

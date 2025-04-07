@@ -38,7 +38,7 @@ public class AdminManageCategoryAdd extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminManageCategoryAdd</title>");            
+            out.println("<title>Servlet AdminManageCategoryAdd</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AdminManageCategoryAdd at " + request.getContextPath() + "</h1>");
@@ -75,16 +75,26 @@ public class AdminManageCategoryAdd extends HttpServlet {
             throws ServletException, IOException {
         String categoryName = request.getParameter("categoryName");
         String description = request.getParameter("description");
-        
+
         if (categoryName == null || categoryName.trim().isEmpty()) {
             request.setAttribute("error", "Category name is required.");
             request.getRequestDispatcher("ViewCategoryForAdmin").forward(request, response);
             return;
         }
-        
+
         CategoryDAO categoryDAO = new CategoryDAO();
+
+// Kiểm tra trùng tên
+        if (categoryDAO.isCategoryNameExists(categoryName)) {
+            request.setAttribute("error", "Invalid category name");
+            request.setAttribute("categoryName", categoryName); // để giữ lại dữ liệu người dùng đã nhập
+            request.setAttribute("description", description);
+            request.getRequestDispatcher("ViewCategoryForAdminAdd.jsp").forward(request, response);
+            return;
+        }
+
+// Nếu không trùng thì thêm mới
         categoryDAO.addCategory(categoryName, description);
-        
         response.sendRedirect("AdminManageCategory");
     }
 

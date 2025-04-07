@@ -6,6 +6,7 @@
 
 <%@page import="DAO.orderDAO"%>
 <%@page import="Model.Orders" %>
+<%@page import="Model.Product" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -129,6 +130,8 @@
             }
 
 
+
+
         </style>
     </head>
     <body style="width: 100%;">
@@ -165,16 +168,29 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="detail" items="${OrderDetails}">
-                                    <tr>
-                                        <td><img style="width: 50%" src="${detail.imageUrl}" alt="${detail.productName}" class="product-image"></td>
-                                        <td class="product-name">
-                                            ${detail.productName} <br>
-<!--                                            <small>${detail.description}</small>-->
-                                        </td>
-                                        <td>$${detail.price}</td>
-                                        <td>${detail.quantity}</td>
-                                        <td>$${detail.price * detail.quantity}</td>
-                                    </tr>
+                                    <c:choose>
+                                        <c:when test="${detail.productName == null || detail.productName == '' || detail.productName == 'null'}">
+                                            <tr>
+                                                <td colspan="5" class="text-danger fw-bold text-center">
+                                                    Sản phẩm này không còn tồn tại trong hệ thống.
+                                                </td>
+                                            </tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td>
+                                                    <img style="width: 50%" src="${detail.imageUrl}" alt="${detail.productName}" class="product-image">
+                                                </td>
+                                                <td class="product-name">
+                                                    ${detail.productName} <br>
+                                                    <!-- <small>${detail.description}</small> -->
+                                                </td>
+                                                <td>$${detail.price / detail.quantity}</td>
+                                                <td>${detail.quantity}</td>
+                                                <td>$${detail.price}</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:forEach>
                             </tbody>
                         </table>
@@ -182,7 +198,7 @@
                         <div class="text-end total-section">
                             <p><strong>Total: <span>$${order.totalAmount}</span></strong></p>                        
                         </div>
-                    </div>
+                    </div>  
                 </div>
 
                 <!-- Customer Details -->
@@ -231,26 +247,29 @@
         <!-- Modal chỉnh sửa thông tin -->
 
         <c:if test="${order.orderStatus == 'pending'}">
-             <form action="UpdateCustomerDetails" method="POST" id="editCustomerForm">
-            <div id="editModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">Edit Order Details</div>
-                    <div class="modal-body">
-                        <label for="editPhone">Mobile:</label>
-                        <input type="text" id="editPhone" name="phoneNumber" class="form-control" value="${order.phoneNumber}" required>
+            <form action="UpdateCustomerDetails" method="POST" id="editCustomerForm" onsubmit="return validatePhoneNumber()">
+                <div id="editModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">Edit Order Details</div>
+                        <div class="modal-body">
+                            <label for="editPhone">Mobile:</label>
+                            <input type="text" id="editPhone" name="phoneNumber" class="form-control" value="${order.phoneNumber}" required>
 
-                        <label for="editAddress" class="mt-2">Shipping Address:</label>
-                        <textarea id="editAddress" name="address" class="form-control" required>${order.address}</textarea>
+                            <!-- Thông báo lỗi nếu có -->
+                            <div id="phoneError" class="text-danger" style="font-size: 0.875rem;"></div>
 
-                        <input type="hidden" name="orderId" value="${order.orderId}">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="closeEditModal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save Changes</button>
+                            <label for="editAddress" class="mt-2">Shipping Address:</label>
+                            <textarea id="editAddress" name="address" class="form-control" required>${order.address}</textarea>
+
+                            <input type="hidden" name="orderId" value="${order.orderId}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="closeEditModal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
         </c:if>
 
 
@@ -316,7 +335,23 @@
                 }
             });
 
+// Kiểm tra số điện thoại
+            function validatePhoneNumber() {
+                var phoneNumber = document.getElementById("editPhone").value.trim();
+                var regex = /^0\d{9}$/;
+
+                if (!regex.test(phoneNumber)) {
+                    document.getElementById("phoneError").innerText = "Must be enter numer.Phone number must start with 0 and contain exactly 10 digits.";
+                    return false;
+                }
+
+                // Nếu hợp lệ
+                document.getElementById("phoneError").innerText = "";
+                return true;
+            }
 
         </script>
+
+
     </body>
 </html>

@@ -23,6 +23,7 @@ public class OrderDetail {
     private String orderStatus;
     private String description;
     private int quantity;
+    private int productID;
 
     public OrderDetail() {
     }
@@ -41,10 +42,19 @@ public class OrderDetail {
         this.orderStatus = orderStatus;
         this.description = description;
         this.quantity = quantity;
+        this.productID = productID;
     }
 
     public int getOrderId() {
         return orderId;
+    }
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
 
     public void setOrderId(int orderId) {

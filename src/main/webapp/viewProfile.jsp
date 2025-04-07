@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn" style="border-radius: 17px; margin-bottom: 20px; background-color: rgb(251, 59, 59); color: white;">Save changes</button> 
-                                    <a href="" type="button" class="btn btn-default" style="margin-bottom: 20px;">Cancel</a>
+                                    <a href="index.jsp" type="button" class="btn btn-default" style="margin-bottom: 20px;">Back to HomePage</a>
                                 </div>
                             </form>
                             <form class="tab-pane fade <%= (request.getAttribute("error") != null || request.getAttribute("errorOldPassword") != null || session.getAttribute("successMessage") != null) ? "active show" : ""%>" 
@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn" style="border-radius: 17px; margin-bottom: 20px; background-color: rgb(251, 59, 59); color: white;">Save changes</button> 
-                                    <a href="" type="button" class="btn btn-default" style="margin-bottom: 20px;">Cancel</a>
+                                    <a href="index.jsp" type="button" class="btn btn-default" style="margin-bottom: 20px;">Back to HomePage</a>
                                 </div>
                             </form>
 

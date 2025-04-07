@@ -12,12 +12,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Nguyen Phu Quy CE180789
  */
 public class orderDAO {
+
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -102,6 +105,7 @@ public class orderDAO {
         }
         return orders;
     }
+
     public Orders getOrderById(int orderId) {
         Orders order = null;
         String query = "SELECT * FROM Orders WHERE orderID = ?";
@@ -143,7 +147,7 @@ public class orderDAO {
         }
         return false; // Nếu có lỗi, trả về false
     }
-    
+
     public boolean updateCustomerDetailsById(int orderID, String phoneNumber, String address) {
         String query = "UPDATE Orders SET phoneNumber = ?, address = ? WHERE orderID = ?";
 
@@ -161,5 +165,22 @@ public class orderDAO {
             e.printStackTrace();
         }
         return false; // Nếu có lỗi, trả về false
+    }
+
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        // Định nghĩa biểu thức chính quy cho số điện thoại hợp lệ
+        String regex = "^(0[0-9]{9})$";  // Kiểm tra số điện thoại bắt đầu bằng 0 và có đúng 10 chữ số.
+
+        // Kiểm tra xem số điện thoại có khớp với biểu thức chính quy không
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+
+        // Nếu khớp với biểu thức chính quy, trả về true, nếu không thì false
+        if (matcher.matches()) {
+            return true; // Số điện thoại hợp lệ
+        } else {
+            System.out.println("Invalid phone number! It must start with a 0 and be exactly 10 digits long.");
+            return false; // Số điện thoại không hợp lệ
+        }
     }
 }

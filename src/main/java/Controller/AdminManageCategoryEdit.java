@@ -146,6 +146,16 @@ public class AdminManageCategoryEdit extends HttpServlet {
             int categoryId = Integer.parseInt(categoryIdParam);
             CategoryDAO categoryDAO = new CategoryDAO();
 
+            // Kiểm tra trùng tên (trừ chính nó)
+            if (categoryDAO.isCategoryNameExists(categoryName)) {
+                request.setAttribute("errorMessage", "The name category already exists!");
+                Category existingCategory = categoryDAO.getCategoryById(categoryId);
+                request.setAttribute("category", existingCategory); // giữ lại dữ liệu đã nhập
+                request.setAttribute("categoryName", categoryName);
+                request.getRequestDispatcher("ViewCategoryForAdminEdit.jsp").forward(request, response);
+                return;
+            }
+
             // Cập nhật danh mục
             categoryDAO.editCategoryById(categoryId, categoryName, description);
 

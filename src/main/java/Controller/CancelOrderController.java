@@ -7,6 +7,7 @@ package Controller;
 import DAO.orderDAO;
 import DAO.OrderDetailDAO;
 import DAO.OrdersDAO;
+import DAO.ProductDAO;
 import Model.Orders;
 import Model.OrderDetail;
 import Model.User;
@@ -69,16 +70,26 @@ public class CancelOrderController extends HttpServlet {
             String orderIDParam = request.getParameter("id");
 
             if ("cancelOrder".equals(action) && orderIDParam != null) {
-
                 int orderID = Integer.parseInt(orderIDParam);
 
+                // 1. Lấy danh sách sản phẩm và số lượng từ đơn hàng
+                OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+                List<OrderDetail> details = orderDetailDAO.getProductQuantityInOrder(orderID);
+
+                // 2. Tăng lại số lượng trong bảng Products
+                ProductDAO productDAO = new ProductDAO();
+                for (OrderDetail od : details) {
+                    productDAO.increaseProductStock(od.getProductID(), od.getQuantity());
+                }
+
+                // 3. Huỷ đơn hàng
                 orderDAO ordersDAO = new orderDAO();
                 boolean isDeleted = ordersDAO.CancelOrderById(orderID);
 
                 if (isDeleted) {
-                    request.setAttribute("successMessage", "Đơn hàng đã được xóa thành công!");
+                    request.setAttribute("successMessage", "Đơn hàng đã được huỷ và kho đã được cập nhật.");
                 } else {
-                    request.setAttribute("errorMessage", "Xóa đơn hàng thất bại! Có thể đơn hàng không tồn tại.");
+                    request.setAttribute("errorMessage", "Huỷ đơn hàng thất bại.");
                 }
 
                 response.sendRedirect("ViewOrderListController");

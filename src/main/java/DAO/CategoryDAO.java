@@ -35,7 +35,7 @@ public class CategoryDAO {
                 int categoryID = resultSet.getInt(1);
                 String categoryName = resultSet.getString(2);
                 String description = resultSet.getString(3);
-                
+
                 Category cate = new Category(categoryID, categoryName, description);
                 listCate.add(cate);
             }
@@ -45,8 +45,8 @@ public class CategoryDAO {
         }
         return listCate;
     }
-    
-     public Category getCategoryById(int categoryID) {
+
+    public Category getCategoryById(int categoryID) {
 
         String query = "SELECT * FROM Categories WHERE categoryID = ?";
         Category category = null;
@@ -158,5 +158,19 @@ public class CategoryDAO {
                 System.out.println("Error closing resources: " + ex.getMessage());
             }
         }
+    }
+
+    public boolean isCategoryNameExists(String categoryName) {
+        String query = "SELECT 1 FROM Categories WHERE categoryName = ?";
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, categoryName);
+            resultSet = preparedStatement.executeQuery();
+            return resultSet.next(); // nếu có kết quả thì tên đã tồn tại
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 }

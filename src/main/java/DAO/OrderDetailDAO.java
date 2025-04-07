@@ -96,26 +96,47 @@ public class OrderDetailDAO {
     }
 
     public List<UserAction> getUserActionsByOrderID(int orderID) {
-    String query = "SELECT userName, action " +
-                   "FROM OrderRecords " +
-                   "WHERE orderID = ?";
-    List<UserAction> userActions = new ArrayList<>();
+        String query = "SELECT userName, action "
+                + "FROM OrderRecords "
+                + "WHERE orderID = ?";
+        List<UserAction> userActions = new ArrayList<>();
 
-    try (PreparedStatement ps = connection.prepareStatement(query)) {
-        ps.setInt(1, orderID);
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                String userName = rs.getString("userName");
-                String action = rs.getString("action");
-                userActions.add(new UserAction(userName, action));
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, orderID);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String userName = rs.getString("userName");
+                    String action = rs.getString("action");
+                    userActions.add(new UserAction(userName, action));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return userActions;
     }
-    return userActions;
-}
-    
-    
+
+    public List<OrderDetail> getProductQuantityInOrder(int orderID) {
+        List<OrderDetail> details = new ArrayList<>();
+        String query = "SELECT productID, quantity FROM OrderDetails WHERE orderID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                OrderDetail od = new OrderDetail();
+                od.setProductID(resultSet.getInt("productID"));
+                od.setQuantity(resultSet.getInt("quantity"));
+                details.add(od);
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting product quantity in order: " + e.getMessage());
+        }
+
+        return details;
+    }
 
 }

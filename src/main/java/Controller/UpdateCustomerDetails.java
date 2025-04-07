@@ -80,9 +80,10 @@ public class UpdateCustomerDetails extends HttpServlet {
 
         // Ghi log dữ liệu đầu vào
         System.out.println("Received data - Phone: " + phoneNumber + ", Address: " + address + ", Order ID: " + orderIdStr);
-
-        int orderId = Integer.parseInt(orderIdStr);
+        
         orderDAO orderDAO = new orderDAO();
+        int orderId = Integer.parseInt(orderIdStr);
+        
         boolean isUpdated = orderDAO.updateCustomerDetailsById(orderId, phoneNumber, address);
 
         if (isUpdated) {

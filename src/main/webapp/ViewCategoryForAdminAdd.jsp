@@ -49,12 +49,14 @@
                 cursor: pointer;
                 text-decoration: none;
             }
+
             .toggle-btn:hover {
                 color: black;
                 background-color: #FCEBF2;
                 transform: scale(1.05);
                 text-decoration: none;
             }
+
             .stock-input-form {
                 display: flex;
                 align-items: center;
@@ -72,6 +74,56 @@
                 font-size: 12px;
             }
 
+            .form-container {
+                max-width: 320px; /* Adjusted width for better fit */
+                margin: 20px auto;
+                padding: 15px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-container .mb-3 {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .form-container .mb-3 input,
+            .form-container .mb-3 textarea {
+                padding: 6px;
+                font-size: 13px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            /* For buttons inside the form */
+            .btn-custom {
+                background-color: #EA83AA;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+            .btn-custom:hover {
+                background-color: #FCEBF2;
+                transform: scale(1.05);
+                color: black;
+            }
+
+            .btn-cancel {
+                background-color: #EA83AA;
+                margin-left: 10px;
+            }
+
+            /* Adjust button spacing */
+            .text-center {
+                display: flex;
+                justify-content: center;
+                gap: 15px; /* Increased gap between buttons */
+                margin-top: 20px;
+            }
         </style>
     </head>
     <body>
@@ -85,23 +137,29 @@
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
+        
+        
 
         <div class="container">
             <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Category</h2>
 
-            <c:if test="${not empty error}">
-                <div class="error-message">${error}</div>
-            </c:if>
+            
 
             <form action="AdminManageCategoryAdd" method="POST" class="form-container">
                 <div class="mb-3">
                     <label class="form-label">Category Name:</label>
-                    <input type="text" class="form-control" name="categoryName" required>
+                    <input type="text" class="form-control" name="categoryName" value="${categoryName}" required>
+
+                    <c:if test="${not empty error}">
+                        <div class="error-message" style="color:red; font-size:13px; margin-top:5px;">
+                            ${error}
+                        </div>
+                    </c:if>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Description:</label>
-                    <textarea class="form-control" name="description" rows="3" required></textarea>
+                      <textarea class="form-control" name="description" rows="3" required>${description}</textarea>
                 </div>
 
                 <div class="text-center">
