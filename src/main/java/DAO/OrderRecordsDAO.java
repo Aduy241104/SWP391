@@ -96,14 +96,6 @@ public class OrderRecordsDAO {
 
   
 
-    public static void main(String[] args) {
-        try {
-            OrderRecordsDAO orderRecordsDAO = new OrderRecordsDAO();
-            int userID = 4; // Thay đổi userID để kiểm thử
-
-            System.out.println(orderRecordsDAO.getUserNameByUserID(4));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  
+    
 }

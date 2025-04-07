@@ -49,9 +49,9 @@
                             <img src="img/colorful-picture-teddy-bear-some-toys.jpg" alt="Los Angeles" style="width:100%; height: 500px;">
                         </div>
 
-                        <div class="item">
+<!--                        <div class="item">
                             <img src="img/toys-on-store-shelves.jpg" alt="Chicago" style="width:100%;height: 500px;">
-                        </div>
+                        </div>-->
 
                         <div class="item">
                             <img src="img/istockphoto-881663636-1024x1024.jpg" alt="New york" style="width:100%;height: 500px;">

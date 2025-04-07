@@ -132,7 +132,7 @@
                 <div class="col-md-6">
                     <h2>${product.productName}</h2>
                     <p class="product-price">${product.price}$</p>
-                    
+
                     <p><strong>Stock: </strong> <strong class="text-primary">${(product.stock > 0) ? product.stock: "Out Of Stock"} </strong> </p>
 
                     <c:if test="${product.stock > 0}">
@@ -141,12 +141,17 @@
                             <input type="text" id="quantity" readonly value="1" min="1" max="${product.stock}">
                             <button id="increase"><i class="fa-solid fa-plus"></i></button>
                         </div>
-                        <div class="product-buttons">
-
-                            <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
-                            <a id="buyNowBtn" class="btn customize" href="ViewFeedback?productID=${product.productID}">FeedBack</a>
-                        </div>
                     </c:if>
+                    <div class="product-buttons">
+                         <c:if test="${product.stock <= 0}">
+                             <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1" style="display: none">Add To Cart</a>
+                        </c:if>
+                        <c:if test="${product.stock > 0}">
+                            <a id="addToCartBtn" class="btn btn-primary customize" href="AddToCart?productID=${product.productID}&quantity=1">Add To Cart</a>
+                        </c:if>
+                        <a id="buyNowBtn" class="btn customize" href="ViewFeedback?productID=${product.productID}">FeedBack</a>
+                    </div>
+
                     <div class="" style="margin-top: 120px">
                         <h4>Product Information</h4>
                         <table class="table product-info-table">
@@ -178,10 +183,7 @@
                         </p>
                     </div>
                 </div>
-<!--                <div class="col-md-6" style="height: 200px">
-                    <h2>Rating 4.5⭐</h2>
-                    <a class="btn btn-primary customize" href="ViewFeedback?productID=${product.productID}">Feedback</a>
-                </div>-->
+          
             </div>
             <div class="row">
                 <h3 style="margin-left: 19px; margin-bottom: 20px;">Related Toy</h3>
@@ -193,7 +195,6 @@
                                 <div class="suggest-product_infor">
                                     <h5>${ctl.productName}</h5>
                                     <p>${ctl.price}</p>
-                                    <a href="" class="hxe">Add To Cart</a>
                                 </div>
                             </div>
                         </a>
@@ -227,19 +228,19 @@
         <script src="Js/Prdt.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                    function showModal() {
-                        document.getElementById("cartModal").classList.add("show-3");
-                        document.getElementById("cartModal").style.display = "block";
-                    }
-                    function closeModal() {
-                        document.getElementById("cartModal").classList.remove("show-3");
-                        document.getElementById("cartModal").style.display = "none";
-                    }
+                        function showModal() {
+                            document.getElementById("cartModal").classList.add("show-3");
+                            document.getElementById("cartModal").style.display = "block";
+                        }
+                        function closeModal() {
+                            document.getElementById("cartModal").classList.remove("show-3");
+                            document.getElementById("cartModal").style.display = "none";
+                        }
 
-                    // Tự động hiển thị modal khi trang tải xong
-                    window.onload = function () {
-                        showModal();
-                    };
+                        // Tự động hiển thị modal khi trang tải xong
+                        window.onload = function () {
+                            showModal();
+                        };
         </script>
         <script>
             // Hàm hiển thị Toast

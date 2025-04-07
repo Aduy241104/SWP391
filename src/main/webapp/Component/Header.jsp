@@ -15,7 +15,6 @@
     </div>
     <div class="col-md-6 option_1">
         <ul>
-            <li class="option-header"><a href="">Join us</a></li>
             <span class="line-row" style="margin: 14px 7px;"></span>
             <li class="option-header">
                 <%
@@ -52,7 +51,8 @@
     <div class="col-md-6 text-center">
         <ul class="category_List">
             <li class="category"><a href="ViewProductListController"><i style="font-size: 14px" class="fa-solid fa-house fa-beat"></i> Home Page</a></li>
-            <li class="category"> <a href="">Top Toy</a></li>
+            <li class="category"> <a href="AboutUs.jsp">About Us</a></li>
+            <li class="category"> <a href="">Contact</a></li>
         </ul>
     </div>
 
@@ -76,7 +76,6 @@
         <div class="leftBanner_contentz">
             <span>
                 No matter what you feel like doing today, It’s better as a Member. <br>
-                <a href="">Join Us</a>
             </span>
         </div>
     </div>
