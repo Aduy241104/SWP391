@@ -131,7 +131,7 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Email:</label>
                         <input type="email" class="form-control" name="email" id="email" required>
-                        <span id="emailError" class="text-danger"></span>
+                        <span id="emailError" class="text-danger">${requestScope.emailError}</span>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Full Name:</label>
