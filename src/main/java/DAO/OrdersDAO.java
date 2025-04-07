@@ -7,6 +7,7 @@ package DAO;
 import Model.Orders;
 import Utils.DBContext;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -32,6 +33,31 @@ public class OrdersDAO {
         }
     }
 
+    public Orders getOrderById(int orderId) {
+        Orders order = null;
+        String query = "SELECT * FROM Orders WHERE orderID = ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, orderId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) { // Chỉ có 1 đơn hàng
+                int userID = resultSet.getInt("userID");
+                double totalAmount = resultSet.getDouble("totalAmount");
+                Date createdAt = resultSet.getDate("createdAt");
+                String address = resultSet.getString("address");
+                String phoneNumber = resultSet.getString("phoneNumber");
+                String orderStatus = resultSet.getString("orderStatus");
+
+                order = new Orders(orderId, userID, totalAmount, createdAt, address, phoneNumber, orderStatus);
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting order by ID: " + e.getMessage());
+        }
+        return order; // Chỉ trả về một đơn hàng hoặc null nếu không tìm thấy
+    }
     public List<Orders> getAllOrders() {
         List<Orders> orders = new ArrayList<>();
         String query = "SELECT * FROM Orders";
@@ -221,6 +247,7 @@ public class OrdersDAO {
 
         return listResult;
     }
+    
 
     public int addOrder(Orders order) {
         String query = "INSERT INTO Orders (userID,totalAmount,address,phoneNumber)\n"

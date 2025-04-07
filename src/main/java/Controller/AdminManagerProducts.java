@@ -78,131 +78,132 @@ public class AdminManagerProducts extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = (String) request.getParameter("action");
-        try{
-        if (action.equals("product")) {
-            ProductDAO pDao = new ProductDAO();
-            List<Product> productList = pDao.getProductList();
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("ManageProductForAdmin.jsp").forward(request, response);
-        } else if (action.equals("BackToAdminDashboard")) {
-            request.getSession().removeAttribute("totalAmount");
-            request.getSession().removeAttribute("countOrders");
-            request.getSession().removeAttribute("count");
-            request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
-        } else if (action.equals("home")) {
-            request.getRequestDispatcher("ViewProductListController").forward(request, response);
-        } else if (action.equals("productForDashBoard")) {
-            ProductDAO pDao = new ProductDAO();
-            List<Product> productList = pDao.getProductList();
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("adminDashboard.jsp?view=productTable").forward(request, response);
+        try {
+            if (action.equals("product")) {
+                ProductDAO pDao = new ProductDAO();
+                List<Product> productList = pDao.getProductList();
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("ManageProductForAdmin.jsp").forward(request, response);
+            } else if (action.equals("BackToAdminDashboard")) {
+                request.getSession().removeAttribute("totalAmount");
+                request.getSession().removeAttribute("countOrders");
+                request.getSession().removeAttribute("count");
+                request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+            } else if (action.equals("home")) {
+                request.getRequestDispatcher("ViewProductListController").forward(request, response);
+            } else if (action.equals("productForDashBoard")) {
+                ProductDAO pDao = new ProductDAO();
+                List<Product> productList = pDao.getProductList();
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("adminDashboard.jsp?view=productTable").forward(request, response);
 
-        } else if (action.equals("count")) {
-            ProductDAO productDao = new ProductDAO();
-            List<Product> productList = productDao.getProductList();
-            OrdersDAO ordersDao = new OrdersDAO();
-            List<Orders> OrdersList = ordersDao.getAllOrders();
-            OrdersDAO OrdersDAO = new OrdersDAO();
-            userDAO userDao = new userDAO();
-            List<User> userList = userDao.getAllUser();
-            StaffDAO staffDao = new StaffDAO();
-            List<Staff> staffList = staffDao.getAllStaffs();
-            Double totalAmount = OrdersDAO.getTotalAmountOfDeliveredOrders();
-            int countStaff = staffList.size();
-            int countOrders = OrdersList.size();
-            int count = productList.size();
-            int countUser = userList.size();
-            DecimalFormat df = new DecimalFormat("#,###");
-            String formattedRevenue = df.format(totalAmount);
-            request.getSession().setAttribute("countStaff", countStaff);
-            request.getSession().setAttribute("totalAmount", formattedRevenue);
-            request.getSession().setAttribute("countOrders", countOrders);
-            request.getSession().setAttribute("count", count);
-            request.getSession().setAttribute("countUser", countUser);
-            request.setAttribute("count", count);
-            request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
-        } else if (action.equals("delete")) {
-            ProductDAO productDao = new ProductDAO();
-            String id_raw = request.getParameter("id");
-            try {
-                int id = Integer.parseInt(id_raw);
-                productDao.deleteProduct(id);
-                request.getRequestDispatcher("AdminManagerProducts?action=product").forward(request, response);
-            } catch (NumberFormatException e) {
-            }
-        } else if (action.equals("addProduct")) {
-            CategoryDAO categoryDAO = new CategoryDAO();
-            List<Category> categoryList = categoryDAO.getAllCategory();
-            request.setAttribute("categoryList", categoryList);
-            request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
-        } else if (action.equals("editProduct")) {
-            String productID_raw = request.getParameter("id");
-            try {
-                int productID = Integer.parseInt(productID_raw);
+            } else if (action.equals("count")) {
                 ProductDAO productDao = new ProductDAO();
-                Product product = productDao.getProductByID(productID);
+                List<Product> productList = productDao.getProductList();
+                OrdersDAO ordersDao = new OrdersDAO();
+                List<Orders> OrdersList = ordersDao.getAllOrders();
+                OrdersDAO OrdersDAO = new OrdersDAO();
+                userDAO userDao = new userDAO();
+                List<User> userList = userDao.getAllUser();
+                StaffDAO staffDao = new StaffDAO();
+                List<Staff> staffList = staffDao.getAllStaffs();
+                Double totalAmount = OrdersDAO.getTotalAmountOfDeliveredOrders();
+                int countStaff = staffList.size();
+                int countOrders = OrdersList.size();
+                int count = productList.size();
+                int countUser = userList.size();
+                DecimalFormat df = new DecimalFormat("#,###");
+                String formattedRevenue = df.format(totalAmount);
+                request.getSession().setAttribute("countStaff", countStaff);
+                request.getSession().setAttribute("totalAmount", formattedRevenue);
+                request.getSession().setAttribute("countOrders", countOrders);
+                request.getSession().setAttribute("count", count);
+                request.getSession().setAttribute("countUser", countUser);
+                request.setAttribute("count", count);
+                request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+            } else if (action.equals("delete")) {
+                ProductDAO productDao = new ProductDAO();
+                String id_raw = request.getParameter("id");
+                try {
+                    int id = Integer.parseInt(id_raw);
+                    productDao.deleteProduct(id);
+                    request.getRequestDispatcher("AdminManagerProducts?action=product").forward(request, response);
+                } catch (NumberFormatException e) {
+                }
+            } else if (action.equals("addProduct")) {
                 CategoryDAO categoryDAO = new CategoryDAO();
                 List<Category> categoryList = categoryDAO.getAllCategory();
-                request.setAttribute("product", product);
                 request.setAttribute("categoryList", categoryList);
-                request.getRequestDispatcher("ManageProductForAdminEditProductPage.jsp").forward(request, response);
-            } catch (Exception e) {
-            }
-        } else if (action.equals("viewDelete")) {
-            ProductDAO productDao = new ProductDAO();
-            List<Product> productList = productDao.getDisabledProducts();
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
-        } else if (action.equals("restore")) {
-            String productID_raw = request.getParameter("id");
-            try {
-                int productID = Integer.parseInt(productID_raw);
+                request.getRequestDispatcher("ManageProductForAdminAddProductPage.jsp").forward(request, response);
+            } else if (action.equals("editProduct")) {
+                String productID_raw = request.getParameter("id");
+
+                try {
+                    int productID = Integer.parseInt(productID_raw);
+                    ProductDAO productDao = new ProductDAO();
+                    Product product = productDao.getProductByID(productID);
+                    CategoryDAO categoryDAO = new CategoryDAO();
+                    List<Category> categoryList = categoryDAO.getAllCategory();
+                    request.setAttribute("product", product);
+                    request.setAttribute("categoryList", categoryList);
+                    request.getRequestDispatcher("ManageProductForAdminEditProductPage.jsp").forward(request, response);
+                } catch (Exception e) {
+                }
+            } else if (action.equals("viewDelete")) {
                 ProductDAO productDao = new ProductDAO();
-                productDao.restoreProduct(productID);
                 List<Product> productList = productDao.getDisabledProducts();
                 request.setAttribute("productList", productList);
                 request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
-            } catch (Exception e) {
+            } else if (action.equals("restore")) {
+                String productID_raw = request.getParameter("id");
+                try {
+                    int productID = Integer.parseInt(productID_raw);
+                    ProductDAO productDao = new ProductDAO();
+                    productDao.restoreProduct(productID);
+                    List<Product> productList = productDao.getDisabledProducts();
+                    request.setAttribute("productList", productList);
+                    request.getRequestDispatcher("ManageProductForAdminDeletedProductPage.jsp").forward(request, response);
+                } catch (Exception e) {
+                }
+            } else if (action.equals("viewProductDetail")) {
+                String productID_raw = request.getParameter("id");
+                try {
+                    int productID = Integer.parseInt(productID_raw);
+                    ProductDAO productDao = new ProductDAO();
+                    productDao.restoreProduct(productID);
+                    Product product = productDao.getProductByID(productID);
+                    request.setAttribute("product", product);
+                    request.getRequestDispatcher("ManageProductForAdminViewDetails.jsp").forward(request, response);
+                } catch (Exception e) {
+                }
+            } else if (action.equals("managerStock")) {
+                StockDAO stockDao = new StockDAO();
+                double totalIm = stockDao.calculateTotalImportValue();
+                double totalEx = stockDao.calculateTotalExportValue();
+                double totalStock = stockDao.calculateStockDifference();
+                request.setAttribute("totalIm", totalIm);
+                request.setAttribute("totalEx", totalEx);
+                request.setAttribute("totalStock", totalStock);
+                ProductDAO pDao = new ProductDAO();
+                List<Product> productList = pDao.getProductList();
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
+            } else if (action.equals("managerStockError")) {
+                ProductDAO pDao = new ProductDAO();
+                List<Product> productList = pDao.getProductList();
+                request.setAttribute("error", "Export quantity cannot exceed stock quantity!");
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
+            } else if (action.equals("managerStockSearch")) {
+                HttpSession session = request.getSession();
+                String query = (String) session.getAttribute("query");
+                ProductDAO pDao = new ProductDAO();
+                List<Product> productList = pDao.getProductList();
+                request.setAttribute("query", query);
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("AdminManager_Search?page=stock&query=" + query).forward(request, response);
             }
-        } else if (action.equals("viewProductDetail")) {
-            String productID_raw = request.getParameter("id");
-            try {
-                int productID = Integer.parseInt(productID_raw);
-                ProductDAO productDao = new ProductDAO();
-                productDao.restoreProduct(productID);
-                Product product = productDao.getProductByID(productID);
-                request.setAttribute("product", product);
-                request.getRequestDispatcher("ManageProductForAdminViewDetails.jsp").forward(request, response);
-            } catch (Exception e) {
-            }
-        } else if (action.equals("managerStock")) {
-            StockDAO stockDao = new StockDAO();
-            double totalIm = stockDao.calculateTotalImportValue();
-            double totalEx = stockDao.calculateTotalExportValue();
-            double totalStock = stockDao.calculateStockDifference();
-            request.setAttribute("totalIm", totalIm);
-            request.setAttribute("totalEx", totalEx);
-            request.setAttribute("totalStock", totalStock);
-            ProductDAO pDao = new ProductDAO();
-            List<Product> productList = pDao.getProductList();
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
-        } else if (action.equals("managerStockError")) {
-            ProductDAO pDao = new ProductDAO();
-            List<Product> productList = pDao.getProductList();
-            request.setAttribute("error", "Export quantity cannot exceed stock quantity!");
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("ManageProductForAdminStock.jsp").forward(request, response);
-        } else if (action.equals("managerStockSearch")) {
-            HttpSession session = request.getSession();
-            String query = (String) session.getAttribute("query");
-            ProductDAO pDao = new ProductDAO();
-            List<Product> productList = pDao.getProductList();
-            request.setAttribute("query", query);
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("AdminManager_Search?page=stock&query=" + query).forward(request, response);
-        }
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
     }
@@ -276,19 +277,24 @@ public class AdminManagerProducts extends HttpServlet {
                 String weightStr = request.getParameter("weight");
                 String isActiveStr = request.getParameter("isActive");
 
+                // Lấy hidden input chứa ảnh cũ
+                String oldImageUrl = request.getParameter("oldImageUrl");
                 Part filePart = request.getPart("image");
+
                 String imagePath;
                 if (filePart != null && filePart.getSize() > 0) {
+                    // Có upload ảnh mới
                     String fileName = filePart.getSubmittedFileName();
                     String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdir();
                     }
-                    imagePath = "uploads" + File.separator + fileName;
                     filePart.write(uploadPath + File.separator + fileName);
+                    imagePath = "uploads" + File.separator + fileName;
                 } else {
-                    imagePath = request.getParameter("existingImage"); // Giả sử form gửi hidden field chứa đường dẫn ảnh cũ
+                    // Không upload mới, dùng ảnh cũ
+                    imagePath = oldImageUrl;
                 }
 
                 int productID = Integer.parseInt(productIDStr);
@@ -304,8 +310,9 @@ public class AdminManagerProducts extends HttpServlet {
 
                 response.sendRedirect("AdminManagerProducts?action=product");
             }
-        }catch (Exception e) {
- 
+
+        } catch (Exception e) {
+
         }
     }
 

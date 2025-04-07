@@ -81,13 +81,13 @@ public class userDAO {
     }
 
     public boolean checkExistAccount(String identifier) {
-        String query = "SELECT COUNT(*) FROM Users WHERE username = ? OR email = ?";
+        String query = "SELECT COUNT(*) FROM Users WHERE (username = ? OR email = ?) AND isActive = 1";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, identifier);
             ps.setString(2, identifier);
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // Trả về true nếu tài khoản tồn tại
+                    return rs.getInt(1) > 0; // Trả về true nếu tài khoản tồn tại và đang hoạt động
                 }
             }
         } catch (Exception e) {
@@ -576,7 +576,7 @@ public class userDAO {
 
     public boolean updateUserPassword(int userId, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE userID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newPassword); // Mật khẩu chưa mã hóa (mã hóa sau)
             ps.setInt(2, userId);
             int rowsAffected = ps.executeUpdate();
