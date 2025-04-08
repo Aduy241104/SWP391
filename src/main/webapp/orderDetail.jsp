@@ -218,7 +218,7 @@
                     <div class="card card-custom">
                         <div class="d-flex justify-content-between">
                             <h5>Shipping Address</h5>
-                            <button class="btn btn-sm btn-outline-danger" id="editAddressBtn">Edit</button>
+                            <button style="display: none" class="btn btn-sm btn-outline-danger" id="editAddressBtn">Edit</button>
                         </div>
                         <p class="mt-3"><span id="displayAddress">${order.address}</span></p>
                     </div>
