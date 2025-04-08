@@ -103,7 +103,12 @@
                             <fmt:formatNumber value="${requestScope.totalAmount}" pattern="#,##0.00" />$
                         </strong></h5>
 
-                    <button type="submit" class="btn w-100 p-3 mt-4 custome-btn">Confirm</button>
+                    <c:if test="${requestScope.totalAmount > 0}">
+                        <button type="submit" class="btn w-100 p-3 mt-4 custome-btn">Confirm</button>
+                    </c:if>
+                    <c:if test="${empty requestScope.totalAmount}">
+                        <button type="submit" disabled class="btn w-100 p-3 mt-4 custome-btn">Confirm</button>
+                    </c:if>
                 </form>  
             </div>
             <footer style="margin-top: 80px;" class="container-fluid" id="footer">

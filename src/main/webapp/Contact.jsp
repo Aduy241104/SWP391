@@ -118,7 +118,7 @@
 <body>
 
     <div class="back-container">
-        <a href="home.jsp" class="back-btn">← Back</a>
+        <a href="ViewProductListController" class="back-btn">← Back</a>
     </div>
 
     <h1>Contact Us</h1>
@@ -129,30 +129,15 @@
         </div>
 
         <div class="qr-section">
-            <img src="images/qr-code.png" alt="QR Code for Contact" />
+            <img src="img/QR.jpg" alt="QR Code for Contact" />
             <p>Scan this QR to connect with us</p>
         </div>
 
         <div class="contact-info">
-            <p><strong>Address:</strong> 123 Pink Street, Toyland City</p>
-            <p><strong>Phone:</strong> (123) 456-7890</p>
+            <p><strong>Address:</strong> Can Tho, Ninh Kieu</p>
+            <p><strong>Phone:</strong> (+84) 374-721-054</p>
             <p><strong>Email:</strong> support@toystore.com</p>
             <p><strong>Opening Hours:</strong> 8:00 AM - 6:00 PM (Mon - Sat)</p>
-        </div>
-
-        <div class="contact-form">
-            <form action="SendContactServlet" method="post">
-                <label for="name">Your Name</label>
-                <input type="text" name="name" id="name" required>
-
-                <label for="email">Your Email</label>
-                <input type="email" name="email" id="email" required>
-
-                <label for="message">Your Message</label>
-                <textarea name="message" id="message" required></textarea>
-
-                <button type="submit">Send Message</button>
-            </form>
         </div>
     </div>
 

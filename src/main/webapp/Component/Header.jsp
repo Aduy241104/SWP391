@@ -52,7 +52,7 @@
         <ul class="category_List">
             <li class="category"><a href="ViewProductListController"><i style="font-size: 14px" class="fa-solid fa-house fa-beat"></i> Home Page</a></li>
             <li class="category"> <a href="AboutUs.jsp">About Us</a></li>
-            <li class="category"> <a href="">Contact</a></li>
+            <li class="category"> <a href="Contact.jsp">Contact</a></li>
         </ul>
     </div>
 
