@@ -187,7 +187,7 @@
                         <p><strong>Email:</strong> ${orderDetail.email}</p>
                         <p><strong>Status:</strong> ${orderDetail.orderStatus}</p>
                         <p>
-                            <strong>Total Amount: </strong>$<fmt:formatNumber value="${total}" type="number"/> 
+                            <strong>Total Amount: </strong>$<fmt:formatNumber value="${orderDetail.totalAmount}" type="number"/> 
                         </p>
                     </div>
 

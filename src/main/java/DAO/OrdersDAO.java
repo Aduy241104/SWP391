@@ -61,36 +61,28 @@ public class OrdersDAO {
 
     public List<Orders> getAllOrders() {
         List<Orders> orders = new ArrayList<>();
-        String query = "SELECT * FROM Orders";
+        String query = "SELECT * FROM [Orders]";
 
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(query);  ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 double totalAmount = resultSet.getDouble("totalAmount");
 
-                DecimalFormat df = new DecimalFormat("#,###");
-                String formattedRevenue = df.format(totalAmount);
-                try {
-                    double Total = Double.parseDouble(formattedRevenue);
-                    Orders order = new Orders(
-                            resultSet.getInt("orderID"),
-                            resultSet.getInt("userID"),
-                            Total,
-                            resultSet.getDate("createdAt"),
-                            resultSet.getString("address"),
-                            resultSet.getString("phoneNumber"),
-                            resultSet.getString("orderStatus")
-                    );
-                    orders.add(order);
-                } catch (Exception e) {
-                }
-
+                Orders order = new Orders(
+                        resultSet.getInt("orderID"),
+                        resultSet.getInt("userID"),
+                        totalAmount,
+                        resultSet.getDate("createdAt"),
+                        resultSet.getString("address"),
+                        resultSet.getString("phoneNumber"),
+                        resultSet.getString("orderStatus")
+                );
+                orders.add(order);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return orders;
     }
 
