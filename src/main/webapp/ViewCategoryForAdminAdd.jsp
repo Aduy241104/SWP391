@@ -143,7 +143,7 @@
             <jsp:param name="page" value="cate"/>
         </jsp:include> 
 
-        <div class="container" style="margin: 100px; margin-right: 50px;"> 
+        <div class="main-content"> 
             <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Category</h2>
 
 
