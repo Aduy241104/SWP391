@@ -46,7 +46,6 @@
                 </div>
 
                 <div class="remember-forgot">
-                    <label> <input type="checkbox" name="remember"> Remember me</label>
                     <a href="forgotpassword.jsp">Forgot password?</a>
                 </div>
 

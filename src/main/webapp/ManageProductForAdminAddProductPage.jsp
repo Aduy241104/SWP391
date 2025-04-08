@@ -182,7 +182,7 @@
                             <option value="">-- Select Age Range --</option>
                             <option value="0-1" ${product.ageRange == '0-1' ? 'selected' : ''}>0-1</option>
                             <option value="1-3" ${product.ageRange == '1-3' ? 'selected' : ''}>1-3</option>
-                            <option value="3+" ${product.ageRange == '3+' ? 'selected' : ''}>3+</option>
+                            <option value="3" ${product.ageRange == '3' ? 'selected' : ''}>3</option>
                         </select>
                     </div>
                     <div class="col-md-4 mb-3">

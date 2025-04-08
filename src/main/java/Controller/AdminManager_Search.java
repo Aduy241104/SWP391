@@ -4,10 +4,12 @@
  */
 package Controller;
 
+import DAO.CategoryDAO;
 import DAO.OrdersDAO;
 import DAO.ProductDAO;
 import DAO.StaffDAO;
 import DAO.userDAO;
+import Model.Category;
 import Model.Orders;
 import Model.Product;
 import Model.Staff;
@@ -80,11 +82,13 @@ public class AdminManager_Search extends HttpServlet {
         OrdersDAO ordersDao = new OrdersDAO();
         userDAO userDao = new userDAO();
         StaffDAO staffDao = new StaffDAO();
+        CategoryDAO cateDAO = new CategoryDAO();
 
         List<Product> productList = new ArrayList<>();
         List<Orders> ordersList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
         List<Staff> staffList = new ArrayList<>();
+        List<Category> cateList = new ArrayList<>();
 
         int orderId = 0;
         try {
@@ -119,8 +123,13 @@ public class AdminManager_Search extends HttpServlet {
             productList = productDao.searchProduct(query);
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("ManageProductForAdminSearchForStockUpdate.jsp").forward(request, response);
+        } else if (page.equals("cate")) {
+            System.out.println("Searching Products and Users for: " + query);
+            cateList = cateDAO.searchCategoryByName(query);
+            request.setAttribute("categoryList", cateList);
+            request.getRequestDispatcher("ViewCategoryForAdminSearch.jsp").forward(request, response);
         } else if (page.equals("searchAll")) {
-            String role = (String) request.getSession().getAttribute("role"); 
+            String role = (String) request.getSession().getAttribute("role");
 
             if ("staff".equals(role)) {
                 if (isNumber) {

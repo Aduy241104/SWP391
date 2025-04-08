@@ -91,9 +91,9 @@
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
 
-        <%-- <jsp:include page="Component/ManageForAdmin_Search.jsp">
-            <jsp:param name="page" value="product"/>
-        </jsp:include> --%>
+         <jsp:include page="Component/ManageForAdmin_Search.jsp">
+        <jsp:param name="page" value="cate"/>
+        </jsp:include> 
         
 
         <div class="main-content">

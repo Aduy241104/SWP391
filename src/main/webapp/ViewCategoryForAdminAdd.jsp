@@ -137,13 +137,16 @@
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
         </div>
-        
-        
 
-        <div class="container">
+
+        <jsp:include page="Component/ManageForAdmin_Search.jsp">
+            <jsp:param name="page" value="cate"/>
+        </jsp:include> 
+
+        <div class="container" style="margin: 100px; margin-right: 50px;"> 
             <h2 class="text-center"><i class="fas fa-plus-circle"></i> Add New Category</h2>
 
-            
+
 
             <form action="AdminManageCategoryAdd" method="POST" class="form-container">
                 <div class="mb-3">
@@ -159,7 +162,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Description:</label>
-                      <textarea class="form-control" name="description" rows="3" required>${description}</textarea>
+                    <textarea class="form-control" name="description" rows="3" required>${description}</textarea>
                 </div>
 
                 <div class="text-center">

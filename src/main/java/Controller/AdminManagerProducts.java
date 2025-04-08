@@ -107,7 +107,7 @@ public class AdminManagerProducts extends HttpServlet {
                 List<User> userList = userDao.getAllUser();
                 StaffDAO staffDao = new StaffDAO();
                 List<Staff> staffList = staffDao.getAllStaffs();
-                Double totalAmount = OrdersDAO.getTotalAmountOfDeliveredOrders();
+                Double totalAmount = OrdersDAO.getTotalDeliveredAmountAllUsers();
                 int countStaff = staffList.size();
                 int countOrders = OrdersList.size();
                 int count = productList.size();
