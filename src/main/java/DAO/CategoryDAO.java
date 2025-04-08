@@ -160,6 +160,42 @@ public class CategoryDAO {
         }
     }
 
+    public List<Category> searchCategoryByName(String keyword) {
+        List<Category> listCate = new ArrayList<>();
+        String query = "SELECT * FROM Categories WHERE categoryName LIKE ?";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "%" + keyword + "%");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int categoryID = resultSet.getInt("categoryID");
+                String categoryName = resultSet.getString("categoryName");
+                String description = resultSet.getString("description");
+
+                Category cate = new Category(categoryID, categoryName, description);
+                listCate.add(cate);
+            }
+        } catch (Exception e) {
+            System.out.println("Error searching category: " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+
+        return listCate;
+    }
+
     public boolean isCategoryNameExists(String categoryName) {
         String query = "SELECT 1 FROM Categories WHERE categoryName = ?";
         try {

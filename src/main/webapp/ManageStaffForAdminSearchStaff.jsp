@@ -152,17 +152,17 @@
                                                 </button>
                                             </c:when>
                                             <c:when test="${staff.isActive eq true}">
-                                                <a style="padding: 5px 16px;" href="AdminManagerStaff?action=banUser&id=${staff.staffID}" 
+                                                <a style="padding: 5px 16px;" href="AdminManageStaff?action=banStaff&id=${staff.staffID}" 
                                                    onclick="return confirm('Are you sure you want to ban this user?')" 
                                                    class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-ban"></i> Ban User
+                                                    <i class="fas fa-ban"></i> Ban Staff
                                                 </a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="AdminManagerStaff?action=unBanUser&id=${staff.staffID}" 
+                                                <a href="AdminManageStaff?action=unBanStaff&id=${staff.staffID}" 
                                                    onclick="return confirm('Are you sure you want to unban this user?')" 
                                                    class="btn btn-success btn-sm">
-                                                    <i class="fas fa-check"></i> Unban User
+                                                    <i class="fas fa-check"></i> Unban Staff
                                                 </a>
                                             </c:otherwise>
                                         </c:choose>

@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="css/AdminDashboardStyle.css"/>
         <link rel="stylesheet" href="css/ManageProductForAdminStyles.css"/>
         <style>
-            .center-container {
+          .center-container {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -103,14 +103,11 @@
                 padding: 5px 10px;
                 font-size: 12px;
             }
-
             .action-buttons-add {
                 position: absolute;
                 bottom: 20px;
                 right: 20px;
             }
-
-
 
         </style>
     </head>
@@ -124,8 +121,8 @@
             <h2 style="color: white; text-align: start; margin-bottom: 10px; "><i class="fas fa-cogs"></i> Admin</h2>
             <a href="AdminManagerUser?action=user"><i class="fas fa-users"></i> Manage Users</a>
             <a href="AdminManageStaff?action=staff"><i class="fas fa-users"></i> Manage Staff</a>
-            <a href="AdminManageCategory" ><i class="fas fa-box"></i> Manage Category</a>
-            <a href="AdminManagerProducts?action=product"class="active" ><i class="fas fa-box"></i> Manage Products</a>
+            <a href="AdminManageCategory" class="active"><i class="fas fa-box"></i> Manage Category</a>
+            <a href="AdminManagerProducts?action=product" ><i class="fas fa-box"></i> Manage Products</a>
             <a href="AdminManagerOrders?action=order"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
             <a href="ViewRatingListForAdmin?action=reviews"><i class="fas fa-comments"></i> Manage Reviews</a>
             <a href="AdminManagerProducts?action=home"><i class="fas fa-arrow-left"></i> Back to home page</a>
@@ -140,107 +137,89 @@
         <% }%>
 
         <jsp:include page="Component/ManageForAdmin_Search.jsp">
-            <jsp:param name="page" value="product"/>
+            <jsp:param name="page" value="cate"/>
         </jsp:include>
 
         <c:choose>
-            <c:when test="${not empty productList}">
+            <c:when test="${not empty categoryList}">
                 <div class="main-content">
-                    <h2 class="text-center"><i class="fas fa-box"></i> Manage Products</h2>
+                    <h2 class="text-center"><i class="fas fa-box"></i> Manage Category</h2>
                     <table class="table table-bordered table-hover mt-4">
                         <tr class="table-dark">
                             <th>ID</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Image</th>
                             <th>Action</th>
                         </tr>
-                        <c:forEach var="product" items="${productList}">
+                        <c:forEach var="category" items="${categoryList}">
                             <tr>
-                                <td>${product.productID}</td>
-                                <td>${product.productName}</td>
+                                <td>${category.categoryID}</td>
+                                <td>${category.categoryName}</td>
                                 <td class="description">
                                     <c:choose>
-                                        <c:when test="${fn:length(product.description) > 20}">
-                                            <span class="short-text">${fn:substring(product.description, 0, 100)}...</span>
-                                            <span class="full-text" style="display: none;">${product.description}</span>
-                                            <button class="toggle-btn btn btn-sm btn-link">See more...</button>
+                                        <c:when test="${fn:length(category.description) > 20}">
+                                            <span class="short-text">${fn:substring(category.description, 0, 100)}</span>
+                                            <span class="full-text" style="display: none;">${category.description}</span>
                                         </c:when>
                                         <c:otherwise>
-                                            ${product.description}
+                                            ${category.description}
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
 
-                                <td>${product.price}</td>
-                                <td>
-                                    ${product.stock}
-                                </td>
 
-                                <td><img src="${product.imageUrl}" alt="Product Image" width="50"></td>
+
+
                                 <td>
-                                    <div class="product-actions">
-                                        <a href="AdminManagerProducts?action=editProduct&id=${product.productID}" class="btn btn-warning btn-sm">
+                                    <div class="category-actions">
+                                        <a href="AdminManageCategoryEdit?action=editCategory&categoryID=${category.categoryID}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
-                                        <a href="AdminManagerProducts?action=delete&id=${product.productID}" 
+                                        <a href="AdminManageCategoryDelete?action=delete&categoryID=${category.categoryID}"
                                            onclick="return confirm('Are you sure you want to delete this product?')" 
                                            class="btn btn-danger btn-sm">
                                             <i class="fas fa-trash"></i> Delete
-                                        </a>
-                                        <a href="AdminManagerProducts?action=viewProductDetail&id=${product.productID}" class="btn btn btn-info btn-sm">
-                                            <i class="fas fa-eye"></i> View Detail
                                         </a>
                                     </div>
                                 </td>
                             </tr>
                         </c:forEach>
-                    </table>
-                    <div style="margin-bottom: 20px;" class="action-buttons-add">
-                        <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                            <i class="fas fa-arrow-left"></i> Back to Product Page
-                        </a>
-                    </div>
-                </div>
-            </c:when>
-
-
-            <c:otherwise>
-                <div class="center-container">
-                    <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
-                </div>
-                <div style="margin-bottom: 20px;" class="action-buttons-add">
-                    <a href="AdminManagerProducts?action=product" class="btn btn-custom btn-lg shadow">
-                        <i class="fas fa-arrow-left"></i> Back to Product Page
-                    </a>
-                </div>
-            </c:otherwise>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="center-container">
+                            <h1 style="margin-left: 100px;" class="mess">No results found!</h1>
+                        </div>
+                        <div style="margin-bottom: 20px;" class="action-buttons-add">
+                            <a href="AdminManageCategory" class="btn btn-custom btn-lg shadow">
+                                <i class="fas fa-arrow-left"></i> Back to Caterory Page
+                            </a>
+                        </div>
+                    </c:otherwise>
         </c:choose>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".toggle-btn").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let td = this.closest("td");
-                        td.classList.toggle("expanded");
+                </table>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        document.querySelectorAll(".toggle-btn").forEach(button => {
+                            button.addEventListener("click", function () {
+                                let td = this.closest("td");
+                                td.classList.toggle("expanded");
 
-                        let shortText = td.querySelector(".short-text");
-                        let fullText = td.querySelector(".full-text");
+                                let shortText = td.querySelector(".short-text");
+                                let fullText = td.querySelector(".full-text");
 
-                        if (td.classList.contains("expanded")) {
-                            fullText.style.display = "inline";
-                            shortText.style.display = "none";
-                            this.textContent = "Collapse";
-                        } else {
-                            fullText.style.display = "none";
-                            shortText.style.display = "inline";
-                            this.textContent = "See more...";
-                        }
+                                if (td.classList.contains("expanded")) {
+                                    fullText.style.display = "inline";
+                                    shortText.style.display = "none";
+                                    this.textContent = "Collapse";
+                                } else {
+                                    fullText.style.display = "none";
+                                    shortText.style.display = "inline";
+                                    this.textContent = "See more...";
+                                }
+                            });
+                        });
                     });
-                });
-            });
 
-        </script>
-    </body>
-</html>
+                </script>
+        </body>
+    </html>

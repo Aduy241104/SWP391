@@ -132,7 +132,7 @@
 
                             <div>
                                 <input name="price" type="checkbox" value="1">
-                                <label for="">From 1$ to 50$</label>
+                                <label for="">From 0$ to 50$</label>
                             </div>
                             <div>
                                 <input name="price" type="checkbox" value="2">

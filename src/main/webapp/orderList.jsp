@@ -92,7 +92,6 @@
                     </div>
 
                     <div style="background-color: rgb(250, 85, 113); border-radius: 10px; margin-top: 15px;" class="row optional">
-                        <h3>Total</h3>
                     </div>
                 </div>
 

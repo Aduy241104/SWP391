@@ -58,6 +58,7 @@ public class OrdersDAO {
         }
         return order; // Chỉ trả về một đơn hàng hoặc null nếu không tìm thấy
     }
+
     public List<Orders> getAllOrders() {
         List<Orders> orders = new ArrayList<>();
         String query = "SELECT * FROM Orders";
@@ -91,6 +92,25 @@ public class OrdersDAO {
             e.printStackTrace();
         }
         return orders;
+    }
+
+    public double getTotalDeliveredAmountAllUsers() {
+        double totalDeliveredAmount = 0;
+        String query = "SELECT SUM(totalAmount) AS total FROM Orders WHERE orderStatus = 'delivered'";
+
+        try {
+            connection = new DBContext().getConnect();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                totalDeliveredAmount = resultSet.getDouble("total");
+            }
+        } catch (Exception e) {
+            System.out.println("Error calculating total delivered amount for all users: " + e.getMessage());
+        }
+
+        return totalDeliveredAmount;
     }
 
     // loc status ne :))
@@ -247,7 +267,6 @@ public class OrdersDAO {
 
         return listResult;
     }
-    
 
     public int addOrder(Orders order) {
         String query = "INSERT INTO Orders (userID,totalAmount,address,phoneNumber)\n"
